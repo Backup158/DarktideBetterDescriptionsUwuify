@@ -11,19 +11,23 @@ Turns Enhanced Descriptions modules into UwU text. The script edits all text tha
    
    It should look like ```replace(target, newFile```
 4. Change these values
-5. 
+   
    Target would be the file name of whichever Enhanced Descriptions module needs to be changed
    
   **Ensure the output file is not the same as the input!**
-6. Save the script, then run it
+  
+5. Save the script, then run it
 
    This should print all the changes in your terminal
    
    You may close the terminal when the script completes
+   
 7. Create a backup of the target file, then rename newFile to the name of the EDM you are replacing
 
    Such as '''output.txt''' --> '''ENLocalizationFIXTalents.lua'''
+   
 8. Open the UwUified EDM in a text editor
+
 9. Use a Find and Replace feature (such as Ctrl + H in Notepad++) to make the following changes:
 - ```'(\.\. \*{3}(\w|\s)*\*{3}|\*{3}(\w|\s)*\*{3} \\.\\.)``` --> ```..```
   
@@ -35,7 +39,8 @@ Turns Enhanced Descriptions modules into UwU text. The script edits all text tha
   ```Wow"``` --> ```Smaww"```
   
   Low --> small --> smaww. I don't like how "wow" sounds in this context.
-9. Verify the changes in-game
+  
+10. Verify the changes in-game
 
 # Errors
 **Calling nil error**
