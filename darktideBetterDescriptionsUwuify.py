@@ -21,7 +21,8 @@ regexComment = '((?:\s)*--.*\n)'
 #regexLineComment = '^' + regexComment
 regexLineComment = '^(?:\s)?--.*\n'
 regexVarCurly = '({(?:.*?)})'											# finds the {var_name:%s}. ? after * makes it non greedy so it stops at the first occurence
-regexColoredText = '(\.\. (?:\w*)_rgb \.\.)|(\.\. (?:\w*)_rgb end},)|(\.\. (?:\w*)_rgb ")|(\.\. ˝(?:\w*)_rgb \.\.)|(\.\. ˝(?:\w*)_rgb ")'	# .. var_rgb .. | .. var_rgb end}, | .. var_rgb " | .. ˝var_rgb .. with that wack ass diacritc
+#regexColoredText = '(\.\. (?:\w*)_rgb \.\.)|(\.\. (?:\w*)_rgb end},)|(\.\. (?:\w*)_rgb ")|(\.\. ˝(?:\w*)_rgb \.\.)|(\.\. ˝(?:\w*)_rgb ")'	# .. var_rgb .. | .. var_rgb end}, | .. var_rgb " | .. ˝var_rgb .. with that wack ass diacritc
+regexColoredText = '(\.\. ˝?(?:\w*)_rgb \.\.)|(\.\. ˝?(?:\w*)_rgb(?: end},)?)|(\.\. ˝?(?:\w*)_rgb ")|( ?˝?(?:\w*)_rgb \.\. ")'		# .. var_rgb .. | .. var_rgb end}, | .. var_rgb " | var_rgb .. "			all with option for wack ass diacritic
 #regexIsEnd = '" end},'													# end with quote
 regexIsEnd = '( end},.*\n)'
 regexLocalStart = 'local .* = iu_actit\('	# local name_rgb = iu_actit(
@@ -30,7 +31,8 @@ regexLocalEnd = ',.*\)\s'					# , value)\n
 regexRemoveEmotesFromColorVar = '\.\. \(.{3,8}\)'							# .. (uwu face)
 regexQuotedText = '"[^(\n)]*"'
 regexReturnLineExceptEnd = '((\s-- )|\s)?return "[^(\n)]*"'
-regexRemoveRoleplayFromColorVar = ' \.\. \*{3}(\w|\s)*\*{3}'			# .. ***rping***
+regexRemoveRoleplayFromColorVarFront = '\.\. \*{3}(\w|\s)*\*{3}'			# .. ***rping***
+regexRemoveRoleplayFromColorVarBack = '\*{3}(\w|\s)*\*{3} \.\.'			# .. ***rping***
 regexRemoveRoleplayFromEnd = '\*{3}(\w|\s)*\*{3} end},'					# ***rping*** end},
 # doing '(regex)' means the delimiter stays in the list	
 # doing '(?:regex)' means match but don't include delimiter
@@ -280,7 +282,7 @@ def replace(fileRead, fileWrite):
 	input_file = open(fileRead, "r")
 	output_file = open(fileWrite, "w")
 	
-	uwu = uwuipy(None, 0.33, 0.075, 0.22, 1, True) #seed, stutterchance, facechance, actionchance, exclamationshcance, nsfw
+	uwu = uwuipy(None, 0.33, 0, 0.22, 1, True) #seed, stutterchance, facechance, actionchance, exclamationshcance, nsfw
 	
 	for line in input_file:
 		match_comment = re.match(regexLineComment, line)						# matches line that is entirely a comment
