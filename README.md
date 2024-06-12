@@ -1,6 +1,6 @@
 # WTF does this even do?
 
-Turns Enhanced Descriptions modules into UwU text.
+Turns Enhanced Descriptions modules into UwU text. The script edits all text that will be displayed on any line that is not commented out.
 
 
 ## Usage
@@ -20,15 +20,18 @@ Turns Enhanced Descriptions modules into UwU text.
 7. Open the UwUified EDM in a text editor
 8. Use a Find and Replace feature (such as Ctrl + H in Notepad++) to make the following changes:
 - ''''(\.\. \*{3}(\w|\s)*\*{3})|(\*{3}(\w|\s)*\*{3} \.\.)'''	--> '''..'''
+  
   Removes roleplay that come before/after quotes and clash with variables_rgb
 - '''\*{3}(\w|\s)*\*{3} end},'''  --> '''end},'''
+  
   Removes roleplay that come after quotes and thereby clash with end syntax
-- *Optional* '''Wow"''' --> '''Smaww"'''
+- *Optional*:      '''Wow"''' --> '''Smaww"'''
+  
   Low --> small --> smaww. I don't like how "wow" sounds in this context.
 9. Verify the changes in-game
 
 # Errors
->>> Calling nil error
+**Calling nil error**
 
 '''
 \[ERROR\] DMF Mod Manager: attempted to call local 'func' (a nil value)
