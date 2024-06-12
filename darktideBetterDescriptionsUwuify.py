@@ -4,27 +4,50 @@ import re
 debug = True
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#	> Script to UwUify displayed text in xsSplater's Enhanced Descriptions mod's Talents module for Warhammer 40k: Darktide. https://www.nexusmods.com/warhammer40kdarktide/mods/210
+#	> Author: Backup158
+#	> Initial creation: 2024-06-09
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# GLOBAL VARIABLES
+# Regex values
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #	regexReturnStart = r'(((\s-- )|\s)?return )'
-#	regexVarCurly = r'({(.*)} )'											# finds the {var_name:%s}
-#	regexColoredText = r'(\.\. (\w*)_rgb \.\.)|(\.\. (\w*)_rgb end},)|(\.\. (\w*)_rgb ")'		# .. var_rgb .. | .. var_rgb end}, | ..toughnyess_dmg "
-#	regexQuotedText = r' [^(\n)]*'
-#	regexReturnLineExceptEnd = r'((\s-- )|\s)?return "[^(\n)]*"'
-#	regexRemoveRoleplayFromColorVar =  \.\. \*{3}(\w|\s)*\*{3}				# .. ***rping***
-#	regexRemoveRoleplayFromEnd = \*{3}(\w|\s)*\*{3} end},					# ***rping*** end},
-#	regexIsEnd = r'" end},'												# is end with quote
-#	regexRemoveEmotesFromColorVar = \.\. \(.{3,8}\)							# .. (uwu face)
+#regexLineBeginsReturn = '((?:\s)?return "[^(\n)]*" end},(?:(?: --[^\n]*)?|(?:\n)))'	# whitespace return "" end}, then a comment or newline
+#regexLineBeginsReturn = '((?:\s)?return "[^(\n)]*" end},.*\n)'
+regexLineBeginsReturn = '((?:\s)?return )'
+regexLocalWhole = 'local .* = iu_actit\(".*",.*\)\n'
+
+regexComment = '((?:\s)*--.*\n)'
+#regexLineComment = '^' + regexComment
+regexLineComment = '^(?:\s)?--.*\n'
+regexVarCurly = '({(?:.*?)})'											# finds the {var_name:%s}. ? after * makes it non greedy so it stops at the first occurence
+regexColoredText = '(\.\. (?:\w*)_rgb \.\.)|(\.\. (?:\w*)_rgb end},)|(\.\. (?:\w*)_rgb ")|(\.\. ˝(?:\w*)_rgb \.\.)|(\.\. ˝(?:\w*)_rgb ")'	# .. var_rgb .. | .. var_rgb end}, | .. var_rgb " | .. ˝var_rgb .. with that wack ass diacritc
+#regexIsEnd = '" end},'													# end with quote
+regexIsEnd = '( end},.*\n)'
+regexLocalStart = 'local .* = iu_actit\('	# local name_rgb = iu_actit(
+regexLocalEnd = ',.*\)\s'					# , value)\n
+
+regexRemoveEmotesFromColorVar = '\.\. \(.{3,8}\)'							# .. (uwu face)
+regexQuotedText = '"[^(\n)]*"'
+regexReturnLineExceptEnd = '((\s-- )|\s)?return "[^(\n)]*"'
+regexRemoveRoleplayFromColorVar = ' \.\. \*{3}(\w|\s)*\*{3}'			# .. ***rping***
+regexRemoveRoleplayFromEnd = '\*{3}(\w|\s)*\*{3} end},'					# ***rping*** end},
 # doing '(regex)' means the delimiter stays in the list	
 # doing '(?:regex)' means match but don't include delimiter
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
-def printSep():
-	print('===============')
+def printSep(indent):
+	string = '==============='
+	for i in range(indent) : string += string
+	print(string)
 	
-def printList(list):
-	printSep()
+def printList(list, indent):
+	printSep(indent)
 	for i in list:
-		print(f'>{i}')
-	printSep()
+		space = ''
+		for j in range(indent) : space += '\t'
+		print(f'{space}>{i}')
+	printSep(indent)
 	
 ################################
 # Cleans up uwuified text
@@ -43,8 +66,8 @@ def cleanuwu(uwutext):
 ################################
 def clearNone(substrings, which):
 	if debug: print(f'== == Cleaning {which} == ==')
-	substrings = [i for i in substrings if i is not None and i != '\t']
-	if debug: printList(substrings)
+	substrings = [i for i in substrings if i is not None and i != '\t' and i != '']
+	if debug: printList(substrings,1)
 	return substrings
 
 #################################################################
@@ -54,23 +77,42 @@ def clearNone(substrings, which):
 #################################################################
 def splitReturnTextEnd(line):
 	# Splits the string at the return point and end point
-	substrings = re.split('((?:(?:\s-- )|\s)?return "[^(?:\n)]*")', line)
-	if debug: printList(substrings)
+	finalRegex = regexLineBeginsReturn + '|' + regexIsEnd
+	#substrings = re.split('((?:\s)?return )|( end},(?:(?: --[^(?:\n)]*)?|(?:\n)))', line)
+	substrings = re.split(finalRegex, line)
+	if debug: 
+		printSep(1)
+		print('Result of splitting line into ReturnTextEnd')
+		printList(substrings,1)
 	
 	substrings = clearNone(substrings, 'SplitReturnTextEnd')
-	if len(substrings) > 1: substrings.pop(0) # the split creates an empty str at the start
+	#if len(substrings) > 1: substrings.pop(0) # the split creates an empty str at the start
 	
-	# cleans up quoted text
 	if debug: 
-		print('-------- Cleaning up quoted text --------')
-		printList(substrings)
-	substringsAndReturn = (substrings[0]).split('"', 1) # splits into (whitespace + return) and the quoted text
-	substringsAndReturn[1] = '"' + substringsAndReturn[1] #readds the quotation mark since we're not using regex
-	if len(substrings) > 1: substringsAndReturn.append(substrings[len(substrings) - 1]) # adds the last substring, the end}, if it's not already there
+		print('++ ++ ++ Split ReturnTextEnd')
+	#	printList(substringsAndReturn)
+		printList(substrings,1)
+	#return substringsAndReturn
+	return substrings
+
+#################################################################
+# Split Local
+# given a line that begins with local name_rgb = iu_actit("wordswordswords", aaa)\n
+# returns a list of substrings: everything before the quote, ", wordswordswords, ", , aaa)\n
+#################################################################
+def substringsLocalSplit(line):
+	substrings = re.split('(")', line)
+	if debug: printList(substrings,0)
+	
+	#if debug: 
+	#	print('-------- Cleaning up quoted text: Split Local --------')
+	#	printList(substrings)
+	substrings = clearNone(substrings, 'SplitLocal')
+	#if len(substrings) > 1: substrings.pop(0) # the split creates an empty str at the start
 	if debug: 
-		print('++ ++ ++')
-		printList(substringsAndReturn)
-	return substringsAndReturn
+		print('++ ++ ++ Split Local')
+		printList(substrings,1)
+	return substrings
 
 #################################################################
 # Class to categorize each substring within the quoted text
@@ -98,26 +140,21 @@ class SubstringText:
 #	recombine
 #	return new string
 #################################################################
-def uwuifyReturnLine(quotedText, uwu):
+def uwuifyQuotedText(quotedText, uwu):
 	# Splits quoted text by variables
-	regexVarCurly = '({(?:.*)%s} )'										# {var_name:%s}
-	regexColoredText = '(\.\. (?:\w*)_rgb \.\.)|(\.\. (?:\w*)_rgb end},)|(\.\. (?:\w*)_rgb ")|(\.\. ˝(?:\w*)_rgb \.\.)|'	# .. var_rgb .. | .. var_rgb end}, | .. ˝var_rgb ..
-	#regexIsEnd = '(" end},(?:^\n)?\n)'			# " end}, | " end}, kalgjslkgja;jk
-	regexIsEnd = '(" end},)'					# " end}, 
-	regexIsComment = '( -- (?:.)*\n)'			#  -- skaldgsl\n
-	regex = (regexVarCurly, regexColoredText, regexIsEnd, regexIsComment)
+
+	regex = (regexComment, regexVarCurly, regexColoredText, regexIsEnd, regexLocalStart, regexLocalEnd)
 	finalRegex = ''
 	for i in range(len(regex)):
-		finalRegex += regex[i]
-		# add pipe if not the last one
-		if i < len(regex) - 1:
-			finalRegex = finalRegex + '|'
+		finalRegex += regex[i] + '|' 
+	# removes pipe from end
+	finalRegex = finalRegex.rstrip('|')
 	
 	substrings = re.split(finalRegex, quotedText)
 	if debug:
-		print("====== Splitting Return Line ======")
-		printList(substrings)
-	substrings = clearNone(substrings, 'ReturnLine')
+		print("====== Splitting Quoted Text ======")
+		printList(substrings,1)
+	substrings = clearNone(substrings, 'QuotedText')
 	
 	# Creates lists of SubstringText to segregate variables/syntax from actual text
 	substringsClassified = []
@@ -126,23 +163,31 @@ def uwuifyReturnLine(quotedText, uwu):
 		# check for matches to regex. if so, it's a variable/syntax and marked as such
 		isVar = False
 		for currentRegex in regex:
+			# checks if it's the single quotation mark
+			# if so, skip over it
+			#if currentSubstring == '"' or currentSubstring == '+' or currentSubstring == '-':
+			# less than 4 to capture two digit percentages and 'nth' and 3 digit ints (i think that's the max we use)
+			# less than 5 to capture decimal accuracy to 2 places
+			if len(currentSubstring) < 5:
+				isVar = True
+				break
 			matchfound = re.search(currentRegex, currentSubstring)		# search checks the whole string; match requries pattern to be at the stasrt
 			if matchfound:
 				isVar = True
-				if currentRegex == regexIsComment:
+				if currentRegex == regexComment:
 					hasComment = True
 				break	# if match found, stop checking the regexes
 		newSub = SubstringText(currentSubstring, isVar)
 		substringsClassified.append(newSub)
 	# Clears out ending blank space from comments
-	if hasComment:
-		substringsClassified.pop()
+	#if hasComment:
+		#substringsClassified.pop()
 		
 	if debug:
 		print("======+++++ Substrings have been classified +++++======")
 		for i in substringsClassified:
 			i.print()
-		printSep()
+		printSep(1)
 	
 	# UwUifies non vars and Recombines list of SubstringText back into a regular string
 	finalText = ''
@@ -160,32 +205,68 @@ def uwuifyReturnLine(quotedText, uwu):
 
 #################################################################
 # Parse Line
+# given a line that's been broken into substrings
+# returns a string that will be used to replace the original line
+#################################################################
+#def parseLine(substrings, uwu):
+def parseLine(substrings, uwu, textPos):
+	finalLine = ''
+	for i in range(len(substrings)):
+		if debug: print(f'+++ Processing {substrings[i]}')
+		# quoted text will have quotes on both sides. check both sides (impossible if first or last one)
+		# not edge					surrounded by quotes			} "			" {				} {			
+		#if i > 0 and i + 1 < len(substrings):
+		#	previousSubstring = substrings[i-1]
+		#	nextSubstring = substrings[i+1]
+		#	if ((previousSubstring == '"' and nextSubstring == '"') or (previousSubstring[len(previousSubstring)-1] == '}' and nextSubstring == '"') or (previousSubstring == '"' and nextSubstring[0] == '{') or (previousSubstring[len(previousSubstring)-1] == '}' and nextSubstring[0] == '{')): 
+		#		if debug: print(f'uwuifying!!!\n\t{substrings[i]}')
+		#		uwutext = uwuifyQuotedText(substrings[i], uwu)
+		#		uwutext = cleanuwu(uwutext)
+		#		if debug: print(f'\t vvvvvvv \n\t{uwutext}')
+		#		finalLine += uwutext
+		
+		if i == textPos:
+			if debug: print(f'uwuifying!!!\n\t{substrings[i]}')
+			uwutext = uwuifyQuotedText(substrings[i], uwu)
+			uwutext = cleanuwu(uwutext)
+			if debug: print(f'\t vvvvvvv \n\t{uwutext}')
+			finalLine += uwutext
+		else:
+			finalLine += substrings[i]
+			
+	if debug: print(f'\tFinal line is {finalLine}')
+	return finalLine
+
+####################
+# Parse Line - Return
 # executed on each line of the input file
 # checks if this is a line I can uwuify (line beginning with return)
 # returns a string that will be used to replace the original line
-#################################################################
-def parseLine(line):
-	uwu = uwuipy(None, 0.25, 0, 0.15, 1, True) #seed, stutterchance, facechance, actionchance, exclamationshcance, nsfw
+####################
+def parseLineReturn(line, uwu):
 	
 	substringsReturnTextEnd = splitReturnTextEnd(line)
 	if debug:
-		printSep()
+		printSep(0)
 		print('Creating Final Line from substringsReturnTextEnd')
-		printList(substringsReturnTextEnd)
-		printSep()
+		printList(substringsReturnTextEnd,0)
+		printSep(0)
 
-	finalLine = ''
+	finalLine = parseLine(substringsReturnTextEnd, uwu, 1)
+
+	return finalLine
 	
-	for i in range(len(substringsReturnTextEnd)):
-		if debug: print(f'+++ Processing {substringsReturnTextEnd[i]}')
-		if i == 1: 
-			if debug: print(f'uwuifying!!!\n\t{substringsReturnTextEnd[i]}')
-			uwutext = uwuifyReturnLine(substringsReturnTextEnd[i], uwu)
-			uwutext = cleanuwu(uwutext)
-			finalLine += uwutext
-		else:
-			finalLine += substringsReturnTextEnd[i]
-	if debug: print(f'\tFinal line is {finalLine}')
+####################
+# Parse Line - Local
+# executed on each line of the input file
+# checks if this is a line I can uwuify (line beginning with local)
+# returns a string that will be used to replace the original line
+####################
+def parseLineLocal(line, uwu):
+	
+	substrings = substringsLocalSplit(line)
+	finalLine = parseLine(substrings, uwu, 2)
+	
 	return finalLine
 	
 #################################################################
@@ -198,21 +279,25 @@ def parseLine(line):
 def replace(fileRead, fileWrite):
 	input_file = open(fileRead, "r")
 	output_file = open(fileWrite, "w")
-	ret = rgbname = 0
-
+	
+	uwu = uwuipy(None, 0.33, 0.075, 0.22, 1, True) #seed, stutterchance, facechance, actionchance, exclamationshcance, nsfw
+	
 	for line in input_file:
-		match_bret = re.match(r'((\s-- )|\s)?return "[^(\n)]*" end},(( --[^(\n)]*)?|(\n))', line) # matches any line that begins with return
-		match_rgbname = re.match(r'', line)
-		if match_ret:
-			ret = match_ret.group(0)
-			cleanedUwu = parseLine(line)
-			if debug: print(f'found the line: {line}\n\treplacing with: {cleanedUwu}')
-			output_file.write(cleanedUwu)
+		match_comment = re.match(regexLineComment, line)						# matches line that is entirely a comment
+		match_ret = re.match(regexLineBeginsReturn, line) 						# matches any line that begins with return
+		match_rgbname = re.match(regexLocalWhole, line)							# matches var declaration for the names
+		
+		cleanedUwu = ''
+		if match_comment:
+			if debug: print('line is a comment!')
+		elif match_ret:
+			cleanedUwu = parseLineReturn(line, uwu)
 		elif match_rgbname:
-			rgbname = match_rgbname.group(0)
+			cleanedUwu = parseLineLocal(line, uwu)
 			
-			
-			
+		if match_ret or match_rgbname:
+			if debug: print(f'found the line: {line}\n\treplacing with: {cleanedUwu}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+			output_file.write(cleanedUwu)
 		else:
 			output_file.write(line)
 			
@@ -220,6 +305,4 @@ def replace(fileRead, fileWrite):
 # main execution
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 if __name__ == "__main__":
-	replace("testFull.txt", "res.txt")
-	#uwu = uwuipy(None, 0.25, 0.05, 0.15, 1, True)
-	#print(uwu.uwuify(input()))
+	replace("testFull.txt", "res.lua")
