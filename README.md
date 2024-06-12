@@ -19,10 +19,10 @@ Turns Enhanced Descriptions modules into UwU text. The script edits all text tha
    Such as '''output.txt''' --> '''ENLocalizationFIXTalents.lua'''
 7. Open the UwUified EDM in a text editor
 8. Use a Find and Replace feature (such as Ctrl + H in Notepad++) to make the following changes:
-- ''''(\.\. \*{3}(\w|\s)*\*{3})|(\*{3}(\w|\s)*\*{3} \.\.)'''	--> '''..'''
+- ''''(\\\\.\\\\. \\\*{3}(\\w|\\s)\*\\\*{3})|(\\\*{3}(\\w|\\s)\*\\\*{3} \\.\\.)'''	--> '''..'''
   
   Removes roleplay that come before/after quotes and clash with variables_rgb
-- '''\*{3}(\w|\s)*\*{3} end},'''  --> '''end},'''
+- '''\\\*{3}(\\w|\\s)\*\\\*{3} end},'''  --> '''end},'''
   
   Removes roleplay that come after quotes and thereby clash with end syntax
 - *Optional*:      '''Wow"''' --> '''Smaww"'''
