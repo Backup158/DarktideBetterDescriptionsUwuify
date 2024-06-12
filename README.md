@@ -1,6 +1,6 @@
 # WTF does this even do?
 
-Turns Enhanced Descriptions modules into UwU text. The script edits all text that will be displayed on any line that is not commented out.
+The script turns Enhanced Descriptions modules into UwU text. Edits all text that will be displayed on any line that is not commented out. Uses the [UwUipy](https://github.com/Cuprum77/uwuipy) library.
 
 
 ## Usage
@@ -46,7 +46,7 @@ Turns Enhanced Descriptions modules into UwU text. The script edits all text tha
 **Calling nil error**
 
 ```
-\[ERROR\] DMF Mod Manager: attempted to call local 'func' (a nil value)
+[ERROR] [DMF Mod Manager] (new_mod) 'mod_script' initialization: [string"./../mods/dmf/scripts/mods/dmf/modules/core/i..."]:69: attempt to call local 'func' (a nil value)
 ```
 
 This means one of the variables or syntax words was messed up. This is likely because it got uwuified or had a roleplay action inserted next to it.
