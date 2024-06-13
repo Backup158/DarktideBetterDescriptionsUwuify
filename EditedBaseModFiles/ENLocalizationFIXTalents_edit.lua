@@ -155,29 +155,29 @@ local weakspot_dmg_rgb = iu_actit("Weakspot Damage", wksp_col)
 -- ==============================================================VARIABLES
 local var_col = Color[mod:get("variables_text_colour")](255, true)
 
-local ñ1_rgb = iu_actit("1", var_col)
-local ñ1_5_rgb = iu_actit("1.5", var_col)
-local ñ2_rgb = iu_actit("2", var_col)
-local ñ2_5_rgb = iu_actit("2.5", var_col)
-local ñ3_rgb = iu_actit("3", var_col)
-local ñ3_5_rgb = iu_actit("3.5", var_col)
-local ñ3_75_rgb = iu_actit("3.75", var_col)
-local ñ4_rgb = iu_actit("4", var_col)
-local ñ5_rgb = iu_actit("5", var_col)
-local ñ6_rgb = iu_actit("6", var_col)
-local ñ7_rgb = iu_actit("7th", var_col)
-local ñ8_rgb = iu_actit("8", var_col)
-local ñ16_rgb = iu_actit("16", var_col)
-local ñ40_rgb = iu_actit("40", var_col)
-local ñ50_rgb = iu_actit("50", var_col)
-local ñ200_rgb = iu_actit("200", var_col)
-local ñ340_rgb = iu_actit("340", var_col)
-local ñpc_rgb = iu_actit("%", var_col)
-local ñ5pc_rgb = iu_actit("5%", var_col)
-local ñ10pc_rgb = iu_actit("10%", var_col)
-local ñ20pc_rgb = iu_actit("20%", var_col)
-local ñ25pc_rgb = iu_actit("25%", var_col)
-local ñ40pc_rgb = iu_actit("40%", var_col)
+local Ã±1_rgb = iu_actit("1", var_col)
+local Ã±1_5_rgb = iu_actit("1.5", var_col)
+local Ã±2_rgb = iu_actit("2", var_col)
+local Ã±2_5_rgb = iu_actit("2.5", var_col)
+local Ã±3_rgb = iu_actit("3", var_col)
+local Ã±3_5_rgb = iu_actit("3.5", var_col)
+local Ã±3_75_rgb = iu_actit("3.75", var_col)
+local Ã±4_rgb = iu_actit("4", var_col)
+local Ã±5_rgb = iu_actit("5", var_col)
+local Ã±6_rgb = iu_actit("6", var_col)
+local Ã±7_rgb = iu_actit("7th", var_col)
+local Ã±8_rgb = iu_actit("8", var_col)
+local Ã±16_rgb = iu_actit("16", var_col)
+local Ã±40_rgb = iu_actit("40", var_col)
+local Ã±50_rgb = iu_actit("50", var_col)
+local Ã±200_rgb = iu_actit("200", var_col)
+local Ã±340_rgb = iu_actit("340", var_col)
+local Ã±pc_rgb = iu_actit("%", var_col)
+local Ã±5pc_rgb = iu_actit("5%", var_col)
+local Ã±10pc_rgb = iu_actit("10%", var_col)
+local Ã±20pc_rgb = iu_actit("20%", var_col)
+local Ã±25pc_rgb = iu_actit("25%", var_col)
+local Ã±40pc_rgb = iu_actit("40%", var_col)
 
 local plus_rgb = iu_actit("+", var_col)
 local scriers_gaze_rgb = iu_actit("Scrier's Gaze", var_col)
@@ -610,7 +610,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_ability_psyker_blitz_throwing_knives_description",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return "You trow swift, homing projectile formed of psychic energy that follows the player's crosshair for " .. ñ2_5_rgb .. " seconds to the nearest Enemy. Deals " .. ñ200_rgb .. " Base " .. damage_rgb .. " to the first target and cost " .. ñ10pc_rgb .. " Peril.\nSecondary attack throws a homing projectile that flies for " .. ñ3_5_rgb .. " seconds and hitting enemies within a " .. ñ50_rgb .. " meter radius with a guaranteed hit. Deals " .. ñ340_rgb .. " Base " .. damage_rgb .. " and cost " .. ñ25pc_rgb .. " Peril.\n\n- Can Crit.\n- Costs 1 ammo.\n- Recharges 1 projectile every 3 seconds.\n- Cleave up to 2 enemies except enemies in Carapace armor.\n- Very low Damage against Carapace and low against Unyielding.\n- Can be affected by Peril Cost Reduction buffs from respective Talents and Combat Stimm.\n- Can be affected by Damage buffs from \"Empowered Psionics\", \"Empyrean Empowerment\", \"Disrupt Destiny\", \"Malefic Momentum\", \"Perfect Timing\", \"Scrier's Gaze\" (including \"Precognition\"), \"Warp Rider\", aura \"Kinetic Presence\" and Ranged Damage node." .. assail_warn_rgb end}, -- Warning!
+	return "You trow swift, homing projectile formed of psychic energy that follows the player's crosshair for " .. Ã±2_5_rgb .. " seconds to the nearest Enemy. Deals " .. Ã±200_rgb .. " Base " .. damage_rgb .. " to the first target and cost " .. Ã±10pc_rgb .. " Peril.\nSecondary attack throws a homing projectile that flies for " .. Ã±3_5_rgb .. " seconds and hitting enemies within a " .. Ã±50_rgb .. " meter radius with a guaranteed hit. Deals " .. Ã±340_rgb .. " Base " .. damage_rgb .. " and cost " .. Ã±25pc_rgb .. " Peril.\n\n- Can Crit.\n- Costs 1 ammo.\n- Recharges 1 projectile every 3 seconds.\n- Cleave up to 2 enemies except enemies in Carapace armor.\n- Very low Damage against Carapace and low against Unyielding.\n- Can be affected by Peril Cost Reduction buffs from respective Talents and Combat Stimm.\n- Can be affected by Damage buffs from \"Empowered Psionics\", \"Empyrean Empowerment\", \"Disrupt Destiny\", \"Malefic Momentum\", \"Perfect Timing\", \"Scrier's Gaze\" (including \"Precognition\"), \"Warp Rider\", aura \"Kinetic Presence\" and Ranged Damage node." .. assail_warn_rgb end}, -- Warning!
 --_____________________________________________________Blitz 3-1
 {	id = "talent_tree_psy_blitz3_001_en", -- Ethereal Shards
 	loc_keys = {"loc_talent_psyker_throwing_knives_pierce",},
@@ -621,7 +621,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_talent_psyker_throwing_knives_pierce_description",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return "Projectiles from {talent_name:%s} now pierce additional targets, up from " .. ñ2_rgb .. " to " .. ñ3_rgb .. ".\n\n- If \"Empowered Psionics\" is active, this is doubled, up to 6 targets.\n- Carapace cannot be Cleaved by default." end}, -- talent_name:Assail.
+	return "Projectiles from {talent_name:%s} now pierce additional targets, up from " .. Ã±2_rgb .. " to " .. Ã±3_rgb .. ".\n\n- If \"Empowered Psionics\" is active, this is doubled, up to 6 targets.\n- Carapace cannot be Cleaved by default." end}, -- talent_name:Assail.
 --_____________________________________________________Blitz 3-2
 {	id = "talent_tree_psy_blitz3_002_en", -- Quick Shards
 	loc_keys = {"loc_talent_psyker_throwing_knives_reduced_cooldown",},
@@ -722,7 +722,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_talent_psyker_shout_reduces_warp_charge_generation_description",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return "{talent_name:%s} now decreases " .. peril_rgb .. " Generation by {warp_generation:%s} for each Enemy hit. Up to {max_stacks:%s}" .. ñpc_rgb .. ". Lasts {duration:%s} seconds.\n\n- Stacks multiplicatively with related Peril Cost Reduction buffs from \"Inner Tranquility\", \"Kinetic Resonance\", Peril Resistance nodes and Combat Stimm." end}, -- talent_name:Venting Shriek warp_generation:1%, max_stacks:25. duration:5. -- colors ", Stacking"->". Stacks" s->seconds
+	return "{talent_name:%s} now decreases " .. peril_rgb .. " Generation by {warp_generation:%s} for each Enemy hit. Up to {max_stacks:%s}" .. Ã±pc_rgb .. ". Lasts {duration:%s} seconds.\n\n- Stacks multiplicatively with related Peril Cost Reduction buffs from \"Inner Tranquility\", \"Kinetic Resonance\", Peril Resistance nodes and Combat Stimm." end}, -- talent_name:Venting Shriek warp_generation:1%, max_stacks:25. duration:5. -- colors ", Stacking"->". Stacks" s->seconds
 --_____________________________________________________Ability 1 Modifier 2
 {	id = "talent_tree_psy_abil1_002_en", -- Warp Rupture
 	loc_keys = {"loc_talent_psyker_shout_damage_per_warp_charge",},
@@ -869,7 +869,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_talent_psyker_souls_desc",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return "Killing an Elite or Speacialist Enemy gains you a " .. ñ1_rgb .. " Warp Charge. Stacks {stack:%s} times.\nYour next " .. combat_ability_rgb .. " spends all available Warp Charges to reduce the " .. cd_rgb .. " of that " .. combat_ability_rgb .. " by {cooldown_reduction:%s} per Warp Charge.\n\n- Drops 1 Warp Charge every 25 seconds.\n- Can be refreshed during active duration.\n- Upon activation, Reduces the remaining Cooldown of Psyker's Combat Ability by 7.5% per held Warp Charge. Procs additionally to Concentration Stimm's Cooldown Reduction effect of 3 seconds per second.\n- For example, when Psyker with \"Seer's Presence\" Aura, 4 Warp Charges and 12% Combat Ability Regeneration from Curios uses \"Telekine Shield\", its maximum Cooldown of 40 seconds is first Reduced by Curio stat and Aura to 40-40x(0.1+0.12)=31.2 seconds. When the Talent procs, these 31.2 seconds are further Reduced by the Warp Charge-based Reduction to 31.2-31.2x(0.075x4)=21.84 seconds (HUD rounds)." end}, -- duration:25, stack:4. cooldown_reduction:7.5%. -- colors () {duration:%s}
+	return "Killing an Elite or Speacialist Enemy gains you a " .. Ã±1_rgb .. " Warp Charge. Stacks {stack:%s} times.\nYour next " .. combat_ability_rgb .. " spends all available Warp Charges to reduce the " .. cd_rgb .. " of that " .. combat_ability_rgb .. " by {cooldown_reduction:%s} per Warp Charge.\n\n- Drops 1 Warp Charge every 25 seconds.\n- Can be refreshed during active duration.\n- Upon activation, Reduces the remaining Cooldown of Psyker's Combat Ability by 7.5% per held Warp Charge. Procs additionally to Concentration Stimm's Cooldown Reduction effect of 3 seconds per second.\n- For example, when Psyker with \"Seer's Presence\" Aura, 4 Warp Charges and 12% Combat Ability Regeneration from Curios uses \"Telekine Shield\", its maximum Cooldown of 40 seconds is first Reduced by Curio stat and Aura to 40-40x(0.1+0.12)=31.2 seconds. When the Talent procs, these 31.2 seconds are further Reduced by the Warp Charge-based Reduction to 31.2-31.2x(0.075x4)=21.84 seconds (HUD rounds)." end}, -- duration:25, stack:4. cooldown_reduction:7.5%. -- colors () {duration:%s}
 --_____________________________________________________Keystone 1 Modifier 1
 {	id = "talent_tree_psy_keys1_001_en", -- Inner Tranquility
 	loc_keys = {"loc_talent_psyker_reduced_warp_charge_cost_venting_speed",},
@@ -1003,7 +1003,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_talent_psyker_marked_enemies_passive_desc",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return "Every second, Enemies within " .. ñ40_rgb .. " meters have a chance of being Marked. Killing a Marked Enemy grants:\n" .. plus_rgb .. "{toughness:%s} " .. toughness_rgb .. ",\n{move_speed:%s} Movement Speed for {move_speed_duration:%s} seconds and adds a " .. precision_rgb .. " Bonus for {bonus_duration} seconds.\n\nEach " .. precision_rgb .. " Bonus grants:\n{base_damage:%s} " .. damage_rgb .. ",\n{crit_damage:%s} " .. crit_hit_rgb .. " " .. damage_rgb .. " and\n{weakspot_damage:%s} " .. weakspot_dmg_rgb .. ".\n" .. precision_rgb .. " Bonus Stacks {bonus_stacks:%s} times.\n\n- Dealing damage to Marked enemies refreshes the Talent's duration.\n- Valid targets are: Dreg/Scab Bruisers, Dreg/Scab Stalkers, Scab Shooters, Ragers, Gunners, Shotgunners and Maulers.\n- Stacks additively with Movement Speed buffs from \"Mettle\", \"Warp Speed\", Movement Speed nodes and Weapon Blessings like \"Rev it Up\".\n- Precision bonuses Stack additively with other related Damage buffs.\n- Can be refreshed during active duration either by killing or successfully Staggering the Marked enemy or by Damage ticks from Soulblaze, Burn and Bleed on the Marked target." end}, -- radius:25. toughness:10% move_speed:+20% move_speed_duration:2.5 bonus_duration 15. base_damage:+1% crit_damage:+2% weakspot_damage:2.5%. bonus_stacks:15. -- colors s->seconds Notice! {radius:%s}
+	return "Every second, Enemies within " .. Ã±40_rgb .. " meters have a chance of being Marked. Killing a Marked Enemy grants:\n" .. plus_rgb .. "{toughness:%s} " .. toughness_rgb .. ",\n{move_speed:%s} Movement Speed for {move_speed_duration:%s} seconds and adds a " .. precision_rgb .. " Bonus for {bonus_duration} seconds.\n\nEach " .. precision_rgb .. " Bonus grants:\n{base_damage:%s} " .. damage_rgb .. ",\n{crit_damage:%s} " .. crit_hit_rgb .. " " .. damage_rgb .. " and\n{weakspot_damage:%s} " .. weakspot_dmg_rgb .. ".\n" .. precision_rgb .. " Bonus Stacks {bonus_stacks:%s} times.\n\n- Dealing damage to Marked enemies refreshes the Talent's duration.\n- Valid targets are: Dreg/Scab Bruisers, Dreg/Scab Stalkers, Scab Shooters, Ragers, Gunners, Shotgunners and Maulers.\n- Stacks additively with Movement Speed buffs from \"Mettle\", \"Warp Speed\", Movement Speed nodes and Weapon Blessings like \"Rev it Up\".\n- Precision bonuses Stack additively with other related Damage buffs.\n- Can be refreshed during active duration either by killing or successfully Staggering the Marked enemy or by Damage ticks from Soulblaze, Burn and Bleed on the Marked target." end}, -- radius:25. toughness:10% move_speed:+20% move_speed_duration:2.5 bonus_duration 15. base_damage:+1% crit_damage:+2% weakspot_damage:2.5%. bonus_stacks:15. -- colors s->seconds Notice! {radius:%s}
 --_____________________________________________________Keystone 3 Modifier 1
 {	id = "talent_tree_psy_keys3_001_en", -- Lingering Influence
 	loc_keys = {"loc_talent_psyker_mark_increased_duration",},
@@ -1349,7 +1349,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_talent_zealot_always_in_coherency_description",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return "Makes Zealot count as being in Coherency with one Ally which enables the lowest rate of Coherency " .. toughness_rgb .. " Regeneration of " .. ñ3_75_rgb .. " " .. toughness_rgb .. " per second at all times.\n\n- This rate can be increased by Zealot's Talent \"Fortitude in Fellowship\", Toughness Regeneration Speed from Curios and related buffs from Psyker's and Veteran's Talent nodes \"Inspiring Presence\" or Ogryn's aura \"Stay Close!\"" end}, -- coherency_min_stack:2.
+	return "Makes Zealot count as being in Coherency with one Ally which enables the lowest rate of Coherency " .. toughness_rgb .. " Regeneration of " .. Ã±3_75_rgb .. " " .. toughness_rgb .. " per second at all times.\n\n- This rate can be increased by Zealot's Talent \"Fortitude in Fellowship\", Toughness Regeneration Speed from Curios and related buffs from Psyker's and Veteran's Talent nodes \"Inspiring Presence\" or Ogryn's aura \"Stay Close!\"" end}, -- coherency_min_stack:2.
 
 
 -- ==============================================================ABILITIES
@@ -1408,7 +1408,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_talent_zealot_bolstering_prayer_variant_two_description",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return "Wield a holy relic that releases pulses of energy " .. ñ7_rgb .. " times every {interval:%s} seconds.\nEach pulse grants Zealot and Allies in Coherency immunity to " .. stuns_rgb .. " from both Melee and Ranged attacks and Invulnerability for " .. ñ1_5_rgb .. " seconds.\n\nEach pulse Replenishes {toughness:%s} " .. toughness_rgb .. " to Allies in Coherency. If the Ally is at full " .. toughness_rgb .. " they instead gain {flat_toughness:%s} Max " .. toughness_rgb .. " up to a total of {max_toughness:%s}.\n\n{cooldown:%s} seconds Base Cooldown.\n\n- 10 meters radius.\n- Applies very high Suppression.\n- Deals no Damage.\n- Does not Stagger.\n- \"Invulnerability\" means that player Health can't fall below 1. Players can still lose any Health above 1.\n- Yellow Toughness bonus lasts 10 seconds.\n- Can be refreshed during active duration.\n- Can be canceled by Blocking, Sprinting or pressing the Ability button." end}, -- interval:0.8. toughness:45%. flat_toughness:+20 max_toughness:+100. cooldown:60. -- colors s->seconds
+	return "Wield a holy relic that releases pulses of energy " .. Ã±7_rgb .. " times every {interval:%s} seconds.\nEach pulse grants Zealot and Allies in Coherency immunity to " .. stuns_rgb .. " from both Melee and Ranged attacks and Invulnerability for " .. Ã±1_5_rgb .. " seconds.\n\nEach pulse Replenishes {toughness:%s} " .. toughness_rgb .. " to Allies in Coherency. If the Ally is at full " .. toughness_rgb .. " they instead gain {flat_toughness:%s} Max " .. toughness_rgb .. " up to a total of {max_toughness:%s}.\n\n{cooldown:%s} seconds Base Cooldown.\n\n- 10 meters radius.\n- Applies very high Suppression.\n- Deals no Damage.\n- Does not Stagger.\n- \"Invulnerability\" means that player Health can't fall below 1. Players can still lose any Health above 1.\n- Yellow Toughness bonus lasts 10 seconds.\n- Can be refreshed during active duration.\n- Can be canceled by Blocking, Sprinting or pressing the Ability button." end}, -- interval:0.8. toughness:45%. flat_toughness:+20 max_toughness:+100. cooldown:60. -- colors s->seconds
 -- _____________________________________________________Ability 2 Modifier 1
 {	id = "talent_tree_zea_abil2_001_en", -- Holy Cause
 	loc_keys = {"loc_talent_zealot_zealot_channel_grants_defensive_buff",},
@@ -1419,7 +1419,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_talent_zealot_zealot_channel_grants_defensive_buff_desc",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return "The " .. ñ7_rgb .. " pulse grants {toughness:%s} " .. toughness_dmg_rgb .. " Reduction to you and Allies in Coherency. Lasts {duration:%s} seconds.\n\n- Allies get the buff as long as they are in Coherency when the buff is triggered.\n- Stacks multiplicatively with other Damage Reduction buffs.\n- Does not stack with the same Talent from another Zealot." end}, -- stacks:5 toughness:+30%. duration:10. -- colors s->seconds {stacks:%s}
+	return "The " .. Ã±7_rgb .. " pulse grants {toughness:%s} " .. toughness_dmg_rgb .. " Reduction to you and Allies in Coherency. Lasts {duration:%s} seconds.\n\n- Allies get the buff as long as they are in Coherency when the buff is triggered.\n- Stacks multiplicatively with other Damage Reduction buffs.\n- Does not stack with the same Talent from another Zealot." end}, -- stacks:5 toughness:+30%. duration:10. -- colors s->seconds {stacks:%s}
 -- _____________________________________________________Ability 2 Modifier 2
 {	id = "talent_tree_zea_abil2_002_en", -- Banishing Light
 	loc_keys = {"loc_talent_zealot_channel_staggers",},
@@ -1441,7 +1441,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_talent_zealot_zealot_channel_grants_offensive_buff_desc",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return "The " .. ñ7_rgb .. " pulse grants {damage:%s} " .. damage_rgb .. " to you and Allies in Coherency. Lasts {duration:%s} seconds.\n\n- Allies get the buff as long as they are in Coherency when the buff is triggered.\n- Stacks additively with related Damage buffs.\n- Does not stack with the same Talent from another Zealot." end}, -- stacks:5 damage:+20%. duration:10. -- colors s->seconds {stacks:%s}
+	return "The " .. Ã±7_rgb .. " pulse grants {damage:%s} " .. damage_rgb .. " to you and Allies in Coherency. Lasts {duration:%s} seconds.\n\n- Allies get the buff as long as they are in Coherency when the buff is triggered.\n- Stacks additively with related Damage buffs.\n- Does not stack with the same Talent from another Zealot." end}, -- stacks:5 damage:+20%. duration:10. -- colors s->seconds {stacks:%s}
 -- _____________________________________________________Ability 2 Modifier 4
 {	id = "talent_tree_zea_abil2_004_en", -- Martyr's Purpose
 	loc_keys = {"loc_talent_zealot_damage_taken_restores_cd",},
@@ -1474,7 +1474,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_talent_zealot_increased_stealth_duration_description",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return stealth_rgb .. " Duration is increased from " .. ñ3_rgb .. " to {duration_2:%s} seconds." end}, -- duration_2:6. -- colors s->seconds
+	return stealth_rgb .. " Duration is increased from " .. Ã±3_rgb .. " to {duration_2:%s} seconds." end}, -- duration_2:6. -- colors s->seconds
 -- _____________________________________________________Ability 3 Modifier 2
 {	id = "talent_tree_zea_abil3_002_en", -- Perfectionist
 	loc_keys = {"loc_talent_zealot_stealth_increased_damage",},
@@ -1555,7 +1555,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_talent_zealot_shared_fanatic_rage_desc",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return "Allies in Coherency gain " .. ñ5pc_rgb .. " of the " .. crit_hit_chance_rgb .. " granted by {talent_name:%s}.\n\n- Can be refreshed during active duration.\n- Stacks additively with other sources of Critical Chance.\n- Does not Stack with the same Talent from another Zealot." end}, -- crit_chance:+33% talent_name:Blazing Piety. -- colors {crit_chance:%s}
+	return "Allies in Coherency gain " .. Ã±5pc_rgb .. " of the " .. crit_hit_chance_rgb .. " granted by {talent_name:%s}.\n\n- Can be refreshed during active duration.\n- Stacks additively with other sources of Critical Chance.\n- Does not Stack with the same Talent from another Zealot." end}, -- crit_chance:+33% talent_name:Blazing Piety. -- colors {crit_chance:%s}
 -- _____________________________________________________Keystone 1 Modifier 4
 {	id = "talent_tree_zea_keys1_004_en", -- Righteous Warrior
 	loc_keys = {"loc_talent_zealot_fanatic_rage_improved",},
@@ -1995,7 +1995,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_ability_frag_grenade_description",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return "Fragmentation grenade that explodes after approximately " .. ñ2_rgb .. " seconds.\n\n- Explosion radius up to 9 meters.\n- Does not penetrate shields , including Scab Captain's energy shield." end}, -- Notice!
+	return "Fragmentation grenade that explodes after approximately " .. Ã±2_rgb .. " seconds.\n\n- Explosion radius up to 9 meters.\n- Does not penetrate shields , including Scab Captain's energy shield." end}, -- Notice!
 --_____________________________________________________Blitz 1
 {	id = "talent_tree_vet_blitz1_000_en", -- Shredder Frag Grenade
 	loc_keys = {"loc_talent_veteran_grenade_apply_bleed",},
@@ -2006,7 +2006,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_talent_veteran_grenade_apply_bleed_desc",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return "Throw a frag grenade that explodes after approximately " .. ñ2_rgb .. " seconds. Applies {stacks:%s} Stacks of " .. bleed_rgb .. " to all Enemies Hit, causing " .. damage_rgb .. " over time.\n\nThis is an augmented version of {talent_name:%s}.\n\n- Explosion radius up to 9 meters.\n- Up to a maximum of 16 Bleed Stacks.\n- Doesn't apply Bleed through shields, including the Scab Captain's energy shield." end}, -- stacks:6. talent_name:Frag Grenade. -- colors Notice!
+	return "Throw a frag grenade that explodes after approximately " .. Ã±2_rgb .. " seconds. Applies {stacks:%s} Stacks of " .. bleed_rgb .. " to all Enemies Hit, causing " .. damage_rgb .. " over time.\n\nThis is an augmented version of {talent_name:%s}.\n\n- Explosion radius up to 9 meters.\n- Up to a maximum of 16 Bleed Stacks.\n- Doesn't apply Bleed through shields, including the Scab Captain's energy shield." end}, -- stacks:6. talent_name:Frag Grenade. -- colors Notice!
 --_____________________________________________________Blitz 2
 {	id = "talent_tree_vet_blitz2_000_en", -- Krak Grenade
 	loc_keys = {"loc_talent_ability_krak_grenade",},
@@ -2270,7 +2270,7 @@ mod.localization_templates = {
 
 -- ==============================================================KEYSTONES
 --_____________________________________________________Keystone 1
-{	id = "talent_tree_vet_keys1_000_en", -- Marksman’s Focus
+{	id = "talent_tree_vet_keys1_000_en", -- MarksmanÂ’s Focus
 	loc_keys = {"loc_talent_veteran_snipers_focus",},
 	locales = {"en",},
 	handle_func = function(locale, value)
@@ -2334,7 +2334,7 @@ mod.localization_templates = {
 	loc_keys = {"loc_talent_veteran_improved_tag_description",},
 	locales = {"en",},
 	handle_func = function(locale, value)
-	return "Gain " .. focust_rgb .. " every {time:%s} seconds. Stacks {max_stacks:%s} times.\n\nTagging an Enemy applies the " .. focust_rgb .. " stacks to them, causing them to take {damage:%s} additional " .. damage_rgb .. " for each stack, and resets your " .. focust_rgb .. " stacks to " .. ñ1_rgb .. "." end}, -- time:2 max_stacks:5. damage:+4%. -- colors () s->seconds
+	return "Gain " .. focust_rgb .. " every {time:%s} seconds. Stacks {max_stacks:%s} times.\n\nTagging an Enemy applies the " .. focust_rgb .. " stacks to them, causing them to take {damage:%s} additional " .. damage_rgb .. " for each stack, and resets your " .. focust_rgb .. " stacks to " .. Ã±1_rgb .. "." end}, -- time:2 max_stacks:5. damage:+4%. -- colors () s->seconds
 --_____________________________________________________Keystone 2 Modifier 1
 {	id = "talent_tree_vet_keys2_001_en", -- Target Down!
 	loc_keys = {"loc_talent_veteran_improved_tag_dead_bonus",},
