@@ -1,5 +1,6 @@
 from uwuipy import uwuipy
 import re
+import sys
 
 debug = True
 
@@ -30,7 +31,8 @@ regexColoredText = '(\.\. ˝?(?:\w*)_rgb \.\.)|(\.\. ˝?(?:\w*)_rgb(?: end},)?)|
 #regexReturnLineExceptEnd = '((\s-- )|\s)?return "[^(\n)]*"'
 #regexRemoveRoleplayFromColorVarFront = '\.\. \*{3}(\w|\s)*\*{3}'			# .. ***rping***
 #regexRemoveRoleplayFromColorVarBack = '\*{3}(\w|\s)*\*{3} \.\.'			# ***rping*** ..
-#regexRemoveRoleplayFromEnd = '\*{3}(\w|\s)*\*{3} end},'					# ***rping*** end},
+regexRemoveRoleplayFromVar = '\.\. \*{3}(\w|\s)*\*{3}|\*{3}(\w|\s)*\*{3} \.\.'
+regexRemoveRoleplayFromEnd = '\*{3}(\w|\s)*\*{3} end},'					# ***rping*** end},
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
@@ -55,6 +57,7 @@ def cleanuwu(uwutext):
 	newuwu = newuwu.replace('{-', '')		# removes stammering from opening curly braces
 	newuwu = newuwu.replace('.-', '')		# removes stammering from comments
 	newuwu = newuwu.replace('˝-', '')		# removes stammering from numberTh with disacritics ˝
+	newuwu = newuwu.replace('*-', '')		# stops stammering for asterisks
 	newuwu = newuwu.replace('\-', '')		# stops stammering for escape characters
 	newuwu = newuwu.replace("***breaks into your house and aliases neofetch to rm -rf --no-preserve-root /***", '')		# removes funny root action because that fucks my formatting
 	return newuwu
@@ -193,6 +196,17 @@ def uwuifyQuotedText(quotedText, uwu):
 	return finalText
 
 #################################################################
+# Clean Final Line
+# clears out roleplay that comes before/after quotes, which clashes with variables_rgb, and roleplay that comes between quotes and end
+# given string
+# return string
+#################################################################
+def cleanFinalLine(finalLine):
+	newLine = re.sub(regexRemoveRoleplayFromVar, '..', finalLine)
+	newLine = re.sub(regexRemoveRoleplayFromEnd, 'end},', newLine)
+	return newLine
+
+#################################################################
 # Parse Line
 # given list of strings, coming from a line that's been broken into substrings
 #	given uwuifier to use
@@ -215,6 +229,8 @@ def parseLine(substrings, uwu, textPos):
 			finalLine += substrings[i]
 			
 	if debug: print(f'\tFinal line is {finalLine}')
+	finalLine = cleanFinalLine(finalLine)
+	if debug: print(f'\tFinal line (cleaned) is {finalLine}')
 	return finalLine
 
 ####################
@@ -265,7 +281,7 @@ def parseLineLocal(line, uwu):
 #	uses new string if replacable
 #################################################################
 def replace(fileRead, fileWrite):
-	input_file = open(fileRead, "r")
+	input_file = open(fileRead, "r", encoding="latin-1")	# I think xsSplater used this encoding
 	output_file = open(fileWrite, "w")
 	
 	uwu = uwuipy(None, 0.33, 0, 0.22, 1, True) # seed, stutterchance, facechance, actionchance, exclamationshcance, nsfw
@@ -293,4 +309,18 @@ def replace(fileRead, fileWrite):
 # main execution
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 if __name__ == "__main__":
-	replace("testFullEdit.txt", "res.lua")
+	### terminal argument method ###
+
+	#for i in sys.argv:
+	#	if debug: print(f'replacing {i}')
+	#	replace(i, f'uwu_{i}')
+	
+	# first argument is this script
+	for i in range(1, len(sys.argv)):
+		if debug: print(f'replacing {sys.argv[i]}')
+		replace(sys.argv[i], f'uwu_{sys.argv[i]}')
+	
+	
+	### input method ###
+	#fileName = input('Input the name of the file you want to replace: ')
+	#replace(fileName, "res.lua")
