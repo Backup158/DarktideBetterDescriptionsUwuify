@@ -6,41 +6,28 @@ The script turns Enhanced Descriptions modules into UwU text. Edits all text tha
 ## Usage
 
 1. Place script in folder with the Enhanced Description module (EDM) you want to change
-2. Open the script in an editor and go the ```if __name__ == "__main__"``` block at bottom
-3. Find the line that calls the replace function
-   
-   It should look like ```replace(target, newFile```
-4. Change these values
-   
-   Target would be the file name of whichever Enhanced Descriptions module needs to be changed
-   
-  **Ensure the output file is not the same as the input!**
-  
-5. Save the script, then run it
 
-   This should print all the changes in your terminal
-   
-   You may close the terminal when the script completes
-   
-7. Create a backup of the target file, then rename newFile to the name of the EDM you are replacing
+2. Create a backup of the EDM file
 
-   Such as '''output.txt''' --> '''ENLocalizationFIXTalents.lua'''
+   Only necessary for the main EDM file, not for EDM_data.lua and EDM_localization.lua
    
-8. Open the UwUified EDM in a text editor
+3. Execute the file and pass the EDM target file as a terminal argument
 
-9. Use a Find and Replace feature (such as Ctrl + H in Notepad++) to make the following changes:
-- ```'(\.\. \*{3}(\w|\s)*\*{3}|\*{3}(\w|\s)*\*{3} \\.\\.)``` --> ```..```
+   ```python3 darktideBetterDescriptionsUwuify.py ENLocalizationFIXBlessings.lua```
+
+   You could probably skip step 1 by including the path to the file
+
+4. Delete the original EDM file (not the backup) and rename uwu_EDM.lua to the original file name
+
+5. *Optional*: Use a Find and Replace feature (such as Ctrl + H in Notepad++) to make the following change:
+
+- ```Wow"``` --> ```Smaww"```
   
-  Removes roleplay that come before/after quotes and clash with variables_rgb
-- ```\*{3}(\w|\s)*\*{3} end},``` --> ```end},```
+  Low --> small --> smaww: I don't like how "wow" sounds in this context
+
+  Then replace ```w-smaww``` with ```smaww``` until no more matches are found to remove lingering stutters
   
-  Removes roleplay that come after quotes and thereby clash with end syntax
-- *Optional*:
-  ```Wow"``` --> ```Smaww"```
-  
-  Low --> small --> smaww. I don't like how "wow" sounds in this context.
-  
-10. Verify the changes in-game
+6. Verify the changes in-game
 
 # Errors
 **Calling nil error**
