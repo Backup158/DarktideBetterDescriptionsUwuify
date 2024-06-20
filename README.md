@@ -1,6 +1,8 @@
 # WTF does this even do?
 
-The script turns Enhanced Descriptions modules into UwU text. Edits all text that will be displayed on any line that is not commented out. Uses the [UwUipy](https://github.com/Cuprum77/uwuipy) library.
+This script turns modules from the [Enhanced Descriptions mod for *Warhammer 40,000: Darktide*](https://www.nexusmods.com/warhammer40kdarktide/mods/210) into UwU text. It edits all text that will be displayed to the user, as long as the line is not commented out.
+
+Uses the [UwUipy](https://github.com/Cuprum77/uwuipy) library.
 
 
 ## Usage
