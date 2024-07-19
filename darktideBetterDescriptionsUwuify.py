@@ -291,15 +291,22 @@ def replace(fileRead, fileWrite):
 		match_ret = re.match(regexLineBeginsReturn, line) 						# matches any line that begins with return
 		match_rgbname = re.match(regexLocalWhole, line)							# matches var declaration for the names
 		
-		cleanedUwu = ''
 		if match_comment:
-			if debug: print('line is a comment!')
-		elif match_ret:
-			cleanedUwu = parseLineReturn(line, uwu)
-		elif match_rgbname:
-			cleanedUwu = parseLineLocal(line, uwu)
+			if debug: print('line is a comment!')	
 			
 		if match_ret or match_rgbname:
+			cleanedUwu = ''
+			
+			# spaces out variables so the uwuifier can read it
+			# "blah"..var_rgb.."bleh"
+			# "blah" .. var_rgb .. "bleh"
+			line = line.replace('..', ' .. ')
+			line = line.replace(' .. .', '...')	# ellipses get spaced out, so undo that
+			if match_ret:
+				cleanedUwu = parseLineReturn(line, uwu)
+			else:
+				cleanedUwu = parseLineLocal(line, uwu)
+			
 			if debug: print(f'found the line: {line}\n\treplacing with: {cleanedUwu}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 			output_file.write(cleanedUwu)
 		else:
