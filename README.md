@@ -4,6 +4,7 @@ This script turns modules from the [Enhanced Descriptions mod for *Warhammer 40,
 
 Uses the [UwUipy](https://github.com/Cuprum77/uwuipy) library.
 
+![UwUified weapon](https://i.imgur.com/55ZTv2J.png)
 
 ## Usage
 
