@@ -13,24 +13,34 @@ Uses the [UwUipy](https://github.com/Cuprum77/uwuipy) library.
 2. Create a backup of the EDM file
 
    Only necessary for the main EDM file, not for EDM_data.lua and EDM_localization.lua
+
+3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```-- {	id```, ```--	loc```, or ```--	return``` besides the templates (lines 151-156, 3164) in the EDM talents file. Mass replacing this should work since template isn't shown anywhere and the example on 3164 uses different spacing.
    
-3. Execute the file and pass the EDM target file as a terminal argument
+4. Execute the file and pass the EDM target file as a terminal argument
 
    ```python3 darktideBetterDescriptionsUwuify.py ENLocalizationFIXBlessings.lua```
 
-   You could probably skip step 1 by including the path to the file
+   You could skip step 1 by including the path to the file
 
-4. Delete the original EDM file (not the backup) and rename uwu_EDM.lua to the original file name
+5. Delete the original EDM file (not the backup) and rename uwu_EDM.lua to the original file name
 
-5. *Optional*: Use a Find and Replace feature (such as Ctrl + H in Notepad++) to make the following change:
+6. *Optional*: Use a Find and Replace feature (such as Ctrl + H in Notepad++) to make the following change:
 
 - ```Wow"``` --> ```Smaww"```
   
-  Low --> small --> smaww: I don't like how "wow" sounds in this context
+  Toughness Boost Low --> small --> smaww: I don't like how "wow" sounds in this context
 
   Then replace ```w-smaww``` with ```smaww``` until no more matches are found to remove lingering stutters
+
+- ```"Wow``` --> ```"Wo```
+
+  Low Profile --> lo --> wo: wow such profile
+
+- ```Chink``` --> ```C-cwack```
+
+  If you don't like that word
   
-6. Verify the changes in-game
+7. Verify the changes in-game
 
 # Errors
 **Calling nil error**
