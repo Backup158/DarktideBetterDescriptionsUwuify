@@ -16,9 +16,15 @@ Uses the [UwUipy](https://github.com/Cuprum77/uwuipy) library.
 
    Only necessary for the main EDM file, not for EDM_data.lua and EDM_localization.lua
 
-3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```-- {	id```, ```--	loc```, ```--	handle```, or ```--	return``` besides the templates (lines 264-268, 4101). Mass replacing should work fine since the template isn't shown anywhere, and the debug example uses different spacing.
+3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```-- {	id```, ```--	loc```, ```--	handle```, or ```--	return``` besides the templates (lines 264-268, 4101)
 
-   ```--return "+{suppression:%s} Suppression and +{damage_vs_suppressed:%s}``` will cause two return statements. The first one's execution should mean it's ok but I reverted this because of paranoia.
+   Mass replacing won't affect these since the template isn't shown anywhere, and the debug example uses different spacing
+
+   Be careful about replacing ```-- han``` since that will cause an error with the Hand Cannon blessing and ```-- ret```, with the Retribution Zealot talent
+
+   **Revert lines 3509-3510 ```--return "Speedwoad" end},``` and ```--{	id = "trait_bespoke_50_desc_ext_en", -- Speedload``` because that's half a function**
+
+   **Revert line 3781 ```--return "+{suppression:%s} Suppression and +{damage_vs_suppressed:%s}``` because it cause two return statements**
 
 5. *Optional*: Use a Find and Replace feature (such as Ctrl + H in Notepad++ with case sensitivity on) to make the following change:
 
@@ -32,7 +38,7 @@ Uses the [UwUipy](https://github.com/Cuprum77/uwuipy) library.
 
 - ```Chink``` --> ```Crack```
 
-  If you don't like that word
+  This is grammatically correct, but many people dislike this word
    
 5. Execute the file and pass the EDM target file as a terminal argument
 
