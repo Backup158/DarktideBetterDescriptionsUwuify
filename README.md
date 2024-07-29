@@ -22,9 +22,9 @@ Uses the [UwUipy](https://github.com/Cuprum77/uwuipy) library.
 
    Be careful about replacing ```-- han``` since that will cause an error with the Hand Cannon blessing and ```-- ret```, with the Retribution Zealot talent
 
-   **Revert lines 3509-3510 ```--return "Speedwoad" end},``` and ```--{	id = "trait_bespoke_50_desc_ext_en", -- Speedload``` because that's half a function**
+   **Revert lines 3509-3510 ```--return "Speedload" end},``` and ```--{	id = "trait_bespoke_50_desc_ext_en", -- Speedload``` because that's an incomplete function**
 
-   **Revert line 3781 ```--return "+{suppression:%s} Suppression and +{damage_vs_suppressed:%s}``` because it cause two return statements**
+   **Revert line 3781 ```--return "+{suppression:%s} Suppression and +{damage_vs_suppressed:%s}``` because it's a redundant return statements**
 
 5. *Optional*: Use a Find and Replace feature (such as Ctrl + H in Notepad++ with case sensitivity on) to make the following change:
 
