@@ -1,6 +1,6 @@
 # WTF does this even do?
 
-This script turns modules from the [Enhanced Descriptions mod for *Warhammer 40,000: Darktide*](https://www.nexusmods.com/warhammer40kdarktide/mods/210) into UwU text. It edits all text that will be displayed to the user, as long as the line is not commented out.
+This script turns displayed text from the [Enhanced Descriptions mod for *Warhammer 40,000: Darktide*](https://www.nexusmods.com/warhammer40kdarktide/mods/210) into UwU speak. It edits all text that will be displayed to the user, as long as the line is not commented out.
 
 Uses the [UwUipy](https://github.com/Cuprum77/uwuipy) library.
 
@@ -8,37 +8,39 @@ Uses the [UwUipy](https://github.com/Cuprum77/uwuipy) library.
 
 ## Usage
 
-1. Place script in folder with the Enhanced Description module (EDM) you want to change
+1. *Optional*: Place script in folder with the Enhanced Description (EDM) All-in-one files
+
+   ```DarktideFolder/mods/ENLocalizationFIXAIO/scripts/mods/ENLocalizationFIXAIO/```
 
 2. Create a backup of the EDM file
 
    Only necessary for the main EDM file, not for EDM_data.lua and EDM_localization.lua
 
-3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```-- {	id```, ```--	loc```, or ```--	return``` besides the templates (lines 151-156, 3164) in the EDM talents file. Mass replacing this should work since template isn't shown anywhere and the example on 3164 uses different spacing.
+3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```-- {	id```, ```--	loc```, ```--	han```, or ```--	return``` besides the templates (lines 264-268, 4101). Mass replacing should work fine since the template isn't shown anywhere, and the debug example uses different spacing.
+
+4. *Optional*: Use a Find and Replace feature (such as Ctrl + H in Notepad++ with case sensitivity on) to make the following change:
+
+- ```Low"``` --> ```Small"```
+  
+  Toughness Boost Low --> Toughness Boost Wow: I don't like how "wow" sounds in this context so smaww it is
+
+- ```"Low Profile``` --> ```"Sneaky Beaky Mode```
+
+  Low Profile --> Wow Profile: wow such profile
+
+- ```Chink``` --> ```Crack```
+
+  If you don't like that word
    
-4. Execute the file and pass the EDM target file as a terminal argument
+5. Execute the file and pass the EDM target file as a terminal argument
 
    ```python3 darktideBetterDescriptionsUwuify.py ENLocalizationFIXBlessings.lua```
 
-   You could skip step 1 by including the path to the file
+   Including the full path to the file if you skipped step 1
 
-5. Delete the original EDM file (not the backup) and rename uwu_EDM.lua to the original file name
+6. Delete the original EDM file (not the backup) and rename uwu_EDM.lua to the original file name
 
-6. *Optional*: Use a Find and Replace feature (such as Ctrl + H in Notepad++) to make the following change:
-
-- ```Wow"``` --> ```Smaww"```
-  
-  Toughness Boost Low --> small --> smaww: I don't like how "wow" sounds in this context
-
-  Then replace ```w-smaww``` with ```smaww``` until no more matches are found to remove lingering stutters
-
-- ```"Wow``` --> ```"Wo```
-
-  Low Profile --> lo --> wo: wow such profile
-
-- ```Chink``` --> ```C-cwack```
-
-  If you don't like that word
+   If you skipped Step 1, move the generated file to the EDM folder
   
 7. Verify the changes in-game
 
