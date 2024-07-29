@@ -16,9 +16,11 @@ Uses the [UwUipy](https://github.com/Cuprum77/uwuipy) library.
 
    Only necessary for the main EDM file, not for EDM_data.lua and EDM_localization.lua
 
-3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```-- {	id```, ```--	loc```, ```--	han```, or ```--	return``` besides the templates (lines 264-268, 4101). Mass replacing should work fine since the template isn't shown anywhere, and the debug example uses different spacing.
+3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```-- {	id```, ```--	loc```, ```--	handle```, or ```--	return``` besides the templates (lines 264-268, 4101). Mass replacing should work fine since the template isn't shown anywhere, and the debug example uses different spacing.
 
-4. *Optional*: Use a Find and Replace feature (such as Ctrl + H in Notepad++ with case sensitivity on) to make the following change:
+   ```--return "+{suppression:%s} Suppression and +{damage_vs_suppressed:%s}``` will cause two return statements. The first one's execution should mean it's ok but I reverted this because of paranoia.
+
+5. *Optional*: Use a Find and Replace feature (such as Ctrl + H in Notepad++ with case sensitivity on) to make the following change:
 
 - ```Low"``` --> ```Small"```
   
