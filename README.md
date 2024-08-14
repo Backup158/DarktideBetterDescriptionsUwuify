@@ -9,8 +9,11 @@ Uses the [uwuipy](https://github.com/Cuprum77/uwuipy) library.
 # Requirements
 
 A moddable copy of *Darktide* (NOT through GEForceNow) [patched for modding](https://dmf-docs.darkti.de/#/installing-mods)
+
 Enhanced Descriptions mod
+
 [Python 3](https://www.python.org/downloads/) installed
+
 [uwuipy](https://github.com/Cuprum77/uwuipy) installed
 
 ## Usage
