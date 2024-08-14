@@ -2,9 +2,16 @@
 
 This script turns displayed text from the [Enhanced Descriptions mod for *Warhammer 40,000: Darktide*](https://www.nexusmods.com/warhammer40kdarktide/mods/210) into UwU speak. It edits all text that will be displayed to the user, as long as the line is not commented out.
 
-Uses the [UwUipy](https://github.com/Cuprum77/uwuipy) library.
+Uses the [uwuipy](https://github.com/Cuprum77/uwuipy) library.
 
 ![UwUified weapon](https://i.imgur.com/55ZTv2J.png)
+
+# Requirements
+
+A moddable copy of *Darktide* (NOT through GEForceNow) [patched for modding](https://dmf-docs.darkti.de/#/installing-mods)
+Enhanced Descriptions mod
+[Python 3](https://www.python.org/downloads/) installed
+[uwuipy](https://github.com/Cuprum77/uwuipy) installed
 
 ## Usage
 
