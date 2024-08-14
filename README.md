@@ -48,7 +48,7 @@ Enhanced Descriptions mod
 
 - ```Chink``` --> ```Crack```
 
-  This is grammatically correct, but many people dislike this word
+  The other definition is a slur lol
    
 5. Execute the file and pass the EDM target file as a terminal argument
 
