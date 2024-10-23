@@ -1,4 +1,4 @@
-from uwuipy import uwuipy
+from uwuipy import Uwuipy
 import re
 import sys
 
@@ -284,7 +284,7 @@ def replace(fileRead, fileWrite):
 	input_file = open(fileRead, "r", encoding="latin-1")	# I think xsSplater used this encoding
 	output_file = open(fileWrite, "w")
 	
-	uwu = uwuipy(None, 0.33, 0, 0.22, 1, True) # seed, stutterchance, facechance, actionchance, exclamationshcance, nsfw
+	uwu = Uwuipy(None, 0.33, 0, 0.22, 1, True) # seed, stutterchance, facechance, actionchance, exclamationshcance, nsfw
 	
 	for line in input_file:
 		match_comment = re.match(regexLineComment, line)						# matches line that is entirely a comment
@@ -300,8 +300,10 @@ def replace(fileRead, fileWrite):
 			# spaces out variables so the uwuifier can read it
 			# "blah"..var_rgb.."bleh"
 			# "blah" .. var_rgb .. "bleh"
-			line = line.replace('..', ' .. ')
-			line = line.replace(' .. .', '...')	# ellipses get spaced out, so undo that
+			if "rgb.." in line:
+				line = line.replace('..', ' .. ')
+				line = line.replace(' .. .', '...')	# ellipses get spaced out, so undo that
+			
 			if match_ret:
 				cleanedUwu = parseLineReturn(line, uwu)
 			else:
