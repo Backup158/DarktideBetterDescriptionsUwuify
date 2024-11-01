@@ -23,9 +23,11 @@ Enhanced Descriptions mod
 
 1. *Optional*: Place script in folder with the Enhanced Description (EDM) All-in-one files
 
-   ```DarktideFolder/mods/ENLocalizationFIXAIO/scripts/mods/ENLocalizationFIXAIO/```
+   ```(DarktideFolder)/mods/ENLocalizationFIXAIO/scripts/mods/ENLocalizationFIXAIO/```
 
-2. Create a backup of the description files: COLORS_KWords.lua, CURIOS_Blessings_Perks.lua, TALENTS.lua, TALENTS_Enh_desc.lua, TALENTS_Enh_desc2.lua, TALENTS_Enh_desc_nodes.lua, WEAPONS_Blessings_Perks.lua
+2. Create a backup of the EDM text source files: COLORS_KWords.lua, CURIOS_Blessings_Perks.lua, TALENTS.lua, TALENTS_Enh_desc.lua, TALENTS_Enh_desc2.lua, TALENTS_Enh_desc_nodes.lua, WEAPONS_Blessings_Perks.lua
+
+   Example with an aliased command for a bash script to backup all arguments ```backup COLORS_KWords.lua CURIOS_Blessings_Perks.lua TALENTS.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua WEAPONS_Blessings_Perks.lua```
 
 3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```-- create_template``` in TALENTS.lua.
 
@@ -33,7 +35,7 @@ Enhanced Descriptions mod
 
 - ```"Low Profile``` --> ```"Sneaky Beaky Mode```
 
-  Low Profile --> Wow Profile: wow such profile
+  Low Profile --> Wow Profile: wow such profile. I like the sound of 'sneaky beaky' more.
 
 - ```Chink``` --> ```Crack```
 
@@ -45,7 +47,7 @@ Enhanced Descriptions mod
 
    Including the full path to the file if you skipped step 1
 
-6. Delete the original EDM file (not the backup) and rename uwu_EDM.lua to the original file name
+6. Delete the original EDM text source files (not the backup) and rename uwu_OriginalName.lua to the original file name
 
    If you skipped Step 1, move the generated file to the EDM folder
   
