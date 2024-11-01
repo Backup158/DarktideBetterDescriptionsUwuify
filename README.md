@@ -25,7 +25,7 @@ Enhanced Descriptions mod
 
    ```(DarktideFolder)/mods/ENLocalizationFIXAIO/scripts/mods/ENLocalizationFIXAIO/```
 
-2. Create a backup of the EDM text source files: COLORS_KWords.lua, CURIOS_Blessings_Perks.lua, TALENTS.lua, TALENTS_Enh_desc.lua, TALENTS_Enh_desc2.lua, TALENTS_Enh_desc_nodes.lua, WEAPONS_Blessings_Perks.lua
+2. Create a backup of the EDM target files: COLORS_KWords.lua, CURIOS_Blessings_Perks.lua, TALENTS.lua, TALENTS_Enh_desc.lua, TALENTS_Enh_desc2.lua, TALENTS_Enh_desc_nodes.lua, WEAPONS_Blessings_Perks.lua
 
    Example with an aliased command for a bash script to backup all arguments ```backup COLORS_KWords.lua CURIOS_Blessings_Perks.lua TALENTS.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua WEAPONS_Blessings_Perks.lua```
 
@@ -41,15 +41,15 @@ Enhanced Descriptions mod
 
   The other definition is a slur lol
    
-5. Execute the file and pass the EDM target file as a terminal argument
+5. Execute the file and pass each EDM target file as a terminal argument
 
-   ```python3 darktideBetterDescriptionsUwuify.py ENLocalizationFIXBlessings.lua```
+   ```python3 darktideBetterDescriptionsUwuify.py COLORS_KWords.lua CURIOS_Blessings_Perks.lua TALENTS.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua WEAPONS_Blessings_Perks.lua```
 
    Including the full path to the file if you skipped step 1
 
-6. Delete the original EDM text source files (not the backup) and rename uwu_OriginalName.lua to the original file name
+6. Delete the original EDM target files (not the backups) and rename uwu_OriginalName.lua to the original file name
 
-   If you skipped Step 1, move the generated file to the EDM folder
+   If you skipped Step 1, move the generated files to the EDM folder
   
 7. Verify the changes in-game
 
