@@ -1,4 +1,4 @@
-from uwuipy import Uwuipy
+from uwuipy import uwuipy
 import re
 import sys
 
@@ -8,6 +8,7 @@ debug = True
 #	> Script to UwUify displayed text in xsSplater's Enhanced Descriptions mod's Talents module for Warhammer 40k: Darktide. https://www.nexusmods.com/warhammer40kdarktide/mods/210
 #	> Author: Backup158
 #	> Initial creation: 2024-06-09
+#	> v2.0 Update: 2024-10-31
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # GLOBAL VARIABLES
 # Regex values
@@ -15,14 +16,18 @@ debug = True
 # doing '(regex)' means the delimiter stays in the list	
 # doing '(?:regex)' means match but don't include delimiter
 
-regexLineBeginsReturn = '((?:\s)?return )'
-regexLocalWhole = 'local .* = iu_actit\(".*",.*\)\n'
-regexLineComment = '^(?:\s)?--.*\n'
+# regexLineBeginsReturn = '((?:\s)?return )'
+# regexLocalWhole = 'local .* = iu_actit\(".*",.*\)\n'
+regexLineComment = '^(?:\s)?--.*'
+regexCreateTemplateStart = '(create_template.*return )'
+# regexLocalKeyword = '(local .* = iu_actit )'
+regexLocalDescriptions = '(local .* = )'		# local, anything, =. captures the color[mod:get ] ones but i deal with that manually in the call
+regexDescriptionString = '(".*",)'
 
-regexIsEnd = '( end},.*\n)'					# end followed by whatever until newline
-regexLocalStart = 'local .* = iu_actit\('	# local name_rgb = iu_actit(
-regexLocalEnd = ',.*\)\s'					# , value)\n
-regexComment = '((?:\s)*--.*\n)'
+regexIsEnd = '( end\),(^\n)*)'				# end), followed by whatever until newline
+#regexLocalStart = 'local .* = iu_actit\('	# local name_rgb = iu_actit(
+#regexLocalEnd = ',.*\)\s'					# , value)\n
+regexComment = '((?:\s)*--(^\n)*)'
 regexVarCurly = '({(?:.*?)})'											# finds the {var_name:%s}. ? after * makes it non greedy so it stops at the first occurence
 regexColoredText = '(\.\. ˝?(?:\w*)_rgb \.\.)|(\.\. ˝?(?:\w*)_rgb(?: end},)?)|(\.\. ˝?(?:\w*)_rgb ")|( ?˝?(?:\w*)_rgb \.\. ")'		# .. var_rgb .. | .. var_rgb end}, | .. var_rgb " | var_rgb .. "			all with option for wack ass diacritic
 
@@ -53,13 +58,14 @@ def printList(list, indent):
 # Cleans up uwuified text
 ################################
 def cleanuwu(uwutext):
-	newuwu = uwutext.replace('"-', '')		# removes stammering from quotation marks
+	newuwu = uwutext.replace('"-"', '"')	# removes stammering from quotation marks. "- is used as a bullet point so we ain't doin that
 	newuwu = newuwu.replace('{-', '')		# removes stammering from opening curly braces
 	newuwu = newuwu.replace('.-', '')		# removes stammering from comments
-	newuwu = newuwu.replace('˝-', '')		# removes stammering from numberTh with disacritics ˝
+	newuwu = newuwu.replace('˝-', '')		# removes stammering from the diacritics ˝
 	newuwu = newuwu.replace('*-', '')		# stops stammering for asterisks
-	newuwu = newuwu.replace('\-', '')		# stops stammering for escape characters
-	newuwu = newuwu.replace("***breaks into your house and aliases neofetch to rm -rf --no-preserve-root /***", '')		# removes funny root action because that fucks my formatting
+	newuwu = newuwu.replace('\-', '')		# stops stammering for escape characters. hypens need no escape so it's fine
+	newuwu = newuwu.replace("***breaks into your house and aliases neofetch to rm -rf --no-preserve-root /*** ", '')		# removes funny root action because that fucks my formatting
+	newuwu = newuwu.replace( "***breaks into your house and aliases neofetch to rm -rf --no-preserve-root /***", '')		# in case the space is on the wrong side
 	return newuwu
 
 ################################
@@ -77,31 +83,31 @@ def clearNone(substrings, which):
 	return substringsCleaned
 
 #################################################################
-# Split Return Text End
-# given a line that begins with (whitespace) return ", split that into 3 substrings
-# returns a list of substrings: return, the quoted text, end},
+# Split Create Text End
+# given a line that begins with (whitespace) create_template ... return ", split that into 3-4 substrings
+# returns a list of substrings: the create template stuff, the quoted text with vars, end),, and any comments afterwards
 #################################################################
-def splitReturnTextEnd(line):
+def splitCreateTextEnd(line):
 	# Splits the string at the return point and end point
-	finalRegex = regexLineBeginsReturn + '|' + regexIsEnd
+	finalRegex = regexCreateTemplateStart + '|' + regexIsEnd
 	substrings = re.split(finalRegex, line)
 	if debug: 
 		printSep(1)
-		print('Result of splitting line into ReturnTextEnd')
+		print('Result of splitting line into CreateTextEnd')
 		printList(substrings,1)
 	
-	substrings = clearNone(substrings, 'SplitReturnTextEnd')
+	substrings = clearNone(substrings, 'SplitCreateTextEnd')
 	
 	if debug: 
-		print('++ ++ ++ Split ReturnTextEnd')
+		print('++ ++ ++ Split CreateTextEnd')
 		printList(substrings,1)
 
 	return substrings
 
 #################################################################
-# Split Local
+# Split Local (and Description String line)
 # given a line that begins with local name_rgb = iu_actit("wordswordswords", aaa)\n
-# returns a list of substrings: everything before the quote, ", wordswordswords, ", , aaa)\n
+# returns a list of substrings: everything before the quote (blank for descStr), ", wordswordswords, ", , aaa)\n
 #################################################################
 def substringsLocalSplit(line):
 	substrings = re.split('(")', line)
@@ -115,7 +121,8 @@ def substringsLocalSplit(line):
 	return substrings
 
 #################################################################
-# Class to categorize each substring within the quoted text
+# ~~~~ Class ~~~~
+# categorizes each substring within the quoted text
 # allows you mark if it's a variable/syntax (can't uwuify without breaking the code)
 #################################################################
 class SubstringText:
@@ -143,7 +150,7 @@ class SubstringText:
 def uwuifyQuotedText(quotedText, uwu):
 	# Splits quoted text by variables
 	# gather all the regex needed
-	regex = (regexComment, regexVarCurly, regexColoredText, regexIsEnd, regexLocalStart, regexLocalEnd)
+	regex = (regexComment, regexVarCurly, regexColoredText, regexIsEnd)
 	finalRegex = ''
 	for i in range(len(regex)):
 		finalRegex += regex[i] + '|' 
@@ -234,24 +241,24 @@ def parseLine(substrings, uwu, textPos):
 	return finalLine
 
 ####################
-# Parse Line - Return
-# given a string: line beginning with return (description declaration)
+# Parse Line - Create Template
+# given a string: line beginning with create_template (description declaration)
 # splits and uwuifies it
-#	return
-#	quoted text				<< position 1
-#	end},
+#	create_template("quotes", {"quotes2"}, {"quotes3"}, function(locale, value) return
+#	quotes and variables					<< position 1
+#	end),
 # returns a string that will be used to replace the original line
 ####################
-def parseLineReturn(line, uwu):
+def parseLineTemp(line, uwu):
 	
-	substringsReturnTextEnd = splitReturnTextEnd(line)
+	substringsCreateTextEnd = splitCreateTextEnd(line)
 	if debug:
 		printSep(0)
-		print('Creating Final Line from substringsReturnTextEnd')
-		printList(substringsReturnTextEnd,0)
+		print('Creating Final Line from substringsCreateTextEnd')
+		printList(substringsCreateTextEnd,0)
 		printSep(0)
 
-	finalLine = parseLine(substringsReturnTextEnd, uwu, 1)
+	finalLine = parseLine(substringsCreateTextEnd, uwu, 1)
 
 	return finalLine
 	
@@ -259,11 +266,11 @@ def parseLineReturn(line, uwu):
 # Parse Line - Local
 # given a string: line beginning with local (name declaration)
 # splits and uwuifies it
-#	local 
+#	local (whatever)
 #	"
 #	quoted text				<< position 2
 #	"
-#	end},
+#	end}, 				if applicable
 # returns a string that will be used to replace the original line
 ####################
 def parseLineLocal(line, uwu):
@@ -273,6 +280,24 @@ def parseLineLocal(line, uwu):
 	
 	return finalLine
 	
+####################
+# Parse Line - Desc
+# given a string: line of description
+# splits and uwuifies it
+#	"
+#	- quoted text				<< position 1
+#	"
+#	,
+# position 1 this time because it cleans out the none
+# returns a string that will be used to replace the original line
+####################
+def parseLineDesc(line, uwu):
+	
+	substrings = substringsLocalSplit(line)
+	finalLine = parseLine(substrings, uwu, 1)
+	
+	return finalLine
+
 #################################################################
 # File Replacement
 # given a file to read and temporary file to write to
@@ -284,30 +309,41 @@ def replace(fileRead, fileWrite):
 	input_file = open(fileRead, "r", encoding="latin-1")	# I think xsSplater used this encoding
 	output_file = open(fileWrite, "w")
 	
-	uwu = Uwuipy(None, 0.33, 0, 0.22, 1, True) # seed, stutterchance, facechance, actionchance, exclamationshcance, nsfw
+	uwu = uwuipy(None, 0.33, 0, 0.22, 1, True)		# seed, stutterChance, faceChance, actionChance, exclamationsChance, nsfw, 
+	#uwu = uwuipy(None, 0.33, 0, 0.22, 1, True, 1) 	# power 1-4. only seems to work on newer versions
+	#uwu2 = Uwuipy(None, 0.33, 0, 0.22, 1, True, 2)
+	#uwuSuper = Uwuipy(None, 0.33, 0, 0.22, 1, True, 4)
 	
 	for line in input_file:
-		match_comment = re.match(regexLineComment, line)						# matches line that is entirely a comment
-		match_ret = re.match(regexLineBeginsReturn, line) 						# matches any line that begins with return
-		match_rgbname = re.match(regexLocalWhole, line)							# matches var declaration for the names
-		
+		match_comment = re.match(regexLineComment, line)				# line is entirely a comment
 		if match_comment:
-			if debug: print('line is a comment!')	
-			
-		if match_ret or match_rgbname:
+			if debug: print('line is a comment!')
+			output_file.write(line) # write then skip the other checks
+			continue
+
+		match_temp = re.match(regexCreateTemplateStart, line) 			# beginning with create_template: descriptions for curios
+		match_local = re.match(regexLocalDescriptions, line)			# talents, talent desc, colors_kwords
+		match_descStr = re.match(regexDescriptionString, line)			# talents enh desc
+		
+		if match_temp or match_local or match_descStr:
 			cleanedUwu = ''
+
+			# replaces escaped quotes because i'm using quotes as a delimiter
+			# \"blah\"		\\ escaped backslash, \" escaped quote
+			# \'blah\'		
+			if "\"" in line:
+				line = line.replace('\\\"', '\\\'')
 			
-			# spaces out variables so the uwuifier can read it
-			# "blah"..var_rgb.."bleh"
-			# "blah" .. var_rgb .. "bleh"
-			if "rgb.." in line:
-				line = line.replace('..', ' .. ')
-				line = line.replace(' .. .', '...')	# ellipses get spaced out, so undo that
-			
-			if match_ret:
-				cleanedUwu = parseLineReturn(line, uwu)
-			else:
+			if match_temp:
+				cleanedUwu = parseLineTemp(line, uwu)
+			elif match_local:
+				# false positive dealt with manually
+				if "mod:get" in line:
+					output_file.write(line)
+					continue
 				cleanedUwu = parseLineLocal(line, uwu)
+			else:
+				cleanedUwu = parseLineDesc(line, uwu)
 			
 			if debug: print(f'found the line: {line}\n\treplacing with: {cleanedUwu}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 			output_file.write(cleanedUwu)
@@ -319,16 +355,10 @@ def replace(fileRead, fileWrite):
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 if __name__ == "__main__":
 	### terminal argument method ###
-
-	#for i in sys.argv:
-	#	if debug: print(f'replacing {i}')
-	#	replace(i, f'uwu_{i}')
-	
 	# first argument is this script
 	for i in range(1, len(sys.argv)):
 		if debug: print(f'replacing {sys.argv[i]}')
 		replace(sys.argv[i], f'uwu_{sys.argv[i]}')
-	
 	
 	### input method ###
 	#fileName = input('Input the name of the file you want to replace: ')
