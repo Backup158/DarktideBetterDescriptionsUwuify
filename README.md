@@ -25,25 +25,11 @@ Enhanced Descriptions mod
 
    ```DarktideFolder/mods/ENLocalizationFIXAIO/scripts/mods/ENLocalizationFIXAIO/```
 
-2. Create a backup of the EDM file
+2. Create a backup of the description files: COLORS_KWords.lua, CURIOS_Blessings_Perks.lua, TALENTS.lua, TALENTS_Enh_desc.lua, TALENTS_Enh_desc2.lua, TALENTS_Enh_desc_nodes.lua, WEAPONS_Blessings_Perks.lua
 
-   Only necessary for the main EDM file, not for EDM_data.lua and EDM_localization.lua
+3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```-- create_template``` in TALENTS.lua.
 
-3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```-- {	id```, ```--	loc```, ```--	handle```, or ```--	return``` besides the templates (lines 264-268, 4101)
-
-   Mass replacing won't affect these since the template isn't shown anywhere, and the debug example uses different spacing
-
-   Be careful about replacing ```-- han``` since that will cause an error with the Hand Cannon blessing and ```-- ret```, with the Retribution Zealot talent
-
-   **Revert lines 3509-3510 ```--return "Speedload" end},``` and ```--{	id = "trait_bespoke_50_desc_ext_en", -- Speedload``` because that's an incomplete function**
-
-   **Revert line 3781 ```--return "+{suppression:%s} Suppression and +{damage_vs_suppressed:%s}``` because it's a redundant return statements**
-
-5. *Optional*: Use a Find and Replace feature (such as Ctrl + H in Notepad++ with case sensitivity on) to make the following change:
-
-- ```Low"``` --> ```Small"```
-  
-  Toughness Boost Low --> Toughness Boost Wow: I don't like how "wow" sounds in this context so smaww it is
+4. *Optional*: If you did step 3 and agree with these changes, make the following replacements in the TALENTS files:
 
 - ```"Low Profile``` --> ```"Sneaky Beaky Mode```
 
