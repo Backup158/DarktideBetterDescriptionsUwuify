@@ -63,6 +63,7 @@ def cleanuwu(uwutext):
 	newuwu = newuwu.replace('.-', '')		# removes stammering from comments
 	newuwu = newuwu.replace('˝-', '')		# removes stammering from the diacritics ˝
 	newuwu = newuwu.replace('*-', '')		# stops stammering for asterisks
+	newuwu = newuwu.replace('~-', '')		# tildes. used as bullet points
 	newuwu = newuwu.replace('\-', '')		# stops stammering for escape characters. hypens need no escape so it's fine
 	newuwu = newuwu.replace("***breaks into your house and aliases neofetch to rm -rf --no-preserve-root /*** ", '')		# removes funny root action because that fucks my formatting
 	newuwu = newuwu.replace( "***breaks into your house and aliases neofetch to rm -rf --no-preserve-root /***", '')		# in case the space is on the wrong side
@@ -306,21 +307,22 @@ def parseLineDesc(line, uwu):
 #	uses new string if replacable
 #################################################################
 def replace(fileRead, fileWrite):
-	input_file = open(fileRead, "r", encoding="latin-1")	# I think xsSplater used this encoding
+	input_file = open(fileRead, "r")	
 	output_file = open(fileWrite, "w")
-	
+	lineCount = 1
+
 	uwu = uwuipy(None, 0.33, 0, 0.22, 1, True)		# seed, stutterChance, faceChance, actionChance, exclamationsChance, nsfw, 
-	#uwu = uwuipy(None, 0.33, 0, 0.22, 1, True, 1) 	# power 1-4. only seems to work on newer versions
+	#uwu = uwuipy(None, 0.33, 0, 0.22, 1, True, 1) 	# power 1-4. only on v0.1.9
 	#uwu2 = Uwuipy(None, 0.33, 0, 0.22, 1, True, 2)
 	#uwuSuper = Uwuipy(None, 0.33, 0, 0.22, 1, True, 4)
 	
 	for line in input_file:
+		# Checking line to see if it's one of those that contains quoted text
 		match_comment = re.match(regexLineComment, line)				# line is entirely a comment
 		if match_comment:
-			if debug: print('line is a comment!')
+			if debug: print(f'{lineCount}lineCount: line is a comment!')
 			output_file.write(line) # write then skip the other checks
 			continue
-
 		match_temp = re.match(regexCreateTemplateStart, line) 			# beginning with create_template: descriptions for curios
 		match_local = re.match(regexLocalDescriptions, line)			# talents, talent desc, colors_kwords
 		match_descStr = re.match(regexDescriptionString, line)			# talents enh desc
@@ -331,23 +333,32 @@ def replace(fileRead, fileWrite):
 			# replaces escaped quotes because i'm using quotes as a delimiter
 			# \"blah\"		\\ escaped backslash, \" escaped quote
 			# \'blah\'		
-			if "\"" in line:
+			if '\\\"' in line:
 				line = line.replace('\\\"', '\\\'')
+			# Replaces bullet point hyphens with tilde bullet points to make stuttering easy to remove
+			# Tildes are not used anywhere else
+			if '\"-' in line:
+				line = line.replace('\"-', '\"~')
 			
+			# specifies which type of line it is
 			if match_temp:
 				cleanedUwu = parseLineTemp(line, uwu)
 			elif match_local:
 				# false positive dealt with manually
-				if "mod:get" in line:
+				# these are local vars that only work with quoted variables
+				# ++ is only used in seperators and that doesn't need uwuifying
+				if "mod:get" or "get_mod" or "require" or "++" in line:
+					if debug: print(f'{lineCount}: local false positive')
 					output_file.write(line)
 					continue
 				cleanedUwu = parseLineLocal(line, uwu)
 			else:
 				cleanedUwu = parseLineDesc(line, uwu)
-			
-			if debug: print(f'found the line: {line}\n\treplacing with: {cleanedUwu}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+			# writes down the uwuified line
+			if debug: print(f'{lineCount}: found the line: {line}\n\treplacing with: {cleanedUwu}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 			output_file.write(cleanedUwu)
 		else:
+			if debug: print(f'{lineCount}: doesnt match any known regex')
 			output_file.write(line)
 			
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
@@ -356,6 +367,7 @@ def replace(fileRead, fileWrite):
 if __name__ == "__main__":
 	### terminal argument method ###
 	# first argument is this script
+	# iterates through all other arguments
 	for i in range(1, len(sys.argv)):
 		if debug: print(f'replacing {sys.argv[i]}')
 		replace(sys.argv[i], f'uwu_{sys.argv[i]}')
