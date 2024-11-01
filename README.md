@@ -1,5 +1,5 @@
 # 2024-10-31 !!!!!
-Version 2.0 was built from the ground up and this script needs tweaking. Do not use until updated
+## Version 2.0 was built from the ground up and this script needs tweaking. Do not use until main branch is updated!
 
 # WTF does this even do?
 
