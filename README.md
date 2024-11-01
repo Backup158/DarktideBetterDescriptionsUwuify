@@ -61,3 +61,7 @@ Enhanced Descriptions mod
 ```
 
 This means one of the variables or syntax words was messed up. This is likely because it got uwuified or had a roleplay action inserted next to it.
+
+**Module call error for uwuipy**
+
+The uwuipy version I developed this on is v0.1.7 which I installed through pip. This one only runs with ```from uwuipy import uwuipy```. The latest version on GitHub is v0.1.9, which specifies ```from uwuipy import Uwuify``` and lets you change the power in the constructor with an 8th argument.
