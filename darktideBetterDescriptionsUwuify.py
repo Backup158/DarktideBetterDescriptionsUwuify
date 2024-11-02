@@ -20,7 +20,7 @@ debug = True
 regexColoredVar = '[a-zA-Z|_|\.|0-9]*'		# variables include alphabet (up and lower), numbers, _, and .
 regexWhitespace = '(\s)*?'		# at the start of the line, match whitespace which may or may not be there
 regexSingleQuote = '(\")'
-regexNotNewline = '[^\n]'
+regexNotNewline = '([^\n])'
 
 # ### Entire Lines ###
 # Judging from the start
@@ -71,7 +71,8 @@ def cleanuwu(uwutext):
 	# replacing "- would normally cause issues with bullet points, so i did the mass replacement with tilde before processing
 	# ˝ is that whackass diacritic from earlier versions
 	# for \\, it's to avoid stammering with escape characters. hypens need no escape so we good
-	charsToExclude = ['"', '{', '.', '˝', '*', '~~', '~', '\\', '(']
+	# quotation mark, curly brace, period, comma, whackass diacritc, asterisk, double tilde, tilde, backslash, forward slash, paranthesis
+	charsToExclude = ['"', '{', '.', ',', '˝', '*', '~~', '~', '\\', '/', '(']
 	newuwu = uwutext
 	for i in charsToExclude:
 		exclusion = i + '-'
@@ -92,7 +93,9 @@ def cleanuwu(uwutext):
 ################################
 def clearNone(substrings, which):
 	if debug: print(f'== == Cleaning {which} == ==')
-	substringsCleaned = [i for i in substrings if i is not None and i != '' and (i.isspace() == False)]	# add substrings if they are not None, empty string, or only whitespace
+	# add substrings if they are not None, empty string, or only whitespace
+	# exceptions for newline (fucks up formatting if not included) and single spaces (which are put between variables)
+	substringsCleaned = [i for i in substrings if i is not None and i != '' and (i.isspace() == False or i == '\n' or i == ' ')]
 	if debug: printList(substringsCleaned,1)
 	return substringsCleaned
 
