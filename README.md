@@ -96,3 +96,5 @@ This means one of the variables or syntax words was messed up. This is likely be
 The uwuipy version I developed this on is v0.1.7 which I installed through pip. This one only runs with ```from uwuipy import uwuipy```, where the module and class name are the same and calling the class just works out.
 
 The latest version on GitHub is v0.1.9, which specifies ```from uwuipy import Uwuify``` and lets you change the power in the constructor with an 8th argument. I have a version in a branch which accounts for this, so use that one instead.
+
+If this doesn't work, open up an issue and/or try to fix it yourself. The relevant lines are 1 and 216.
