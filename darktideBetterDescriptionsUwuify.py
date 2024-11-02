@@ -16,23 +16,27 @@ debug = True
 # doing '(regex)' means the delimiter stays in the list	
 # doing '(?:regex)' means match but don't include delimiter
 
+# ### Reusable Regex Groups ###
+regexColoredVar = '[a-zA-Z|_|\.|0-9]*'		# variables include alphabet (up and lower), numbers, _, and .
+regexStartingWhitespace = '^(?:\s)*'		# at the start of the line, match whitespace which may or may not be there
+
 # ### Entire Lines ###
 # Judging from the start
-regexLineComment = '^(?:\s)?--.*'
-regexCreateTemplateStart = '((\s)*create_template.*return )'		# any amt of whitespace, create_template, whatever chars, return
+regexLineComment = regexStartingWhitespace + '?--.*'
+regexCreateTemplateStart = '(' + regexStartingWhitespace + 'create_template.*return )'		# any amt of whitespace, create_template, whatever chars, return
 regexLocalDescriptions = '(local .* = )'		# local, anything, =. captures the color[mod:get ] ones but i deal with that manually in the call
 regexDescriptionString = '(".*",)'
 
 # ### Parts of text in quotes ###
 regexIsEnd = '( end\),(^\n)*)'				# end), followed by whatever until newline
-regexComment = '((?:\s)*--(^\n)*)'
+regexComment = '(' + regexStartingWhitespace + '--(^\n)*)'
 regexVarCurly = '({(?:.*?)})'				# finds the {var_name:%s}. ? after * makes it non greedy so it stops at the first occurence
 # RGB Text, all with option for wack ass diacritic
-regexColoredVar = '[a-zA-Z|_|\.|0-9]*'		# variables include alphabet (up and lower), numbers, _, and .
+
 regexColoredText1 = '(\.\.˝?' + regexColoredVar + '_rgb\.\.)'			# ..var_rgb..
 regexColoredText2 = '(\.\.˝?' + regexColoredVar + '_rgb(?: end},)?)'	# ..var_rgb end},
 regexColoredText3 = '(\.\.˝?' + regexColoredVar + '_rgb( ?)")'			# ..var_rgb ",..var_rgb"
-regexColoredText4 = '( ?˝?' + regexColoredVar + '_rgb\.\.")'			# var_rgb .. "
+regexColoredText4 = '( ?˝?' + regexColoredVar + '_rgb\.\.")'			# var_rgb.. "
 regexColoredText5 = '(\.\.' + regexColoredVar + '_rgb)'				# ..var_rgb, .. var_rgb
 regexColoredText = regexColoredText1 + '|' + regexColoredText2 + '|' + regexColoredText3 + '|' + regexColoredText4 + '|' + regexColoredText5
 
@@ -84,7 +88,7 @@ def cleanuwu(uwutext):
 ################################
 def clearNone(substrings, which):
 	if debug: print(f'== == Cleaning {which} == ==')
-	substringsCleaned = [i for i in substrings if i is not None and i != '' and i.isspace() == False]	# add substrings if they are not None, empty string, or not whitespace
+	substringsCleaned = [i for i in substrings if i is not None and i != '']	# add substrings if they are not None, empty string
 	if debug: printList(substringsCleaned,1)
 	return substringsCleaned
 
