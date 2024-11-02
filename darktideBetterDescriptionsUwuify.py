@@ -1,4 +1,4 @@
-from uwuipy import uwuipy
+from uwuipy import Uwuipy
 import re
 import sys
 
@@ -213,7 +213,7 @@ def uwuifyQuotedText(quotedText, uwu):
 			finalText += currentObject.getText()
 		else:
 			if debug: print()
-			uwutext = uwu.uwuify(currentObject.getText())
+			uwutext = uwu.Uwuify(currentObject.getText())
 			uwutext = cleanuwu(uwutext)
 			finalText += uwutext
 
