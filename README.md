@@ -17,7 +17,7 @@ Enhanced Descriptions mod
 
 [Python 3](https://www.python.org/downloads/) installed
 
-[uwuipy](https://github.com/Cuprum77/uwuipy) installed
+[uwuipy](https://github.com/Cuprum77/uwuipy) installed (v0.1.7 for main branch. Version for v0.1.9, the latest one on GitHub, is in a branch).
 
 ## Usage
 
@@ -29,9 +29,37 @@ Enhanced Descriptions mod
 
    Example with an aliased command for a bash script to backup all arguments: ```backup COLORS_KWords.lua CURIOS_Blessings_Perks.lua TALENTS.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua WEAPONS_Blessings_Perks.lua```
 
-3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```-- create_template``` in TALENTS.lua.
+3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```create_template``` in TALENTS.lua (besides the template)
 
-4. *Optional*: If you did step 3 and agree with these changes, make the following replacements in the TALENTS files:
+   ```-- create_template("t``` --> ```create_template("t```
+
+   I've hosted a version of this file with the following changes on my [Mod Edits](https://github.com/Backup158/Darktide-Mod-Edits/blob/main/EnhancedDescriptionsv2_TALENTS_edit.lua) GitHub page
+
+   3.1. Clear out the random comments in the middle of lines which break the syntax
+
+   Search for them using ```", --``` then remove them by hand
+   - Line 214: Warp Rupture (Psyker Ability 1-2)
+   - Line 250: Precognition (Psyker Ability 3-2)
+   - Line 430: Puppet Master (Psyker Passive 24)
+   - Line 473: Stunstorm Grenade (Zealot Blitz 1)
+   - Line 535: Martyr's Purpose (Zealot Ability 2-4)
+   - Line 580: Martyrdom (Zealot Keystone 2)
+   - Line 1051: Onslaught (Veteran Passive 38)
+   - Line 1237: Lynchpin (Ogryn Passive 7)
+   - Line 1249: Crunch! (Ogryn Passive 10)
+
+   3.2. Fix other oddities
+   - Lines 438-443: Crystalline Will and Kinetic Deflection have the same template ID for name and description, so name changes will not apply unless you change Crystalline Will's template ID (```talent_tree_psy_pas_026_en``` to match the formatting)
+   - Line 447: Tranquility Through Slaughter (Psyker Passive 28) has two descriptions; leave the first one commented out
+   - Line 455: Penetration of Soul (Psyker Passive 30) has a missing comma in the name template creation
+
+   ```{"en"} function(locale, value)``` --> ```{"en"}, function(locale, value)```
+
+5. *Optional*: If you did step 3 and agree with these changes, make the following replacements in the TALENTS files:
+
+- ```Boost Low" end``` --> ```"Boost Small" end```
+
+  Wow boost doesn't sound as good as smaww boost :3
 
 - ```"Low Profile``` --> ```"Sneaky Beaky Mode```
 
