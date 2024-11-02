@@ -17,7 +17,7 @@ Enhanced Descriptions mod
 
 [Python 3](https://www.python.org/downloads/) installed
 
-[uwuipy](https://github.com/Cuprum77/uwuipy) installed
+[uwuipy](https://github.com/Cuprum77/uwuipy) installed (v0.1.7 for main branch. Version for v0.1.9, the latest one on GitHub, is in a branch).
 
 ## Usage
 
