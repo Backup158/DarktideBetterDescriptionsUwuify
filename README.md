@@ -37,6 +37,10 @@ Enhanced Descriptions mod
 
 4. *Optional*: If you did step 3 and agree with these changes, make the following replacements in the TALENTS files:
 
+- ```Boost Low" end``` --> ```"Boost Small" end```
+
+  Wow boost doesn't sound as good as smaww boost :3
+
 - ```"Low Profile``` --> ```"Sneaky Beaky Mode```
 
   Low Profile --> Wow Profile: wow such profile. I like the sound of 'sneaky beaky' more.
