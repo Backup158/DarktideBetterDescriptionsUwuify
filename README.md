@@ -29,7 +29,11 @@ Enhanced Descriptions mod
 
    Example with an aliased command for a bash script to backup all arguments ```backup COLORS_KWords.lua CURIOS_Blessings_Perks.lua TALENTS.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua WEAPONS_Blessings_Perks.lua```
 
-3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```-- create_template``` in TALENTS.lua.
+3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```create_template``` in TALENTS.lua (besides the template).
+
+   ```-- create_template ("t``` --> ```create_template ("t```
+
+   Line 447: Tranquility Through Slaughter (Psyker Passive 28) has two descriptions. Leave the first one commented out.
 
 4. *Optional*: If you did step 3 and agree with these changes, make the following replacements in the TALENTS files:
 
