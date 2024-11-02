@@ -33,6 +33,8 @@ Enhanced Descriptions mod
 
    ```-- create_template("t``` --> ```create_template("t```
 
+   I've hosted a version of this file with the following changes on my [Mod Edits](https://github.com/Backup158/Darktide-Mod-Edits/blob/main/EnhancedDescriptionsv2_TALENTS_edit.lua) GitHub page
+
    3.1. Clear out the random comments in the middle of lines which break the syntax
 
    Search for them using ```", --``` then remove them by hand
