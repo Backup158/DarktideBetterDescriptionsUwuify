@@ -31,7 +31,7 @@ Enhanced Descriptions mod
 
 3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```create_template``` in TALENTS.lua (besides the template).
 
-   ```-- create_template ("t``` --> ```create_template ("t```
+   ```-- create_template("t``` --> ```create_template("t```
 
    Line 447: Tranquility Through Slaughter (Psyker Passive 28) has two descriptions. Leave the first one commented out.
 
