@@ -8,7 +8,7 @@ debug = True
 #	> Script to UwUify displayed text in xsSplater's Enhanced Descriptions mod's Talents module for Warhammer 40k: Darktide. https://www.nexusmods.com/warhammer40kdarktide/mods/210
 #	> Author: Backup158
 #	> Initial creation: 2024-06-09
-#	> v2.0 Update: 2024-10-31
+#	> Enhanced Descriptions v2.0 Update: 2024-10-31
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # GLOBAL VARIABLES
 # Regex values
@@ -16,17 +16,15 @@ debug = True
 # doing '(regex)' means the delimiter stays in the list	
 # doing '(?:regex)' means match but don't include delimiter
 
-# regexLineBeginsReturn = '((?:\s)?return )'
-# regexLocalWhole = 'local .* = iu_actit\(".*",.*\)\n'
+# ### Entire Lines ###
+# Judging from the start
 regexLineComment = '^(?:\s)?--.*'
 regexCreateTemplateStart = '((\s)*create_template.*return )'		# any amt of whitespace, create_template, whatever chars, return
-# regexLocalKeyword = '(local .* = iu_actit )'
 regexLocalDescriptions = '(local .* = )'		# local, anything, =. captures the color[mod:get ] ones but i deal with that manually in the call
 regexDescriptionString = '(".*",)'
 
+# ### Parts of text in quotes ###
 regexIsEnd = '( end\),(^\n)*)'				# end), followed by whatever until newline
-#regexLocalStart = 'local .* = iu_actit\('	# local name_rgb = iu_actit(
-#regexLocalEnd = ',.*\)\s'					# , value)\n
 regexComment = '((?:\s)*--(^\n)*)'
 regexVarCurly = '({(?:.*?)})'				# finds the {var_name:%s}. ? after * makes it non greedy so it stops at the first occurence
 # RGB Text, all with option for wack ass diacritic
@@ -38,12 +36,7 @@ regexColoredText4 = '( ?˝?' + regexColoredVar + '_rgb\.\.")'			# var_rgb .. "
 regexColoredText5 = '(\.\.' + regexColoredVar + '_rgb)'				# ..var_rgb, .. var_rgb
 regexColoredText = regexColoredText1 + '|' + regexColoredText2 + '|' + regexColoredText3 + '|' + regexColoredText4 + '|' + regexColoredText5
 
-#regexRemoveEmotesFromColorVar = '\.\. \(.{3,8}\)'							# .. (uwu face)
-#regexQuotedText = '"[^(\n)]*"'
-#regexReturnLineExceptEnd = '((\s-- )|\s)?return "[^(\n)]*"'
-#regexRemoveRoleplayFromColorVarFront = '\.\. \*{3}(\w|\s)*\*{3}'			# .. ***rping***
-#regexRemoveRoleplayFromColorVarBack = '\*{3}(\w|\s)*\*{3} \.\.'			# ***rping*** ..
-regexRemoveRoleplayFromVar = '\.\. \*{3}(\w|\s)*\*{3}|\*{3}(\w|\s)*\*{3} \.\.'
+#regexRemoveRoleplayFromVar = '\.\. \*{3}(\w|\s)*\*{3}|\*{3}(\w|\s)*\*{3} \.\.'		# .. ***owowowow***, ***owowooww*** ..
 regexRemoveRoleplayFromEnd = '\*{3}(\w|\s)*\*{3} end},'					# ***rping*** end},
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -65,13 +58,18 @@ def printList(list, indent):
 # Cleans up uwuified text
 ################################
 def cleanuwu(uwutext):
-	newuwu = uwutext.replace('"-"', '"')	# removes stammering from quotation marks. "- is used as a bullet point so we ain't doin that
-	newuwu = newuwu.replace('{-', '')		# removes stammering from opening curly braces
-	newuwu = newuwu.replace('.-', '')		# removes stammering from comments
-	newuwu = newuwu.replace('˝-', '')		# removes stammering from the diacritics ˝
-	newuwu = newuwu.replace('*-', '')		# stops stammering for asterisks
-	newuwu = newuwu.replace('~-', '')		# tildes. used as bullet points
-	newuwu = newuwu.replace('\-', '')		# stops stammering for escape characters. hypens need no escape so it's fine
+	charsToExclude = ['"', '{', '.', '˝', '*', '~', '\\']
+	newuwu = uwutext
+	for i in charsToExclude:
+		exclusion = i + '-'
+		newuwu = newuwu.replace(exclusion, i)
+	#newuwu = uwutext.replace('"-"', '"')	# removes stammering from quotation marks. "- is used as a bullet point so we ain't doin that
+	#newuwu = newuwu.replace('{-', '')		# removes stammering from opening curly braces
+	#newuwu = newuwu.replace('.-', '')		# removes stammering from comments
+	#newuwu = newuwu.replace('˝-', '')		# removes stammering from the diacritics ˝
+	#newuwu = newuwu.replace('*-', '')		# stops stammering for asterisks
+	#newuwu = newuwu.replace('~-', '')		# tildes. used as bullet points
+	#newuwu = newuwu.replace('\-', '')		# stops stammering for escape characters. hypens need no escape so it's fine
 	newuwu = newuwu.replace("***breaks into your house and aliases neofetch to rm -rf --no-preserve-root /*** ", '')		# removes funny root action because that fucks my formatting
 	newuwu = newuwu.replace( "***breaks into your house and aliases neofetch to rm -rf --no-preserve-root /***", '')		# in case the space is on the wrong side
 	return newuwu
@@ -86,7 +84,7 @@ def cleanuwu(uwutext):
 ################################
 def clearNone(substrings, which):
 	if debug: print(f'== == Cleaning {which} == ==')
-	substringsCleaned = [i for i in substrings if i is not None and i != '' and i != ' ']	# add substrings if they are not None, empty string, or single space
+	substringsCleaned = [i for i in substrings if i is not None and i != '' and i.isspace() == False]	# add substrings if they are not None, empty string, or not whitespace
 	if debug: printList(substringsCleaned,1)
 	return substringsCleaned
 
@@ -218,7 +216,8 @@ def uwuifyQuotedText(quotedText, uwu):
 # return string
 #################################################################
 def cleanFinalLine(finalLine):
-	newLine = re.sub(regexRemoveRoleplayFromVar, '..', finalLine)
+	newLine = finalLine
+	#newLine = re.sub(regexRemoveRoleplayFromVar, '..', newLine)
 	newLine = re.sub(regexRemoveRoleplayFromEnd, 'end},', newLine)
 	return newLine
 
