@@ -18,18 +18,20 @@ debug = True
 
 # ### Reusable Regex Groups ###
 regexColoredVar = '[a-zA-Z|_|\.|0-9]*'		# variables include alphabet (up and lower), numbers, _, and .
-regexStartingWhitespace = '^(?:\s)*'		# at the start of the line, match whitespace which may or may not be there
+regexWhitespace = '(\s)*?'		# at the start of the line, match whitespace which may or may not be there
+regexSingleQuote = '(\")'
+regexNotNewline = '[^\n]'
 
 # ### Entire Lines ###
 # Judging from the start
-regexLineComment = regexStartingWhitespace + '?--.*'
-regexCreateTemplateStart = '(' + regexStartingWhitespace + 'create_template.*return )'		# any amt of whitespace, create_template, whatever chars, return
+regexLineComment = regexWhitespace + '--.*'
+regexCreateTemplateStart = '(^' + regexWhitespace + 'create_template.*return' + regexWhitespace + ')'		# any amt of whitespace, create_template, whatever chars, return
 regexLocalDescriptions = '(local .* = )'		# local, anything, =. captures the color[mod:get ] ones but i deal with that manually in the call
-regexDescriptionString = '(".*",)'
+regexDescriptionString = '(' + regexWhitespace + regexSingleQuote + '[~-]' + regexNotNewline + '*' + regexSingleQuote + ',)'
 
 # ### Parts of text in quotes ###
-regexIsEnd = '( end\),(^\n)*)'				# end), followed by whatever until newline
-regexComment = '(' + regexStartingWhitespace + '--(^\n)*)'
+regexIsEnd = '( end\),'+ regexNotNewline + '*)'				# end), followed by whatever until newline
+regexComment = '(' + regexWhitespace + '--(^\n)*)'
 regexVarCurly = '({(?:.*?)})'				# finds the {var_name:%s}. ? after * makes it non greedy so it stops at the first occurence
 # RGB Text, all with option for wack ass diacritic
 
@@ -62,18 +64,20 @@ def printList(list, indent):
 # Cleans up uwuified text
 ################################
 def cleanuwu(uwutext):
-	charsToExclude = ['"', '{', '.', '˝', '*', '~', '\\']
+	if debug: print('cleaning uwu text')
+
+	# Double tilde must come first
+	# ~~-~~-~~- needs to be ~~, not ~~~ (which happens if you only remove ~- first)
+	# replacing "- would normally cause issues with bullet points, so i did the mass replacement with tilde before processing
+	# ˝ is that whackass diacritic from earlier versions
+	# for \\, it's to avoid stammering with escape characters. hypens need no escape so we good
+	charsToExclude = ['"', '{', '.', '˝', '*', '~~', '~', '\\', '(']
 	newuwu = uwutext
 	for i in charsToExclude:
 		exclusion = i + '-'
-		newuwu = newuwu.replace(exclusion, i)
-	#newuwu = uwutext.replace('"-"', '"')	# removes stammering from quotation marks. "- is used as a bullet point so we ain't doin that
-	#newuwu = newuwu.replace('{-', '')		# removes stammering from opening curly braces
-	#newuwu = newuwu.replace('.-', '')		# removes stammering from comments
-	#newuwu = newuwu.replace('˝-', '')		# removes stammering from the diacritics ˝
-	#newuwu = newuwu.replace('*-', '')		# stops stammering for asterisks
-	#newuwu = newuwu.replace('~-', '')		# tildes. used as bullet points
-	#newuwu = newuwu.replace('\-', '')		# stops stammering for escape characters. hypens need no escape so it's fine
+		# if debug: print(f'\treplacing {exclusion}')
+		newuwu = newuwu.replace(exclusion, '')
+
 	newuwu = newuwu.replace("***breaks into your house and aliases neofetch to rm -rf --no-preserve-root /*** ", '')		# removes funny root action because that fucks my formatting
 	newuwu = newuwu.replace( "***breaks into your house and aliases neofetch to rm -rf --no-preserve-root /***", '')		# in case the space is on the wrong side
 	return newuwu
@@ -88,7 +92,7 @@ def cleanuwu(uwutext):
 ################################
 def clearNone(substrings, which):
 	if debug: print(f'== == Cleaning {which} == ==')
-	substringsCleaned = [i for i in substrings if i is not None and i != '']	# add substrings if they are not None, empty string
+	substringsCleaned = [i for i in substrings if i is not None and i != '' and (i.isspace() == False)]	# add substrings if they are not None, empty string, or only whitespace
 	if debug: printList(substringsCleaned,1)
 	return substringsCleaned
 
@@ -160,7 +164,6 @@ class SubstringText:
 def uwuifyQuotedText(quotedText, uwu):
 	# Splits quoted text by variables
 	# gather all the regex needed
-	regexSingleQuote = "(\")"
 	regex = (regexComment, regexVarCurly, regexColoredText, regexIsEnd, regexSingleQuote)
 	finalRegex = ''
 	for i in range(len(regex)):
@@ -275,10 +278,10 @@ def parseLineTemp(line, uwu):
 	return finalLine
 	
 ####################
-# Parse Line - Local
-# given a string: line beginning with local (name declaration)
+# Parse Line - Local, Description String
+# given a string: line beginning with local (name declaration) or line with whitespace and description string
 # splits and uwuifies it
-#	local (whatever)
+#	local (whatever)			| 			whitespace
 #	"
 #	quoted text				<< position 2
 #	"
@@ -310,6 +313,28 @@ def parseLineDesc(line, uwu):
 	
 	return finalLine
 
+####################
+# Line Preprocessing Replacements
+# Given a line from the file. Line has been determined to have text to be uwuified. Cleaning up formatting to make script execution cleaner.
+# returns cleaned line
+####################
+def linePreprocess(rawline):
+	cleanline = rawline
+	# replaces escaped quotes because i'm using quotes as a delimiter
+	# \"blah\"		\\ escaped backslash, \" escaped quote
+	# \'blah\'		
+	if '\\\"' in cleanline:
+		cleanline = cleanline.replace('\\\"', '\\\'')
+	# Replaces bullet point hyphens with tilde bullet points to make stuttering easy to remove
+	# Tildes are not used anywhere else
+	# also gets rid of double hyphen bulet points
+	if '"-' in cleanline:
+		cleanline = cleanline.replace('"-', '"~')
+	if '~-' in cleanline:
+		cleanline = cleanline.replace('~-', '~~')
+
+	return cleanline
+
 #################################################################
 # File Replacement
 # given a file to read and temporary file to write to
@@ -329,6 +354,7 @@ def replace(fileRead, fileWrite):
 	
 	for line in input_file:
 		lineCount = lineCount + 1
+		if debug: print(f'############# New Line {lineCount}!!!! #############')
 		# Checking line to see if it's one of those that contains quoted text
 		# re.match checks the BEGINNING
 		match_comment = re.match(regexLineComment, line)				# line is entirely a comment
@@ -343,15 +369,7 @@ def replace(fileRead, fileWrite):
 		if match_temp or match_local or match_descStr:
 			cleanedUwu = ''
 
-			# replaces escaped quotes because i'm using quotes as a delimiter
-			# \"blah\"		\\ escaped backslash, \" escaped quote
-			# \'blah\'		
-			if '\\\"' in line:
-				line = line.replace('\\\"', '\\\'')
-			# Replaces bullet point hyphens with tilde bullet points to make stuttering easy to remove
-			# Tildes are not used anywhere else
-			if '\"-' in line:
-				line = line.replace('\"-', '\"~')
+			line = linePreprocess(line)
 			
 			# specifies which type of line it is
 			if match_temp:
@@ -360,13 +378,20 @@ def replace(fileRead, fileWrite):
 				# false positive dealt with manually
 				# these are local vars that only work with quoted variables
 				# ++ is only used in seperators and that doesn't need uwuifying
-				if "mod:get" or "get_mod" or "require" or "++" in line:
+				falsePositives = ["mod:get", "get_mod", "require", "++"]
+				fpFound = False
+				for i in falsePositives:
+					if i in line:
+						fpFound = True
+						break
+				if fpFound:
 					if debug: print(f'{lineCount}: local false positive')
 					output_file.write(line)
 					continue
 				cleanedUwu = parseLineLocal(line, uwu)
 			else:
 				cleanedUwu = parseLineDesc(line, uwu)
+				#cleanedUwu = parseLineLocal(line, uwu)
 			# writes down the uwuified line
 			if debug: print(f'{lineCount}: found the line: {line}\n\treplacing with: {cleanedUwu}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 			output_file.write(cleanedUwu)
