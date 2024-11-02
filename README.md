@@ -1,6 +1,3 @@
-# 2024-10-31 !!!!!
-## Version 2.0 was built from the ground up and this script needs tweaking. Do not use until main branch is updated!
-
 # WTF does this even do?
 
 This script turns displayed text from the [Enhanced Descriptions mod for *Warhammer 40,000: Darktide*](https://www.nexusmods.com/warhammer40kdarktide/mods/210) into UwU speak. It edits all text that will be displayed to the user, as long as the line is not commented out.
