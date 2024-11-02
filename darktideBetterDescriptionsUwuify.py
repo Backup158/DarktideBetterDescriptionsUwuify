@@ -19,7 +19,7 @@ debug = True
 # regexLineBeginsReturn = '((?:\s)?return )'
 # regexLocalWhole = 'local .* = iu_actit\(".*",.*\)\n'
 regexLineComment = '^(?:\s)?--.*'
-regexCreateTemplateStart = '(create_template.*return )'
+regexCreateTemplateStart = '((\s)*create_template.*return )'		# any amt of whitespace, create_template, whatever chars, return
 # regexLocalKeyword = '(local .* = iu_actit )'
 regexLocalDescriptions = '(local .* = )'		# local, anything, =. captures the color[mod:get ] ones but i deal with that manually in the call
 regexDescriptionString = '(".*",)'
@@ -28,8 +28,15 @@ regexIsEnd = '( end\),(^\n)*)'				# end), followed by whatever until newline
 #regexLocalStart = 'local .* = iu_actit\('	# local name_rgb = iu_actit(
 #regexLocalEnd = ',.*\)\s'					# , value)\n
 regexComment = '((?:\s)*--(^\n)*)'
-regexVarCurly = '({(?:.*?)})'											# finds the {var_name:%s}. ? after * makes it non greedy so it stops at the first occurence
-regexColoredText = '(\.\. ˝?(?:\w*)_rgb \.\.)|(\.\. ˝?(?:\w*)_rgb(?: end},)?)|(\.\. ˝?(?:\w*)_rgb ")|( ?˝?(?:\w*)_rgb \.\. ")'		# .. var_rgb .. | .. var_rgb end}, | .. var_rgb " | var_rgb .. "			all with option for wack ass diacritic
+regexVarCurly = '({(?:.*?)})'				# finds the {var_name:%s}. ? after * makes it non greedy so it stops at the first occurence
+# RGB Text, all with option for wack ass diacritic
+regexColoredVar = '[a-zA-Z|_|\.|0-9]*'		# variables include alphabet (up and lower), numbers, _, and .
+regexColoredText1 = '(\.\.˝?' + regexColoredVar + '_rgb\.\.)'			# ..var_rgb..
+regexColoredText2 = '(\.\.˝?' + regexColoredVar + '_rgb(?: end},)?)'	# ..var_rgb end},
+regexColoredText3 = '(\.\.˝?' + regexColoredVar + '_rgb( ?)")'			# ..var_rgb ",..var_rgb"
+regexColoredText4 = '( ?˝?' + regexColoredVar + '_rgb\.\.")'			# var_rgb .. "
+regexColoredText5 = '(\.\.' + regexColoredVar + '_rgb)'				# ..var_rgb, .. var_rgb
+regexColoredText = regexColoredText1 + '|' + regexColoredText2 + '|' + regexColoredText3 + '|' + regexColoredText4 + '|' + regexColoredText5
 
 #regexRemoveEmotesFromColorVar = '\.\. \(.{3,8}\)'							# .. (uwu face)
 #regexQuotedText = '"[^(\n)]*"'
@@ -79,7 +86,7 @@ def cleanuwu(uwutext):
 ################################
 def clearNone(substrings, which):
 	if debug: print(f'== == Cleaning {which} == ==')
-	substringsCleaned = [i for i in substrings if i is not None and i != '']
+	substringsCleaned = [i for i in substrings if i is not None and i != '' and i != ' ']	# add substrings if they are not None, empty string, or single space
 	if debug: printList(substringsCleaned,1)
 	return substringsCleaned
 
@@ -151,7 +158,8 @@ class SubstringText:
 def uwuifyQuotedText(quotedText, uwu):
 	# Splits quoted text by variables
 	# gather all the regex needed
-	regex = (regexComment, regexVarCurly, regexColoredText, regexIsEnd)
+	regexSingleQuote = "(\")"
+	regex = (regexComment, regexVarCurly, regexColoredText, regexIsEnd, regexSingleQuote)
 	finalRegex = ''
 	for i in range(len(regex)):
 		finalRegex += regex[i] + '|' 
@@ -200,7 +208,7 @@ def uwuifyQuotedText(quotedText, uwu):
 			uwutext = uwu.uwuify(currentObject.getText())
 			uwutext = cleanuwu(uwutext)
 			finalText += uwutext
-	
+
 	return finalText
 
 #################################################################
@@ -309,7 +317,7 @@ def parseLineDesc(line, uwu):
 def replace(fileRead, fileWrite):
 	input_file = open(fileRead, "r")	
 	output_file = open(fileWrite, "w")
-	lineCount = 1
+	lineCount = 0
 
 	uwu = uwuipy(None, 0.33, 0, 0.22, 1, True)		# seed, stutterChance, faceChance, actionChance, exclamationsChance, nsfw, 
 	#uwu = uwuipy(None, 0.33, 0, 0.22, 1, True, 1) 	# power 1-4. only on v0.1.9
@@ -317,10 +325,12 @@ def replace(fileRead, fileWrite):
 	#uwuSuper = Uwuipy(None, 0.33, 0, 0.22, 1, True, 4)
 	
 	for line in input_file:
+		lineCount = lineCount + 1
 		# Checking line to see if it's one of those that contains quoted text
+		# re.match checks the BEGINNING
 		match_comment = re.match(regexLineComment, line)				# line is entirely a comment
 		if match_comment:
-			if debug: print(f'{lineCount}lineCount: line is a comment!')
+			if debug: print(f'{lineCount}: line is a comment!')
 			output_file.write(line) # write then skip the other checks
 			continue
 		match_temp = re.match(regexCreateTemplateStart, line) 			# beginning with create_template: descriptions for curios
