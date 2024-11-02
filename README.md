@@ -29,35 +29,29 @@ Enhanced Descriptions mod
 
    Example with an aliased command for a bash script to backup all arguments: ```backup COLORS_KWords.lua CURIOS_Blessings_Perks.lua TALENTS.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua WEAPONS_Blessings_Perks.lua```
 
-3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```create_template``` in TALENTS.lua (besides the template).
+3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```create_template``` in TALENTS.lua (besides the template)
 
    ```-- create_template("t``` --> ```create_template("t```
 
-   Line 214: Warp Rupture (Psyker Ability 1-2) has a random comment in the middle, breaking the structure. Move it to the end of the line or delete it.
+   3.1. Clear out the random comments in the middle of lines which break the syntax
 
-   Line 250: Precognition (Psyker Ability 3-2) has a random comment in the middle.
+   Search for them using ```", --``` then remove them by hand
+   - Line 214: Warp Rupture (Psyker Ability 1-2)
+   - Line 250: Precognition (Psyker Ability 3-2)
+   - Line 430: Puppet Master (Psyker Passive 24)
+   - Line 473: Stunstorm Grenade (Zealot Blitz 1)
+   - Line 535: Martyr's Purpose (Zealot Ability 2-4)
+   - Line 580: Martyrdom (Zealot Keystone 2)
+   - Line 1051: Onslaught (Veteran Passive 38)
+   - Line 1237: Lynchpin (Ogryn Passive 7)
+   - Line 1249: Crunch! (Ogryn Passive 10)
 
-   Line 430: Puppet Master (Psyker Passive 24) has a random comment in the middle. Seems to be a holdover from the previous version since it's numbered 16 instead of 24.
-
-   Lines 438-443: Crystalline Will and Kinetic Deflection have the same template ID for name and description. Name changes will not apply unless you change Crystalline Will's template ID to something unusued (```talent_tree_psy_pas_026_en``` to match the formatting). 
-
-   Line 447: Tranquility Through Slaughter (Psyker Passive 28) has two descriptions. Leave the first one commented out.
-
-   Line 455: Penetration of Soul (Psyker Passive 30) has a missing comma in the name template creation.
+   3.2. Fix other oddities
+   - Lines 438-443: Crystalline Will and Kinetic Deflection have the same template ID for name and description, so name changes will not apply unless you change Crystalline Will's template ID (```talent_tree_psy_pas_026_en``` to match the formatting)
+   - Line 447: Tranquility Through Slaughter (Psyker Passive 28) has two descriptions; leave the first one commented out
+   - Line 455: Penetration of Soul (Psyker Passive 30) has a missing comma in the name template creation
 
    ```{"en"} function(locale, value)``` --> ```{"en"}, function(locale, value)```
-
-   line 473: Stunstorm Grenade (Zealot Blitz 1) has a random comment in the middle.
-
-   line 535: Martyr's Purpose (Zealot Ability 2-4) has a random comment in the middle.
-
-   line 580: Martyrdom (Zealot Keystone 2) has a random comment in the middle.
-
-   Line 1051: Onslaught (Veteran Passive 38) has a random comment in the middle.
-
-   Line 1237: Lynchpin (Ogryn Passive 7) has a random comment in the middle.
-
-   Line 1249: Crunch! (Ogryn Passive 10) has a random comment in the middle.
 
 5. *Optional*: If you did step 3 and agree with these changes, make the following replacements in the TALENTS files:
 
