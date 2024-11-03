@@ -105,8 +105,12 @@ If this doesn't work, open up an issue and/or try to fix it yourself. The releva
 
 The base enhanced descriptions (verbose version) already pushes the upper limit of how much text can be displayed on the screen. Adding \*\*\*uwu nuzzles youw necky wecky\*\*\* on top of that just makes the problem worse. If it's only being covered by the loadout preset bar, there's a bandaid of using [Inventory Hider](https://www.nexusmods.com/warhammer40kdarktide/mods/313) to toggle that off as needed. If it goes above that into the tabs, the only option is to manually go into the relevant files and trim some of the uwu actions off. I could add a limited uwuifier based on line length but I'm lazy. Maybe if enough people bug me about it (yes that's an invitation).
 
+![Cutoff1](https://imgur.com/RBfE9C7.png)
+![Cutoff2](https://imgur.com/AS1izjF.png)
+
 # Gallery
 
 ![Flamer](https://imgur.com/bRrrpB0.png)
 ![Ranged Weapons](https://imgur.com/mF52XI1.png)
 ![Recon](https://imgur.com/DgE8amT.png)
+![Talents1](https://imgur.com/K5HieQk.png)
