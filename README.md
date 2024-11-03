@@ -4,7 +4,7 @@ This script turns displayed text from the [Enhanced Descriptions mod for *Warham
 
 Uses the [uwuipy](https://github.com/Cuprum77/uwuipy) library.
 
-![UwUified weapon](https://i.imgur.com/55ZTv2J.png)
+![UwUified weapon](https://imgur.com/K603bvO.png)
 
 # Requirements
 
@@ -98,3 +98,15 @@ The uwuipy version I developed this on is v0.1.7 which I installed through pip. 
 The latest version on GitHub is v0.1.9, which specifies ```from uwuipy import Uwuify``` and lets you change the power in the constructor with an 8th argument. I have a version in a branch which accounts for this, so use that one instead.
 
 If this doesn't work, open up an issue and/or try to fix it yourself. The relevant lines are 1 and 216.
+
+# Known Issues
+
+**Descriptions getting cut off**
+
+The base enhanced descriptions (verbose version) already pushes the upper limit of how much text can be displayed on the screen. Adding \*\*\*uwu nuzzles youw necky wecky\*\*\* on top of that just makes the problem worse. If it's only being covered by the loadout preset bar, there's a bandaid of using [Inventory Hider](https://www.nexusmods.com/warhammer40kdarktide/mods/313) to toggle that off as needed. If it goes above that into the tabs, the only option is to manually go into the relevant files and trim some of the uwu actions off. I could add a limited uwuifier based on line length but I'm lazy. Maybe if enough people bug me about it (yes that's an invitation).
+
+# Gallery
+
+![Flamer](https://imgur.com/bRrrpB0.png)
+![Ranged Weapons](https://imgur.com/mF52XI1.png)
+![Recon](https://imgur.com/DgE8amT.png)
