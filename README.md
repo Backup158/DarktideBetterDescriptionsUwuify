@@ -35,20 +35,20 @@ Enhanced Descriptions mod
    3.1. Clear out the random comments in the middle of lines which break the syntax
 
    Search for them using ```", --``` then remove them by hand
-   - Line 214: Warp Rupture (Psyker Ability 1-2)
-   - Line 250: Precognition (Psyker Ability 3-2)
-   - Line 430: Puppet Master (Psyker Passive 24)
-   - Line 473: Stunstorm Grenade (Zealot Blitz 1)
-   - Line 535: Martyr's Purpose (Zealot Ability 2-4)
-   - Line 580: Martyrdom (Zealot Keystone 2)
-   - Line 1051: Onslaught (Veteran Passive 38)
-   - Line 1237: Lynchpin (Ogryn Passive 7)
-   - Line 1249: Crunch! (Ogryn Passive 10)
+   - Line 221: Warp Rupture (Psyker Ability 1-2)
+   - Line 257: Precognition (Psyker Ability 3-2)
+   - Line 437: Puppet Master (Psyker Passive 24)
+   - Line 480: Stunstorm Grenade (Zealot Blitz 1)
+   - Line 542: Martyr's Purpose (Zealot Ability 2-4)
+   - Line 587: Martyrdom (Zealot Keystone 2)
+   - Line 1058: Onslaught (Veteran Passive 38)
+   - Line 1244: Lynchpin (Ogryn Passive 7)
+   - Line 1256: Crunch! (Ogryn Passive 10)
 
    3.2. Fix other oddities
-   - Lines 438-443: Crystalline Will and Kinetic Deflection have the same template ID for name and description, so name changes will not apply unless you change Crystalline Will's template ID (```talent_tree_psy_pas_026_en``` to match the formatting)
-   - Line 447: Tranquility Through Slaughter (Psyker Passive 28) has two descriptions; leave the first one commented out
-   - Line 455: Penetration of Soul (Psyker Passive 30) has a missing comma in the name template creation
+   - Lines 445-449: Crystalline Will and Kinetic Deflection have the same template ID for name and description, so name changes will not apply unless you change Crystalline Will's template ID (```talent_tree_psy_pas_026_en``` to match the formatting)
+   - Line 454: Tranquility Through Slaughter (Psyker Passive 28) has two descriptions; leave the first one commented out
+   - Line 462: Penetration of Soul (Psyker Passive 30) has a missing comma in the name template creation
 
    ```{"en"} function(locale, value)``` --> ```{"en"}, function(locale, value)```
 
