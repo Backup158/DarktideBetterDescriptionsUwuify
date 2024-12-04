@@ -34,13 +34,13 @@ Enhanced Descriptions mod
 
    3.1. Clear out the random comments in the middle of lines which break the syntax
 
-   Search for them using ```", --``` then remove them by hand
+   Search for them using ```", --``` then remove the mid-line comments by hand (or just comment out the whole line again to avoid more micro). Some of them include extra text, usually the talent name, and I've marked these with asterisks.
    - Line 221: Warp Rupture (Psyker Ability 1-2)
-   - Line 257: Precognition (Psyker Ability 3-2)
-   - Line 437: Puppet Master (Psyker Passive 24)
-   - Line 480: Stunstorm Grenade (Zealot Blitz 1)
+   - Line 257: *Precognition (Psyker Ability 3-2)
+   - Line 437: *Puppet Master (Psyker Passive 24)
+   - Line 480: *Stunstorm Grenade (Zealot Blitz 1)
    - Line 542: Martyr's Purpose (Zealot Ability 2-4)
-   - Line 587: Martyrdom (Zealot Keystone 2)
+   - Line 587: *Martyrdom (Zealot Keystone 2)
    - Line 1058: Onslaught (Veteran Passive 38)
    - Line 1244: Lynchpin (Ogryn Passive 7)
    - Line 1256: Crunch! (Ogryn Passive 10)
