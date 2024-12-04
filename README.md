@@ -20,7 +20,7 @@ Enhanced Descriptions mod
 
 1. *Optional*: Place script in folder with the Enhanced Description (EDM) All-in-one files
 
-   ```(DarktideFolder)/mods/ENLocalizationFIXAIO/scripts/mods/ENLocalizationFIXAIO/```
+   ```(DarktideFolder)/mods/Enhanced_descriptions/```
 
 2. Create a backup of the EDM target files: COLORS_KWords.lua, CURIOS_Blessings_Perks.lua, TALENTS.lua, TALENTS_Enh_desc.lua, TALENTS_Enh_desc2.lua, TALENTS_Enh_desc_nodes.lua, WEAPONS_Blessings_Perks.lua
 
