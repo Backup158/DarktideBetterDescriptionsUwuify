@@ -74,9 +74,12 @@ Enhanced Descriptions mod
 
 6. Delete the original EDM target files (not the backups) and rename uwu_OriginalName.lua to the original file name
 
+   Example: ```trash COLORS_KWords.lua CURIOS_Blessings_Perks.lua TALENTS.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua WEAPONS_Blessings_Perks.lua```
+            ```rename 's/uwu_//' ./*``` Renaming files, substitute uwu_ with empty, for all files in this folder.
+
    If you skipped Step 1, move the generated files to the EDM folder
   
-7. Verify the changes in-game
+8. Verify the changes in-game
 
 # Errors
 **Calling nil error**
