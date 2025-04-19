@@ -25,63 +25,29 @@ Enhanced Descriptions mod
 
 ## Usage
 
-1. *Optional*: Place script in folder with the Enhanced Description (EDM) All-in-one files
+1. *Optional*: Place this script in the folder containing the Enhanced Description mod (EDM) files
 
-   ```(DarktideFolder)/mods/Enhanced_descriptions/```
+   ```<Darktide_Folder>/mods/Enhanced_descriptions/```
 
-2. Create a backup of the EDM target files: COLORS_KWords.lua, CURIOS_Blessings_Perks.lua, TALENTS.lua, TALENTS_Enh_desc.lua, TALENTS_Enh_desc2.lua, TALENTS_Enh_desc_nodes.lua, WEAPONS_Blessings_Perks.lua
+   File names from now on will be referred to relative to this location.
 
-   Example with an aliased command for a bash script to backup all arguments: ```backup COLORS_KWords.lua CURIOS_Blessings_Perks.lua TALENTS.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua WEAPONS_Blessings_Perks.lua```
+3. Create a backup of the EDM target files:
 
-3. *Optional*: To also UwUify talent names, uncomment any lines beginning with ```create_template``` in TALENTS.lua (besides the template)
+&emsp;&emsp;&emsp;`Loc_EN/COLORS_KWords.lua`, `Loc_EN/COLORS_KW_Penances.lua`, `Loc_EN/TALENTS_Enh_desc.lua`, `Loc_EN/TALENTS_Enh_desc2.lua`, `Loc_EN/TALENTS_Enh_desc_nodes.lua`, `Loc_EN/TALENTS_Enh_desc_penances.lua`
 
-   ```-- create_template("t``` --> ```create_template("t```
+&emsp;&emsp;&emsp;`CURIOS_Blessings_Perks.lua`, `Enhanced_descriptions_localization.lua`, `TALENTS.lua`, `WEAPONS_Blessings_Perks.lua`
 
-   I've hosted a version of this file with the following changes on my [Mod Edits](https://github.com/Backup158/Darktide-Mod-Edits/blob/main/EnhancedDescriptionsv2.11_TALENTS_edit.lua) GitHub page. Remember to rename the file.
-
-   3.1. Clear out the random comments in the middle of lines which break the syntax
-
-   Search for them using ```", --``` then remove the mid-line comments by hand (or just comment out the whole line again to avoid more micro). Some of them include extra text, usually the talent name, and I've marked these with asterisks.
-   - Line 221: Warp Rupture (Psyker Ability 1-2)
-   - Line 257: *Precognition (Psyker Ability 3-2)
-   - Line 437: *Puppet Master (Psyker Passive 24)
-   - Line 480: *Stunstorm Grenade (Zealot Blitz 1)
-   - Line 542: Martyr's Purpose (Zealot Ability 2-4)
-   - Line 587: *Martyrdom (Zealot Keystone 2)
-   - Line 1058: Onslaught (Veteran Passive 38)
-   - Line 1244: Lynchpin (Ogryn Passive 7)
-   - Line 1256: Crunch! (Ogryn Passive 10)
-
-   3.2. Fix other oddities
-   - Lines 445-449: Crystalline Will and Kinetic Deflection have the same template ID for name and description, so name changes will not apply unless you change Crystalline Will's template ID (```talent_tree_psy_pas_026_en``` to match the formatting)
-   - Line 454: Tranquility Through Slaughter (Psyker Passive 28) has two descriptions; leave the first one commented out
-   - Line 462: Penetration of Soul (Psyker Passive 30) has a missing comma in the name template creation
-
-   ```{"en"} function(locale, value)``` --> ```{"en"}, function(locale, value)```
-
-5. *Optional*: If you did step 3 and agree with these changes, make the following replacements in the TALENTS files:
-
-- ```Boost Low" end``` --> ```Boost Small" end```
-
-  Wow boost doesn't sound as good as smaww boost :3
-
-- ```"Low Profile``` --> ```"Sneaky Beaky Mode```
-
-  Low Profile --> Wow Profile: wow such profile. I like the sound of 'sneaky beaky' more.
-
-- ```Chink``` --> ```Crack```
-
-  The other definition is a slur lol
+   Example with an aliased command for a bash script to backup all arguments: ```backup Loc_EN/COLORS_KWords.lua Loc_EN/COLORS_KW_Penances.lua Loc_EN/TALENTS_Enh_desc.lua Loc_EN/TALENTS_Enh_desc2.lua Loc_EN/TALENTS_Enh_desc_nodes.lua  Loc_EN/TALENTS_Enh_desc_penances.lua CURIOS_Blessings_Perks.lua Enhanced_descriptions_localization.lua TALENTS.lua WEAPONS_Blessings_Perks.lua```
    
 5. Execute the file and pass each EDM target file as a terminal argument
 
-   Example: ```python3 darktideBetterDescriptionsUwuify.py COLORS_KWords.lua CURIOS_Blessings_Perks.lua TALENTS.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua WEAPONS_Blessings_Perks.lua```
+   Example: ```python3 darktideBetterDescriptionsUwuify.py Loc_EN/COLORS_KWords.lua Loc_EN/COLORS_KW_Penances.lua Loc_EN/TALENTS_Enh_desc.lua Loc_EN/TALENTS_Enh_desc2.lua Loc_EN/TALENTS_Enh_desc_nodes.lua  Loc_EN/TALENTS_Enh_desc_penances.lua CURIOS_Blessings_Perks.lua Enhanced_descriptions_localization.lua TALENTS.lua WEAPONS_Blessings_Perks.lua```
 
    Including the full path to each file if you skipped step 1
 
 6. Delete the original EDM target files (not the backups) and rename uwu_OriginalName.lua to the original file name
 
-   Example: ```trash COLORS_KWords.lua CURIOS_Blessings_Perks.lua TALENTS.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua WEAPONS_Blessings_Perks.lua```
+   Example: ```trash Loc_EN/COLORS_KWords.lua Loc_EN/COLORS_KW_Penances.lua Loc_EN/TALENTS_Enh_desc.lua Loc_EN/TALENTS_Enh_desc2.lua Loc_EN/TALENTS_Enh_desc_nodes.lua  Loc_EN/TALENTS_Enh_desc_penances.lua CURIOS_Blessings_Perks.lua Enhanced_descriptions_localization.lua TALENTS.lua WEAPONS_Blessings_Perks.lua```
             ```rename 's/uwu_//' ./*``` Renaming files, substitute uwu_ with empty, for all files in this folder.
 
    If you skipped Step 1, move the generated files to the EDM folder
