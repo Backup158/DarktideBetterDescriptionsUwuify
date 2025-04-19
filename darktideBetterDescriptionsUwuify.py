@@ -237,12 +237,14 @@ def cleanFinalLine(finalLine):
 
 #################################################################
 # Parse Line
-# given list of strings, coming from a line that's been broken into substrings
-#	given uwuifier to use
-#	given position of the quoted text
-# returns a string that will be used to replace the original line
 #################################################################
-#def parseLine(substrings, uwu):
+# PARAMETER(S): 
+# 	array - list of strings
+#	object - uwuifier to use
+#	int -  position of the quoted text
+# DESCRIPTION: once a line has been broken up into substrings, this function comes in to figure out which substrings need to be uwuified, then it calls a function for each of those
+# RETURNS: str - line to be used to replace the original line
+#################################################################
 def parseLine(substrings, uwu, textPos):
 	finalLine = ''
 	for i in range(len(substrings)):
@@ -262,16 +264,17 @@ def parseLine(substrings, uwu, textPos):
 	if debug: print(f'\tFinal line (cleaned) is {finalLine}')
 	return finalLine
 
-####################
+########################################
 # Parse Line - Create Template
+########################################
 # PARAMETER(S): 
 # 	str - line beginning with create_template, the description declaration
-# DESCRIPTION: splits and uwuifies it
+# DESCRIPTION: splits and calls parseLine uwuifies it
 #	create_template("quotes", {"quotes2"}, {"quotes3"}, function(locale, value) return
 #	quotes and variables					<< position 1
 #	end),
-# returns a string that will be used to replace the original line
-####################
+# RETURN: str - line that will be used to replace the original line
+########################################
 def parseLineTemp(line, uwu):
 	substringsCreateTextEnd = splitCreateTextEnd(line)
 	if debug:
@@ -279,7 +282,6 @@ def parseLineTemp(line, uwu):
 		print('Creating Final Line from substringsCreateTextEnd')
 		printList(substringsCreateTextEnd,0)
 		printSep(0)
-
 	finalLine = parseLine(substringsCreateTextEnd, uwu, 1)
 
 	return finalLine
@@ -292,6 +294,8 @@ def parseLineTemp(line, uwu):
 #	object - uwuifier
 # 	int - position of quoted text
 # DESCRIPTION: splits and uwuifies the given line, according the structure of the other parseline function calling it
+# RETURN : str - line that will be used to replace the original line
+########################################
 def parseLineHelper(line, uwu, pos):
 	substrings = substringsLocalSplit(line)
 	finalLine = parseLine(substrings, uwu, pos)
