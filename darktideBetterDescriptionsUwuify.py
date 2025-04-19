@@ -158,12 +158,15 @@ class SubstringText:
 		return self.text
 
 #################################################################
-# UwUify quoted text
-# Given a string (the text within quotes) and uwu object
-# takes quoted text and splits it by variables
+# UwUify Quoted Text
+#################################################################
+# PARAMETER(S):
+#  	str - the text within quotes, found by the string split functions
+# 	object - uwuifier
+# DESCRIPTION: takes quoted text and splits it by variables
 # 	uwuifies non variables
 #	combine uwuified text with syntax and variables
-#	return new string
+# RETURN: str - text uwuified
 #################################################################
 def uwuifyQuotedText(quotedText, uwu):
 	# Splits quoted text by variables
@@ -261,8 +264,9 @@ def parseLine(substrings, uwu, textPos):
 
 ####################
 # Parse Line - Create Template
-# given a string: line beginning with create_template (description declaration)
-# splits and uwuifies it
+# PARAMETER(S): 
+# 	str - line beginning with create_template, the description declaration
+# DESCRIPTION: splits and uwuifies it
 #	create_template("quotes", {"quotes2"}, {"quotes3"}, function(locale, value) return
 #	quotes and variables					<< position 1
 #	end),
@@ -281,17 +285,19 @@ def parseLineTemp(line, uwu):
 
 	return finalLine
 	
-####################
+########################################
 # Parse Line - Local, Description String
-# given a string: line beginning with local (name declaration) or line with whitespace and description string
-# splits and uwuifies it
+########################################
+# PARAMETER(S): 
+# 	str - line beginning with local, which is usually variable declaration, or line with whitespace and description string
+# DESCRIPTION: splits and uwuifies the given line
 #	local (whatever)			| 			whitespace
 #	"
 #	quoted text				<< position 2
 #	"
 #	end}, 				if applicable
-# returns a string that will be used to replace the original line
-####################
+# RETURN: str - the line that will be used to replace the original line
+########################################
 def parseLineLocal(line, uwu):
 	
 	substrings = substringsLocalSplit(line)
@@ -302,14 +308,15 @@ def parseLineLocal(line, uwu):
 ########################################
 # Parse Line - Desc
 ########################################
-# given a string: line of description
-# splits and uwuifies it
+# PARAMETER(S): 
+# 	str- a line of description
+# DESCRIPTION: splits and uwuifies the line
 #	"
 #	- quoted text				<< position 1
 #	"
 #	,
 # position 1 this time because it cleans out the none
-# returns a string that will be used to replace the original line
+# RETURN: str - the line that will be used to replace the original line
 ########################################
 def parseLineDesc(line, uwu):
 	
@@ -325,9 +332,10 @@ def parseLineDesc(line, uwu):
 ########################################
 # Line Preprocessing Replacements
 ########################################
-# PARAMETER(S): A line (str) from the file. 
-# 	Line has been determined to have text to be uwuified. 
+# PARAMETER(S): 
+# 	str - A line from the file. 
 # DESCRIPTION: Cleaning up formatting to make script execution cleaner.
+# 	Line has been determined to have text to be uwuified. 
 # RETURN: cleaned line (str)
 ########################################
 def linePreprocess(rawline):
@@ -350,10 +358,15 @@ def linePreprocess(rawline):
 
 #################################################################
 # File Replacement
-# given a file to read and temporary file to write to
-# reads file line by line and writes its replacement to the writeFile
-#	copies old line if not replacable
-#	uses new string if replacable
+#################################################################
+# PARAMETER(S): 
+# 	A file to read. 
+# 	A temporary file to write to.
+# DESCRIPTION: Based on the read file, put into the write file the copy that should be used to replace the read file.
+# 	Reads file line by line and writes the corresponding replacement lines to the writeFile
+#		copies old line if not replacable
+#		uses new string if replacable
+# RETURN: N/A
 #################################################################
 def replace(fileRead, fileWrite):
 	input_file = open(fileRead, "r")	
@@ -413,16 +426,12 @@ def replace(fileRead, fileWrite):
 			output_file.write(line)
 			
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# main execution
+# Driver Function
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 if __name__ == "__main__":
-	### terminal argument method ###
+	### Terminal Argument method ###
 	# first argument is this script
 	# iterates through all other arguments
 	for i in range(1, len(sys.argv)):
 		if debug: print(f'replacing {sys.argv[i]}')
 		replace(sys.argv[i], f'uwu_{sys.argv[i]}')
-	
-	### input method ###
-	#fileName = input('Input the name of the file you want to replace: ')
-	#replace(fileName, "res.lua")
