@@ -62,7 +62,12 @@ def printList(list, indent):
 	printSep(indent)
 	
 ################################
-# Cleans up uwuified text
+# Cleans Up UwUified Text
+################################
+# PARAMETER(S):
+#	str - uwuified text
+# DESCRIPTION: Removes extra uwuified text that is human and syntax unfriendly 
+# RETURN: str - uwufied text without that stuff
 ################################
 def cleanuwu(uwutext):
 	if debug: print('cleaning uwu text')
@@ -86,8 +91,10 @@ def cleanuwu(uwutext):
 
 ################################
 # Clear None
-# Given a list of strings and string saying what the name is (purely for debug printing)
-# Removes 'bad' values from the list:
+################################
+# PARAMETER(S):
+# 	list of strings and string saying what the name is (purely for debug printing)
+# DESCRIPTION: Removes 'bad' values from the list:
 #	None
 #	empty strings
 # Returns the list without these values
@@ -102,8 +109,11 @@ def clearNone(substrings, which):
 
 #################################################################
 # Split Create Text End
-# given a line that begins with (whitespace) create_template ... return ", split that into 3-4 substrings
-# returns a list of substrings: the create template stuff, the quoted text with vars, end),, and any comments afterwards
+#################################################################
+# PARAMETER(S):
+# 	str - a line that begins with (whitespace) create_template ... return ", split that into 3-4 substrings
+# DESCRIPTION: 
+# RETURN: arr(str) - the create template stuff, the quoted text with vars, end),, and any comments afterwards
 #################################################################
 def splitCreateTextEnd(line):
 	# Splits the string at the return point and end point
@@ -124,8 +134,11 @@ def splitCreateTextEnd(line):
 
 #################################################################
 # Split Local (and Description String line)
-# given a line that begins with local name_rgb = iu_actit("wordswordswords", aaa)\n
-# returns a list of substrings: everything before the quote (blank for descStr), ", wordswordswords, ", , aaa)\n
+#################################################################
+# PARAMETER(S):
+# 	str - a line that begins with local name_rgb = iu_actit("wordswordswords", aaa)\n
+# DESCRIPTION: 
+# RETURN: arr(str) - everything before the quote (blank for descStr), ", wordswordswords, ", , aaa)\n
 #################################################################
 def substringsLocalSplit(line):
 	substrings = re.split('(")', line)
@@ -225,9 +238,11 @@ def uwuifyQuotedText(quotedText, uwu):
 
 #################################################################
 # Clean Final Line
-# clears out roleplay that comes before/after quotes, which clashes with variables_rgb, and roleplay that comes between quotes and end
-# given string
-# return string
+#################################################################
+# PARAMETER(S): 
+#	str - the original final line
+# DESCRIPTION: clears out roleplay that comes before/after quotes, which clashes with variables_rgb, and roleplay that comes between quotes and end
+# RETURN: str - cleaned up final line
 #################################################################
 def cleanFinalLine(finalLine):
 	newLine = finalLine
