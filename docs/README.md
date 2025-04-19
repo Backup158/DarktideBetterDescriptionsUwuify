@@ -1,3 +1,8 @@
+> [!WARNING]
+> Not yet updated for v3.402!
+> (Nightmares and Vision patch)
+> Instructions need updating and code needs review
+
 # WTF does this even do?
 
 This script turns displayed text from the [Enhanced Descriptions mod for *Warhammer 40,000: Darktide*](https://www.nexusmods.com/warhammer40kdarktide/mods/210) into UwU speak. It edits all text that will be displayed to the user, as long as the line is not commented out.
