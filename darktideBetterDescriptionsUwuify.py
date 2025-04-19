@@ -9,6 +9,7 @@ debug = True
 #	> Author: Backup158
 #	> Initial creation: 2024-06-09
 #	> Enhanced Descriptions v2.0 Update: 2024-10-31
+#	> Enhanced Descriptions v3.402 Update: 2025-04-19
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # GLOBAL VARIABLES
 # Regex values
@@ -298,8 +299,9 @@ def parseLineLocal(line, uwu):
 	
 	return finalLine
 	
-####################
+########################################
 # Parse Line - Desc
+########################################
 # given a string: line of description
 # splits and uwuifies it
 #	"
@@ -308,33 +310,41 @@ def parseLineLocal(line, uwu):
 #	,
 # position 1 this time because it cleans out the none
 # returns a string that will be used to replace the original line
-####################
+########################################
 def parseLineDesc(line, uwu):
 	
 	substrings = substringsLocalSplit(line)
 	finalLine = parseLine(substrings, uwu, 1)
+
+	# Puts hypens back
+	finalLine = finalLine.replace('"~', '"-')
+	finalLine = finalLine.replace('-~', '--')
 	
 	return finalLine
 
-####################
+########################################
 # Line Preprocessing Replacements
-# Given a line from the file. Line has been determined to have text to be uwuified. Cleaning up formatting to make script execution cleaner.
-# returns cleaned line
-####################
+########################################
+# PARAMETER(S): A line (str) from the file. 
+# 	Line has been determined to have text to be uwuified. 
+# DESCRIPTION: Cleaning up formatting to make script execution cleaner.
+# RETURN: cleaned line (str)
+########################################
 def linePreprocess(rawline):
 	cleanline = rawline
-	# replaces escaped quotes because i'm using quotes as a delimiter
+	# Replaces escaped double quotes
+	# 	Replaced with escaped single quote
+	# 	Because I'm using quotes as a delimiter
 	# \"blah\"		\\ escaped backslash, \" escaped quote
 	# \'blah\'		
-	if '\\\"' in cleanline:
-		cleanline = cleanline.replace('\\\"', '\\\'')
-	# Replaces bullet point hyphens with tilde bullet points to make stuttering easy to remove
-	# Tildes are not used anywhere else
-	# also gets rid of double hyphen bulet points
-	if '"-' in cleanline:
-		cleanline = cleanline.replace('"-', '"~')
-	if '~-' in cleanline:
-		cleanline = cleanline.replace('~-', '~~')
+	cleanline = cleanline.replace('\\\"', '\\\'')
+
+	# Replaces bullet point hyphens at the start of a line
+	# 	Replaced with tilde bullet points 
+	# 	Makes stuttering easy to remove
+	# Tildes are used to signify "around 76%" but these are not directly after a double quotation mark
+	cleanline = cleanline.replace('"-', '"~')
+	cleanline = cleanline.replace('~-', '~~')
 
 	return cleanline
 
