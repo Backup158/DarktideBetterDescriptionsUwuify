@@ -273,7 +273,6 @@ def parseLine(substrings, uwu, textPos):
 # returns a string that will be used to replace the original line
 ####################
 def parseLineTemp(line, uwu):
-	
 	substringsCreateTextEnd = splitCreateTextEnd(line)
 	if debug:
 		printSep(0)
@@ -317,8 +316,7 @@ def parseLineHelper(line, uwu, pos):
 # RETURN: str - the line that will be used to replace the original line
 ########################################
 def parseLineLocal(line, uwu):
-	finalLine = parseLineHelper(line, uwu, 2)
-	return finalLine
+	return parseLineHelper(line, uwu, 2)
 	
 ########################################
 # Parse Line - Desc
@@ -334,8 +332,7 @@ def parseLineLocal(line, uwu):
 # RETURN: str - the line that will be used to replace the original line
 ########################################
 def parseLineDesc(line, uwu):
-	finalLine = parseLineHelper(line, uwu, 1)
-	return finalLine
+	return parseLineHelper(line, uwu, 1)
 
 ########################################
 # Line Preprocessing Replacements
