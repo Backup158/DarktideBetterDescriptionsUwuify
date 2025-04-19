@@ -286,23 +286,38 @@ def parseLineTemp(line, uwu):
 	return finalLine
 	
 ########################################
+# Parse Line - Helper
+########################################
+# PARAMETER(S): 
+# 	str - line beginning with local, which is usually variable declaration, or line with whitespace and description string
+#	object - uwuifier
+# 	int - position of quoted text
+# DESCRIPTION: splits and uwuifies the given line, according the structure of the other parseline function calling it
+def parseLineHelper(line, uwu, pos):
+	substrings = substringsLocalSplit(line)
+	finalLine = parseLine(substrings, uwu, pos)
+
+	# Puts hypens back
+	finalLine = finalLine.replace('"~', '"-')
+	finalLine = finalLine.replace('-~', '--')
+	
+	return finalLine
+
+########################################
 # Parse Line - Local, Description String
 ########################################
 # PARAMETER(S): 
 # 	str - line beginning with local, which is usually variable declaration, or line with whitespace and description string
 # DESCRIPTION: splits and uwuifies the given line
-#	local (whatever)			| 			whitespace
-#	"
-#	quoted text				<< position 2
-#	"
-#	end}, 				if applicable
+#		local (whatever)			| 			whitespace
+#		"
+#		quoted text				<< position 2
+#		"
+#		end}, 				if applicable
 # RETURN: str - the line that will be used to replace the original line
 ########################################
 def parseLineLocal(line, uwu):
-	
-	substrings = substringsLocalSplit(line)
-	finalLine = parseLine(substrings, uwu, 2)
-	
+	finalLine = parseLineHelper(line, uwu, 2)
 	return finalLine
 	
 ########################################
@@ -311,22 +326,15 @@ def parseLineLocal(line, uwu):
 # PARAMETER(S): 
 # 	str- a line of description
 # DESCRIPTION: splits and uwuifies the line
-#	"
-#	- quoted text				<< position 1
-#	"
-#	,
-# position 1 this time because it cleans out the none
+#		"
+#		- quoted text				<< position 1
+#		"
+#		,
+# 	Position 1 this time because it cleans out the none
 # RETURN: str - the line that will be used to replace the original line
 ########################################
 def parseLineDesc(line, uwu):
-	
-	substrings = substringsLocalSplit(line)
-	finalLine = parseLine(substrings, uwu, 1)
-
-	# Puts hypens back
-	finalLine = finalLine.replace('"~', '"-')
-	finalLine = finalLine.replace('-~', '--')
-	
+	finalLine = parseLineHelper(line, uwu, 1)
 	return finalLine
 
 ########################################
