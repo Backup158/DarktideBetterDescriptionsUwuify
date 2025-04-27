@@ -20,19 +20,26 @@ debug = True
 # ### Reusable Regex Groups ###
 regexColoredVar = '[a-zA-Z|_|\.|0-9]*'		# variables include alphabet (up and lower), numbers, _, and .
 regexWhitespace = '(\s)*?'		# at the start of the line, match whitespace which may or may not be there
-regexSingleQuote = '(\")'
+regexLoneDoubleQuote = '(\")'
 regexNotNewline = '([^\n])'
+# ### Wrap Regex Helper Function ###
+# PARAMETERS: str - the regex pattern to be wrapped
+# DESCRIPTION: wraps the regex in parantheses so when it's used, it gets kept, and adds a check for whitespace
+# RETURNS: str - the regex with parantheses and whitespace check
+def wrapRegex(regex):
+	wrappedRegex = '(' + regexWhitespace + regex + ')'
+	return wrappedRegex
 
 # ### Entire Lines ###
 # Judging from the start
-regexLineComment = regexWhitespace + '--.*'
-regexCreateTemplateEn = '(^' + regexWhitespace + 'create_template\(".*_en\",' + ')'		# create_template("<anything>_en," ; create_template("weap_wbr041_desc_ext_en",
-regexLocalKeyword = regexWhitespace + '(local .* = iu_actit)'		# local <anything> = iu_actit; like local volley_fire_rgb = iu_actit("Volley Fire", tal_col)
-regexLocalDescription = regexWhitespace + '(local .* = \"-)' 	# local <anything> = "-;local can_be_refr_dur_active_dur = "- Can be refreshed during active duration."
-regexDescriptionString = '(' + regexWhitespace + regexSingleQuote + '[~-]' + regexNotNewline + '*' + regexSingleQuote + ',)'
+regexLineComment = wrapRegex('--.*')
+regexCreateTemplateEn = wrapRegex('create_template\(".*_en\",')		# create_template("<anything>_en," ; create_template("weap_wbr041_desc_ext_en",
+regexLocalKeyword = wrapRegex('local .* = iu_actit')				# local <anything> = iu_actit; like local volley_fire_rgb = iu_actit("Volley Fire", tal_col)
+regexLocalDescription = wrapRegex('local .* = \"-')		# local <anything> = "-;local can_be_refr_dur_active_dur = "- Can be refreshed during active duration."
+regexDescriptionString = wrapRegex(regexLoneDoubleQuote + '[~-]' + regexNotNewline + '*' + regexLoneDoubleQuote + ',')
 
 # ### Parts of text in quotes ###
-regexComment = '(' + regexWhitespace + '--(^\n)*)'
+regexComment = wrapRegex('--(^\n)*')
 regexVarCurly = '({(?:.*?)})'				# finds the {var_name:%s}. ? after * makes it non greedy so it stops at the first occurence
 # RGB Text
 #regexColoredText1 = '(\.?' + regexColoredVar + '_rgb\.\.)'			# ..var_rgb..
@@ -77,9 +84,8 @@ def cleanuwu(uwutext):
 	newuwu = uwutext
 	for i in charsToExclude:
 		exclusion = i + '-'
-		# if debug: print(f'\treplacing {exclusion}')
+		if debug: print(f'\treplacing {exclusion}')
 		newuwu = newuwu.replace(exclusion, '')
-
 	newuwu = newuwu.replace("***breaks into your house and aliases neofetch to rm -rf --no-preserve-root /*** ", '')		# removes funny root action because that fucks my formatting
 	newuwu = newuwu.replace( "***breaks into your house and aliases neofetch to rm -rf --no-preserve-root /***", '')		# in case the space is on the wrong side
 	return newuwu
@@ -179,7 +185,7 @@ class SubstringText:
 def uwuifyQuotedText(quotedText, uwu):
 	# Splits quoted text by variables
 	# gather all the regex needed
-	regex = (regexComment, regexVarCurly, regexColoredText, regexIsEnd, regexSingleQuote)
+	regex = (regexComment, regexVarCurly, regexColoredText, regexIsEnd, regexLoneDoubleQuote)
 	finalRegex = ''
 	for i in range(len(regex)):
 		finalRegex += regex[i] + '|' 
@@ -232,20 +238,6 @@ def uwuifyQuotedText(quotedText, uwu):
 	return finalText
 
 #################################################################
-# Clean Final Line
-#################################################################
-# PARAMETER(S): 
-#	str - the original final line
-# DESCRIPTION: clears out roleplay that comes before/after quotes, which clashes with variables_rgb, and roleplay that comes between quotes and end
-# RETURN: str - cleaned up final line
-#################################################################
-def cleanFinalLine(finalLine):
-	newLine = finalLine
-	#newLine = re.sub(regexRemoveRoleplayFromVar, '..', newLine)
-	newLine = re.sub(regexRemoveRoleplayFromEnd, 'end},', newLine)
-	return newLine
-
-#################################################################
 # Parse Line
 #################################################################
 # PARAMETER(S): 
@@ -270,8 +262,6 @@ def parseLine(substrings, uwu, textPos):
 			finalLine += substrings[i]
 			
 	if debug: print(f'\tFinal line is {finalLine}')
-	finalLine = cleanFinalLine(finalLine)
-	if debug: print(f'\tFinal line (cleaned) is {finalLine}')
 	return finalLine
 
 ########################################
@@ -461,15 +451,15 @@ def replace(fileRead, fileWrite):
 			continue
 		elif match_local_keyword or match_local_description or match_description_string:
 			cleanedUwu = ''
-
 			line = linePreprocess(line)
 			
-			# specifies which type of line it is
-			if match_local:
-				cleanedUwu = parseLineLocal(line, uwu)
+			# uwuifies according to which type of line it is
+			if match_local_keyword:
+				cleanedUwu = parseLineLocalKeyword(line, uwu)
+			elif match_local_description:
+				cleanedUwu = parseLineLocalDescription(line, uwu)
 			else:
 				cleanedUwu = parseLineDesc(line, uwu)
-				#cleanedUwu = parseLineLocal(line, uwu)
 			# writes down the uwuified line
 			if debug: print(f'{lineCount}: found the line: {line}\n\treplacing with: {cleanedUwu}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 			output_file.write(cleanedUwu)
