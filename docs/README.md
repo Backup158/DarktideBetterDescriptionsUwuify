@@ -3,7 +3,9 @@
 > 
 > (Nightmares and Vision patch)
 > 
-> Instructions need updating and code needs review
+> Instructions need updating and code needs rewriting
+>
+> DO NOT USE UNTIL THIS WARNING IS GONE!
 
 # WTF does this even do?
 
