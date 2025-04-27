@@ -21,7 +21,7 @@ Enhanced Descriptions mod
 
 [Python 3](https://www.python.org/downloads/) installed
 
-[uwuipy](https://github.com/Cuprum77/uwuipy) installed (v0.1.7 for main branch. Version for v0.1.9, the latest one on GitHub, is in a branch).
+[uwuipy](https://github.com/Cuprum77/uwuipy) installed (v0.1.9+).
 
 ## Usage
 
@@ -69,11 +69,11 @@ This is a syntax error, which likely means a variable or some formatting was err
 [TypeError: 'module' object is not callable]
 ```
 
-The uwuipy version I developed this on is v0.1.7 which I installed through pip. This one only runs with ```from uwuipy import uwuipy```, where the module and class name are the same and calling the class just works out.
+The uwuipy version I developed this on is v0.1.10, which can be called with `from uwupiy import uwuipy` and `from uwupiy import Uwuipy`
 
-The latest version on GitHub is v0.1.9, which specifies ```from uwuipy import Uwuify``` and lets you change the power in the constructor with an 8th argument. I have a version in a branch which accounts for this, so use that one instead.
+uwuipy v0.1.7 and below can only use `from uwupiy import uwuipy`. My code uses `from uwupiy import Uwuipy` and modifies the power by passing an 8th argument through the constructor, which requires v0.1.9 and above. Note that v0.1.9 can only use `from uwupiy import Uwuipy`.
 
-If this doesn't work, open up an issue and/or try to fix it yourself. The relevant lines are 1 and 216.
+If this doesn't work, open up an issue. The relevant lines are 1 and 216.
 
 # Known Issues
 
