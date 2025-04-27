@@ -33,21 +33,34 @@ def wrapRegex(regex):
 # ### Entire Lines ###
 # Judging from the start
 regexLineComment = wrapRegex('--.*')
-regexCreateTemplateEn = wrapRegex('create_template\(".*_en\",')		# create_template("<anything>_en," ; create_template("weap_wbr041_desc_ext_en",
-regexLocalKeyword = wrapRegex('local .* = iu_actit')				# local <anything> = iu_actit; like local volley_fire_rgb = iu_actit("Volley Fire", tal_col)
-regexLocalDescription = wrapRegex('local .* = \"-')		# local <anything> = "-;local can_be_refr_dur_active_dur = "- Can be refreshed during active duration."
+# CreateTemplateEn
+#	create_template("<anything>_en,"
+#	create_template("weap_wbr041_desc_ext_en",
+regexCreateTemplateEn = wrapRegex('create_template\(".*_en\",')
+# LocalKeyword
+#	local <anything> = iu_actit
+# 	local volley_fire_rgb = iu_actit("Volley Fire", tal_col)
+regexLocalKeyword = wrapRegex('local .* = iu_actit')
+# LocalDescription
+#	local <anything> = "-
+#	local can_be_refr_dur_active_dur = "- Can be refreshed during active duration."
+regexLocalDescription = wrapRegex('local .* = \"-')
+# DescriptionString
+#	"<~ or -><anything>",
+#	"- Cannot Crit.",
 regexDescriptionString = wrapRegex(regexLoneDoubleQuote + '[~-]' + regexNotNewline + '*' + regexLoneDoubleQuote + ',')
 
 # ### Parts of text in quotes ###
-regexComment = wrapRegex('--(^\n)*')
-regexVarCurly = '({(?:.*?)})'				# finds the {var_name:%s}. ? after * makes it non greedy so it stops at the first occurence
-# RGB Text
-#regexColoredText1 = '(\.?' + regexColoredVar + '_rgb\.\.)'			# ..var_rgb..
-#regexColoredText2 = '(\.?' + regexColoredVar + '_rgb(?: end},)?)'	# ..var_rgb end},
-#regexColoredText3 = '(\.?' + regexColoredVar + '_rgb( ?)")'			# ..var_rgb ",..var_rgb"
-#regexColoredText4 = '( ?' + regexColoredVar + '_rgb\.\.")'			# var_rgb.. "
-#regexColoredText5 = '(\.\.' + regexColoredVar + '_rgb)'				# ..var_rgb, .. var_rgb
-#regexColoredText = regexColoredText1 + '|' + regexColoredText2 + '|' + regexColoredText3 + '|' + regexColoredText4 + '|' + regexColoredText5
+# CommentPostLine
+#	at the end of the line, a comment
+#	<BLAHBLAH, NOT MATCHED> --<anything><NEWLINE, NOT MATCHED>>
+#	loc_text("{damage_taken_multiplier:%s} de réduction de "..COLORS_KWords_fr.Damage_rgb_fr.." pendant le chargement des attaques de mêlée.")), -- ..TALENTS_Enh_desc2_fr.ED_OGR_Passive_27_rgb_fr
+regexCommentPostLine = wrapRegex('--[^\n]*')
+# VariableCurly
+#	finds the {stuff_to_insert}. ? after * makes it non greedy so it stops at the first occurence
+#	{<anything>}
+#	{#color(255, 35, 5)}		{rending_multiplier:%s}
+regexVarCurly = '({(?:.*?)})'
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
@@ -109,65 +122,49 @@ def clearNone(substrings, which):
 	return substringsCleaned
 
 #################################################################
-# Split Create Text End
+# Split Line by Lone Double Quotation Mark
 #################################################################
 # PARAMETER(S):
-# 	str - a line that begins with (whitespace) create_template ... return ", split that into 3-4 substrings
-# DESCRIPTION: 
+# 	str - a line containing text to be UwUified
+# DESCRIPTION: splites the line by quoation marks
 # RETURN: arr(str) - the create template stuff, the quoted text with vars, end),, and any comments afterwards
 #################################################################
-def splitCreateTextEnd(line):
+def splitLineByLoneDoubleQuotationMark(line):
 	# Splits the string at the return point and end point
-	finalRegex = regexCreateTemplateStart + '|' + regexIsEnd
-	substrings = re.split(finalRegex, line)
+	substrings = re.split(regexLoneDoubleQuote, line)
 	if debug: 
 		printSep(1)
-		print('Result of splitting line into CreateTextEnd')
+		print('Result of splitting line')
 		printList(substrings,1)
 	
-	substrings = clearNone(substrings, 'SplitCreateTextEnd')
+	substrings = clearNone(substrings, 'splitLineByLoneDoubleQuotationMark')
 	
 	if debug: 
-		print('++ ++ ++ Split CreateTextEnd')
+		print('++ ++ ++ Split Line')
 		printList(substrings,1)
 
-	return substrings
-
-#################################################################
-# Split Local (and Description String line)
-#################################################################
-# PARAMETER(S):
-# 	str - a line that begins with local name_rgb = iu_actit("wordswordswords", aaa)\n
-# DESCRIPTION: 
-# RETURN: arr(str) - everything before the quote (blank for descStr), ", wordswordswords, ", , aaa)\n
-#################################################################
-def substringsLocalSplit(line):
-	substrings = re.split('(")', line)
-	if debug: printList(substrings,0)
-	
-	substrings = clearNone(substrings, 'SplitLocal')
-
-	if debug: 
-		print('++ ++ ++ Split Local')
-		printList(substrings,1)
 	return substrings
 
 #################################################################
 # ~~~~ Class ~~~~
-# categorizes each substring within the quoted text
-# allows you mark if it's a variable/syntax (can't uwuify without breaking the code)
+# Categorizes each substring within the quoted text
+#	text - str - the substring in question
+#	isVar - bool - is this substring a variable/syntax (can't UwUify without breaking the code)
+# Ex "{#color(255, 35, 5)}- You may Explode! Don't use if Peril level is 97% or above!{#reset()}",
+#	The quoted text would be: {#color(255, 35, 5)}- You may Explode! Don't use if Peril level is 97% or above!{#reset()} -- I shit bricks
+#	Substrings where isVar is True:
+#		{#color(255, 35, 5)}
+#		{#reset()}
+#		-- I shit bricks
 #################################################################
 class SubstringText:
 	def __init__(self, text, isVar):
 		self.text = text
 		self.isVar = isVar
-		
 	def print(self):
 		print(f'>SubstringText Object\n  Text: {self.text}\n  Is Variable: {self.isVar}')
-		
 	def getVar(self):
 		return self.isVar
-	
 	def getText(self):
 		return self.text
 
@@ -185,7 +182,7 @@ class SubstringText:
 def uwuifyQuotedText(quotedText, uwu):
 	# Splits quoted text by variables
 	# gather all the regex needed
-	regex = (regexComment, regexVarCurly, regexColoredText, regexIsEnd, regexLoneDoubleQuote)
+	regex = (regexCommentPostLine, regexVarCurly, regexLoneDoubleQuote)
 	finalRegex = ''
 	for i in range(len(regex)):
 		finalRegex += regex[i] + '|' 
@@ -422,9 +419,9 @@ def replace(fileRead, fileWrite):
 		#	CreateTemplateEn
 		#		2 lines before description text. This one is matched for English only.
 		#		CURIOS_Blessings_Perks, TALENTS, WEAPONS_Blessings_Perks
-		#		EX: 	create_template("curio_bless0_ext_en",
+		#		EX: 	create_template("curio_bless0_ext_en",													<<<<< Matching this line
 		#					{"loc_inate_gadget_health_desc"}, {"en"},
-		#						loc_text(COLORS_Numbers.maxhlth_rgb.." Maximum "..COLORS_KWords.Health_rgb)),
+		#						loc_text(COLORS_Numbers.maxhlth_rgb.." Maximum "..COLORS_KWords.Health_rgb)), 	<<<<<< Affecting this line
 		#				# " Maximum " would get uwuified
 		match_template = re.match(regexCreateTemplateEn, line)
 		#	Local Keyword
