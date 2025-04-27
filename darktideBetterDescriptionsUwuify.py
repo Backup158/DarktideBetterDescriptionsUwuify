@@ -1,4 +1,4 @@
-from uwuipy import uwuipy
+from uwuipy import Uwuipy
 import re
 import sys
 
@@ -26,25 +26,21 @@ regexNotNewline = '([^\n])'
 # ### Entire Lines ###
 # Judging from the start
 regexLineComment = regexWhitespace + '--.*'
-regexCreateTemplateStart = '(^' + regexWhitespace + 'create_template.*return' + regexWhitespace + ')'		# any amt of whitespace, create_template, whatever chars, return
-regexLocalDescriptions = '(local .* = )'		# local, anything, =. captures the color[mod:get ] ones but i deal with that manually in the call
+regexCreateTemplateEn = '(^' + regexWhitespace + 'create_template\(".*_en\",' + ')'		# create_template("<anything>_en," ; create_template("weap_wbr041_desc_ext_en",
+regexLocalKeyword = regexWhitespace + '(local .* = iu_actit)'		# local <anything> = iu_actit; like local volley_fire_rgb = iu_actit("Volley Fire", tal_col)
+regexLocalDescription = regexWhitespace + '(local .* = \"-)' 	# local <anything> = "-;local can_be_refr_dur_active_dur = "- Can be refreshed during active duration."
 regexDescriptionString = '(' + regexWhitespace + regexSingleQuote + '[~-]' + regexNotNewline + '*' + regexSingleQuote + ',)'
 
 # ### Parts of text in quotes ###
-regexIsEnd = '( end\),'+ regexNotNewline + '*)'				# end), followed by whatever until newline
 regexComment = '(' + regexWhitespace + '--(^\n)*)'
 regexVarCurly = '({(?:.*?)})'				# finds the {var_name:%s}. ? after * makes it non greedy so it stops at the first occurence
-# RGB Text, all with option for wack ass diacritic
-
-regexColoredText1 = '(\.\.˝?' + regexColoredVar + '_rgb\.\.)'			# ..var_rgb..
-regexColoredText2 = '(\.\.˝?' + regexColoredVar + '_rgb(?: end},)?)'	# ..var_rgb end},
-regexColoredText3 = '(\.\.˝?' + regexColoredVar + '_rgb( ?)")'			# ..var_rgb ",..var_rgb"
-regexColoredText4 = '( ?˝?' + regexColoredVar + '_rgb\.\.")'			# var_rgb.. "
-regexColoredText5 = '(\.\.' + regexColoredVar + '_rgb)'				# ..var_rgb, .. var_rgb
-regexColoredText = regexColoredText1 + '|' + regexColoredText2 + '|' + regexColoredText3 + '|' + regexColoredText4 + '|' + regexColoredText5
-
-#regexRemoveRoleplayFromVar = '\.\. \*{3}(\w|\s)*\*{3}|\*{3}(\w|\s)*\*{3} \.\.'		# .. ***owowowow***, ***owowooww*** ..
-regexRemoveRoleplayFromEnd = '\*{3}(\w|\s)*\*{3} end},'					# ***rping*** end},
+# RGB Text
+#regexColoredText1 = '(\.?' + regexColoredVar + '_rgb\.\.)'			# ..var_rgb..
+#regexColoredText2 = '(\.?' + regexColoredVar + '_rgb(?: end},)?)'	# ..var_rgb end},
+#regexColoredText3 = '(\.?' + regexColoredVar + '_rgb( ?)")'			# ..var_rgb ",..var_rgb"
+#regexColoredText4 = '( ?' + regexColoredVar + '_rgb\.\.")'			# var_rgb.. "
+#regexColoredText5 = '(\.\.' + regexColoredVar + '_rgb)'				# ..var_rgb, .. var_rgb
+#regexColoredText = regexColoredText1 + '|' + regexColoredText2 + '|' + regexColoredText3 + '|' + regexColoredText4 + '|' + regexColoredText5
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
@@ -75,10 +71,9 @@ def cleanuwu(uwutext):
 	# Double tilde must come first
 	# ~~-~~-~~- needs to be ~~, not ~~~ (which happens if you only remove ~- first)
 	# replacing "- would normally cause issues with bullet points, so i did the mass replacement with tilde before processing
-	# ˝ is that whackass diacritic from earlier versions
 	# for \\, it's to avoid stammering with escape characters. hypens need no escape so we good
 	# quotation mark, curly brace, period, comma, whackass diacritc, asterisk, double tilde, tilde, backslash, forward slash, paranthesis
-	charsToExclude = ['"', '{', '.', ',', '˝', '*', '~~', '~', '\\', '/', '(']
+	charsToExclude = ['"', '{', '.', ',', '*', '~~', '~', '\\', '/', '(']
 	newuwu = uwutext
 	for i in charsToExclude:
 		exclusion = i + '-'
@@ -396,48 +391,81 @@ def replace(fileRead, fileWrite):
 	input_file = open(fileRead, "r")	
 	output_file = open(fileWrite, "w")
 	lineCount = 0
+	predetermined = False
+	skipNextLines = 0
 
-	uwu = uwuipy(None, 0.33, 0, 0.22, 1, True)		# seed, stutterChance, faceChance, actionChance, exclamationsChance, nsfw, 
-	#uwu = uwuipy(None, 0.33, 0, 0.22, 1, True, 1) 	# power 1-4. only on v0.1.9
-	#uwu2 = Uwuipy(None, 0.33, 0, 0.22, 1, True, 2)
+	#uwu = uwuipy(None, 0.33, 0, 0.22, 1, True)		# seed, stutterChance, faceChance, actionChance, exclamationsChance, nsfw
+	#uwu = Uwuipy(None, 0.33, 0, 0.22, 1, True, 1) 	# seed, stutterChance, faceChance, actionChance, exclamationsChance, nsfw, power (1-4. only on v0.1.9+)
+	uwu = Uwuipy(None, 0.33, 0, 0.22, 1, True, 2)
 	#uwuSuper = Uwuipy(None, 0.33, 0, 0.22, 1, True, 4)
 	
 	for line in input_file:
 		lineCount = lineCount + 1
+
 		if debug: print(f'############# New Line {lineCount}!!!! #############')
+
+		# Based on how the code is structure, I have determined (by looking at the predecessors)
+		if predetermined:
+			if debug: print(f'{lineCount}: line is predetermined!')
+			if skipNextLines > 0:
+				if debug: print(f'\t{lineCount}: Skipping this and next {skipNextLines - 1} lines')
+				output_file.write(line) # write then skip the other checks
+				skipNextLines = skipNextLines - 1
+				continue
+			else:
+				cleanedUwu = ''
+				line = linePreprocess(line)
+				# UWUIFY AND WRITE
+
+				predetermined = False
+				skipNextLines = 0
+
 		# Checking line to see if it's one of those that contains quoted text
 		# re.match checks the BEGINNING
+		#	If it's a comment, ignore the rest
 		match_comment = re.match(regexLineComment, line)				# line is entirely a comment
 		if match_comment:
 			if debug: print(f'{lineCount}: line is a comment!')
 			output_file.write(line) # write then skip the other checks
 			continue
-		match_temp = re.match(regexCreateTemplateStart, line) 			# beginning with create_template: descriptions for curios
-		match_local = re.match(regexLocalDescriptions, line)			# talents, talent desc, colors_kwords
-		match_descStr = re.match(regexDescriptionString, line)			# talents enh desc
+		#	If it's a line that could contain a string
+		#	CreateTemplateEn
+		#		2 lines before description text. This one is matched for English only.
+		#		CURIOS_Blessings_Perks, TALENTS, WEAPONS_Blessings_Perks
+		#		EX: 	create_template("curio_bless0_ext_en",
+		#					{"loc_inate_gadget_health_desc"}, {"en"},
+		#						loc_text(COLORS_Numbers.maxhlth_rgb.." Maximum "..COLORS_KWords.Health_rgb)),
+		#				# " Maximum " would get uwuified
+		match_template = re.match(regexCreateTemplateEn, line)
+		#	Local Keyword
+		#		COLORS_KWords, COLORS_KPenances
+		#		String that gets assigned a color for reuse
+		#		EX: local Focus_rgb = iu_actit("Focus", focus_col)
+		match_local_keyword = re.match(regexLocalKeyword, line)
+		# 	Local Description
+		#		TALENTS_Enh_desc, TALENTS_Enh_desc2, TALENTS_Enh_desc_nodes, TALENTS_Enh_desc_penances
+		#		Strings that get repeated in the talent tree
+		#		EX: local can_be_refr_dur_active_dur = "- Can be refreshed during active duration."
+		match_local_description = re.match(regexLocalDescription, line)
+		#	String Description
+		#		TALENTS_Enh_desc, TALENTS_Enh_desc2, TALENTS_Enh_desc_nodes, TALENTS_Enh_desc_penances
+		#		Line that's only a string
+		#		EX: "- Always scores a Weakspot hit.",
+		match_description_string = re.match(regexDescriptionString, line)
 		
-		if match_temp or match_local or match_descStr:
+		# CreateTemplateEn does not contain text to uwuify, but the one two lines after does
+		if match_template:
+			predetermined = True
+			skipNextLines = 2
+			output_file.write(line) # write then skip the other checks
+			continue
+		elif match_local_keyword or match_local_description or match_description_string:
 			cleanedUwu = ''
 
 			line = linePreprocess(line)
 			
 			# specifies which type of line it is
-			if match_temp:
-				cleanedUwu = parseLineTemp(line, uwu)
-			elif match_local:
-				# false positive dealt with manually
-				# these are local vars that only work with quoted variables
-				# ++ is only used in seperators and that doesn't need uwuifying
-				falsePositives = ["mod:get", "get_mod", "require", "++"]
-				fpFound = False
-				for i in falsePositives:
-					if i in line:
-						fpFound = True
-						break
-				if fpFound:
-					if debug: print(f'{lineCount}: local false positive')
-					output_file.write(line)
-					continue
+			if match_local:
 				cleanedUwu = parseLineLocal(line, uwu)
 			else:
 				cleanedUwu = parseLineDesc(line, uwu)

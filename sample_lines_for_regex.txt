@@ -1,0 +1,140 @@
+-- Example text, lifted from the files, so you can test your regex
+-- I recommend testing at https://regex101.com/
+
+local can_be_refr_dur_active_dur = "- Can be refreshed during active duration."
+local doesnt_stack_aura_psy = "- Doesn't Stack with the same Aura from another Psyker."
+local doesnt_interact_w_c_a_r_from_curio = "- Does not interact with Combat Ability Regeneration from Curios which only reduces the Maximum cooldown of a Combat Ability."
+-- local dmg_is_incr_by = "- Damage is increased by Rending/Brittleness, \"Skullcrusher\" Blessing (while Staggered) and buffs from \"Empowered Psionics\", \"Empyrean Empowerment\", \"Empyric Shock\", \"Disrupt Destiny\", \"Malefic Momentum\", \"Perfect Timing\", \"Scrier's Gaze\" (including \"Precognition\"), \"Warp Rider\", aura \"Kinetic Presence\" (against Elites), and small Ranged Damage node."
+local procs_on_succss_dodging = "- Procs on successfully dodging enemy Melee or Ranged attacks (except Gunners, Reaper, Sniper), and disabler attacks (Pox Hound jump, Trapper net, Mutant grab)."
+local red_both_tghns_n_health_dmg = "- Reduces both Toughness and Health Damage taken."
+local stacks_add_w_oth_dmg = "- Stacks additively with other Damage buffs, and multiplicatively with Power level buffs from Weapon Blessings."
+local stacks_mult_w_other_dmg_red_buffs = "- Stacks multiplicatively with other Damage Reduction buffs."
+local succss_dodge_means = "- \"Successful dodge\" means Dodging an enemy attack that is locked on the player with an accordingly timed Dodge or Sliding action."
+local warp_attc_refers_to = "- \"Warp attack\" refers to a list of attacks that have their Damage types denoted as \"Warp Damage types\": Force Swords' activated attacks, Force Staves' primary attacks, Force Staves' secondary attacks, Electrocution (\"Smite\", Electrokinetic Staff secondary, Shock Maul special action), \"Soulblaze\", \"Brain Rupture\"/\"Brain Burst\", \"Assail\", and \"Warp Rupture\"."
+local z_eff_of_this_tougn_rep = "- The effectiveness of this Toughness Replenishment is affected by certain player debuffs like toxic gas."
+local z_ghost_hitnrun_n_stripp = "- \"The Ghost\", \"Hit and Run\" and \"Stripped Down\" Weapon Blessings can proc this Talent (only against Ranged attacks)."
+
+--[+ ++ENHANCED DESCRIPTIONS++ +]--
+	--[+ ++VETERAN++ +]--
+	local tal_col = Color[mod:get("talents_penances_text_colour")](255, true)
+	local volley_fire_rgb = iu_actit("Volley Fire", tal_col)
+	local snipcon_rgb = iu_actit("Marksman's Focus", tal_col)
+	local executioner_stance_rgb = iu_actit("Executioner's Stance", tal_col)
+	local krak_gr_rgb = iu_actit("Krak Grenade", tal_col)
+	local frag_gr_rgb = iu_actit("Frag Grenade", tal_col)
+	local smok_gr_rgb = iu_actit("Smoke Grenade", tal_col)
+	local fcs_trg_rgb = iu_actit("Focus Target!", tal_col)
+	local scavenger_rgb = iu_actit("Scavenger", tal_col)
+	local voiceoc_rgb = iu_actit("Voice of Command", tal_col)
+	local firetim_rgb = iu_actit("Fire Team", tal_col)
+	local infiltr_rgb = iu_actit("Infiltrate", tal_col)
+	local closenkill_rgb = iu_actit("Close and Kill", tal_col)
+	local weapspec_rgb = iu_actit("Weapons Specialist", tal_col)
+	local survivalist_rgb = iu_actit("Survivalist", tal_col)
+
+local enhanced_descriptions_enabled = mod:get("enhanced_descriptions_enabled")
+if enhanced_descriptions_enabled then
+	TALENTS_Enh_desc = mod:io_dofile("Enhanced_descriptions/Loc_EN/TALENTS_Enh_desc")
+--[+ Translations +]-- The line below is for the Psyker and Zealot Extended Descriptions and after "else" "null" files with lines that "hide" Extended Descriptions.
+	--[+ French +]--
+	TALENTS_Enh_desc_fr = mod:io_dofile("Enhanced_descriptions/Loc_FR/TALENTS_Enh_desc_fr")
+	--[+ Russian +]--
+	TALENTS_Enh_desc_ru = mod:io_dofile("Enhanced_descriptions/Loc_RU/TALENTS_Enh_desc_ru")
+	--[+ Traditional Chinese +]--
+	-- TALENTS_Enh_desc_tw = mod:io_dofile("Enhanced_descriptions/Loc_TW/TALENTS_Enh_desc_tw")
+
+local enhdesc_col = Color[mod:get("enhdesc_text_colour")](255, true) -- Do not translate this line!
+
+--[+ ++PSYKER++ +]--
+--[+ +BLITZ+ +]--
+	--[+ Blitz 0 - Brain Burst +]--
+	local ED_PSY_Blitz_0_rgb = iu_actit(table.concat({
+		ppp___ppp,
+		"- Cannot Crit.",
+		--"- Base Damage: 900.",
+		"- Always scores a Weakspot hit.",
+		-- "- Higher Damage against Maniac and Unyielding.",
+		"{#color(255, 35, 5)}- You may Explode! Don't use if Peril level is 97% or above!{#reset()}",
+	}, "\n"), enhdesc_col)
+
+    --[+ +CURIOS - РЕЛИКВИИ - 珍品+ +]--
+	--[+ BLESSINGS - БЛАГОСЛОВЕНИЯ - 祝福 +]--
+	--[+ + Health +]--
+	create_template("curio_bless0_ext_en",
+		{"loc_inate_gadget_health_desc"}, {"en"},
+			loc_text(COLORS_Numbers.maxhlth_rgb.." Maximum "..COLORS_KWords.Health_rgb)),
+	--[+ French +]--
+	create_template("curio_bless0_ext_fr",
+		{"loc_inate_gadget_health_desc"}, {"fr"},
+			loc_text(COLORS_Numbers.maxhlth_rgb.." de "..COLORS_KWords_fr.Health_rgb_fr.." Maximum")),
+	--[+ Russian +]--
+	create_template("curio_bless0_ext_en",
+		{"loc_inate_gadget_health_desc"}, {"ru"},
+			loc_text(COLORS_Numbers.maxhlth_rgb.." к максимальному "..COLORS_KWords_ru.Health_rgb_ru)),
+	--[+ 生命 - Traditional Chinese +]--
+	create_template("curio_bless0_ext_tw",
+		{"loc_inate_gadget_health_desc"}, {"zh-tw"},
+			loc_text(COLORS_Numbers.maxhlth_rgb.." 最大 "..COLORS_KWords_tw.Health_rgb_tw)),
+	--[+ Simplified Chinese +]--
+	create_template("curio_bless0_ext_zh_cn",
+		{"loc_inate_gadget_health_desc"}, {"zh-cn"},
+			loc_text(COLORS_Numbers.maxhlth_rgb.." 最大"..COLORS_KWords_zh_cn.Health_rgb_zh_cn.."  ")),
+
+	--[+ + Wound +]--
+	--create_template("curio_bless1_ext_en",
+		{"loc_inate_gadget_health_segment_desc"}, {"en"},
+			loc_text(COLORS_Numbers.maxwnds_rgb.." "..COLORS_KWords.Wound_rgb)),
+	--[+ French +]--
+	create_template("curio_bless1_ext_fr",
+		{"loc_inate_gadget_health_segment_desc"}, {"fr"},
+			loc_text(COLORS_Numbers.maxwnds_rgb.."  "..COLORS_KWords_fr.Wound_rgb_fr)),
+	--[+ Russian +]--
+	create_template("curio_bless1_ext_en",
+		{"loc_inate_gadget_health_segment_desc"}, {"ru"},
+			loc_text(COLORS_Numbers.maxwnds_rgb.." сегмент полоски "..COLORS_KWords_ru.Wound_rgb_ru)),
+	--[+ 傷口 - Traditional Chinese +]--
+	create_template("curio_bless1_ext_tw",
+		{"loc_inate_gadget_health_segment_desc"}, {"zh-tw"},
+			loc_text(COLORS_Numbers.maxwnds_rgb.." "..COLORS_KWords_tw.Wound_rgb_tw)),
+	--[+ Simplified Chinese +]--
+	create_template("curio_bless1_ext_zh_cn",
+		{"loc_inate_gadget_health_segment_desc"}, {"zh-cn"},
+			loc_text(COLORS_Numbers.maxwnds_rgb.." "..COLORS_KWords_zh_cn.Wound_rgb_zh_cn.."  ")),
+	--[+ Passive 36 - Mobile Emplacement +]--
+	create_template("talent_tree_ogr_pas_036_desc_en",
+		{"loc_talent_ogryn_bracing_reduces_damage_taken_desc"}, {"en"},
+			loc_text("You take {damage_taken_multiplier:%s} reduced "..COLORS_KWords.Damage_rgb.." while bracing a Ranged Weapon.")), -- damage_taken_multiplier:-20.00%. -- colors -- ..TALENTS_Enh_desc2.ED_OGR_Passive_36_rgb
+	--[+ French +]--
+	create_template("talent_tree_ogr_pas_036_desc_fr",
+		{"loc_talent_ogryn_bracing_reduces_damage_taken_desc"}, {"fr"},
+			loc_text("Vous réduisez les "..COLORS_KWords_fr.Damage_rgb_fr.." de {damage_taken_multiplier:%s} en utilisant une arme à distance.")), -- ..TALENTS_Enh_desc2_fr.ED_OGR_Passive_30_rgb_fr
+	--[+ Russian +]-- Мобильная огневая точка -- руоф Передвижной окоп
+	create_template("talent_tree_ogr_pas_036_desc_ru",
+		{"loc_talent_ogryn_bracing_reduces_damage_taken_desc"}, {"ru"},
+			loc_text("Вы получаете на {damage_taken_multiplier:%s} меньше "..COLORS_KWords_ru.Dmg_a_rgb_ru.." пока целитесь из дальнобойного оружия.")), -- ..TALENTS_Enh_desc2_ru.ED_OGR_Passive_30_rgb_ru
+
+	--[+ Passive 37 - Implacable +]--
+	create_template("talent_tree_ogr_pas_037_desc_en",
+		{"loc_talent_ogryn_windup_reduces_damage_taken_desc"}, {"en"},
+			loc_text("{damage_taken_multiplier:%s} "..COLORS_KWords.Damage_rgb.." Reduction while charging Melee Attacks.")), -- damage_taken_multiplier: +15% -- colors -- ..TALENTS_Enh_desc2.ED_OGR_Passive_37_rgb
+	--[+ French +]--
+	create_template("talent_tree_ogr_pas_037_desc_fr",
+		{"loc_talent_ogryn_windup_reduces_damage_taken_desc"}, {"fr"},
+			loc_text("{damage_taken_multiplier:%s} de réduction de "..COLORS_KWords_fr.Damage_rgb_fr.." pendant le chargement des attaques de mêlée.")), -- ..TALENTS_Enh_desc2_fr.ED_OGR_Passive_27_rgb_fr
+	--[+ Russian +]-- Непоколебимый 
+	create_template("talent_tree_ogr_pas_037_desc_ru",
+		{"loc_talent_ogryn_windup_reduces_damage_taken_desc"}, {"ru"},
+			loc_text("{damage_taken_multiplier:%s} к сопротивлению "..COLORS_KWords_ru.Damage_rgb_ru.." пока вы заряжаете атаки ближнего боя.")), -- ..TALENTS_Enh_desc2_ru.ED_OGR_Passive_37_rgb_ru
+
+	--[+ Passive 38 - Dominate +]--
+	create_template("talent_tree_ogr_pas_038_desc_en",
+		{"loc_talent_ogryn_rending_on_elite_kills_desc"}, {"en"},
+			loc_text("{rending_multiplier:%s} "..COLORS_KWords.Rending_rgb.." for {duration:%s} seconds on Elite kill.")), -- rending_multiplier: +10%, duration: 10 -- s->seconds -- colors -- ..TALENTS_Enh_desc2.ED_OGR_Passive_38_rgb
+	--[+ French +]--
+	create_template("talent_tree_ogr_pas_038_desc_fr",
+		{"loc_talent_ogryn_rending_on_elite_kills_desc"}, {"fr"},
+			loc_text("{rending_multiplier:%s} de "..COLORS_KWords_fr.Rending_rgb_fr.." pendant {duration:%s} secondes après une élimination d'élite.")), -- ..TALENTS_Enh_desc2_fr.ED_OGR_Passive_22_rgb_fr
+	--[+ Russian +]-- Доминируй -- руоф Господство
+	create_template("talent_tree_ogr_pas_038_desc_ru",
+		{"loc_talent_ogryn_rending_on_elite_kills_desc"}, {"ru"},
+			loc_text("{rending_multiplier:%s} к "..COLORS_KWords_ru.Rending_rgb_ru.." на {duration:%s} секунд после убийства элитного врага.")), -- ..TALENTS_Enh_desc2_ru.ED_OGR_Passive_38_rgb_ru
