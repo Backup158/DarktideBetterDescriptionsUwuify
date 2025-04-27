@@ -138,3 +138,8 @@ local enhdesc_col = Color[mod:get("enhdesc_text_colour")](255, true) -- Do not t
 	create_template("talent_tree_ogr_pas_038_desc_ru",
 		{"loc_talent_ogryn_rending_on_elite_kills_desc"}, {"ru"},
 			loc_text("{rending_multiplier:%s} к "..COLORS_KWords_ru.Rending_rgb_ru.." на {duration:%s} секунд после убийства элитного врага.")), -- ..TALENTS_Enh_desc2_ru.ED_OGR_Passive_38_rgb_ru
+
+loc_text(COLORS_Numbers.maxhlth_rgb.." Maximum "..COLORS_KWords.Health_rgb)),
+local Focus_rgb = iu_actit("Focus", focus_col)
+local can_be_refr_dur_active_dur = "- Can be refreshed during active duration."
+"- Always scores a Weakspot hit.",

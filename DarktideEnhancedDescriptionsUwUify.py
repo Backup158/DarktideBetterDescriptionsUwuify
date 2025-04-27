@@ -91,8 +91,8 @@ def cleanuwu(uwutext):
 	# Double tilde must come first
 	# ~~-~~-~~- needs to be ~~, not ~~~ (which happens if you only remove ~- first)
 	# replacing "- would normally cause issues with bullet points, so i did the mass replacement with tilde before processing
-	# for \\, it's to avoid stammering with escape characters. hypens need no escape so we good
-	# quotation mark, curly brace, period, comma, whackass diacritc, asterisk, double tilde, tilde, backslash, forward slash, paranthesis
+	# for \\, it's to avoid stammering with escape characters. hyphens need no escape so we good
+	# quotation mark, curly brace, period, comma, asterisk, double tilde, tilde, backslash, forward slash, paranthesis
 	charsToExclude = ['"', '{', '.', ',', '*', '~~', '~', '\\', '/', '(']
 	newuwu = uwutext
 	for i in charsToExclude:
@@ -181,13 +181,13 @@ class SubstringText:
 #################################################################
 def uwuifyQuotedText(quotedText, uwu):
 	# Splits quoted text by variables
-	# gather all the regex needed
+	# 	gather all the regex needed
 	regex = (regexCommentPostLine, regexVarCurly, regexLoneDoubleQuote)
 	finalRegex = ''
 	for i in range(len(regex)):
 		finalRegex += regex[i] + '|' 
 	finalRegex = finalRegex.rstrip('|')	# removes pipe from end
-	# splits text with those regex
+	# 	splits text with those regex
 	substrings = re.split(finalRegex, quotedText)
 	if debug:
 		print("====== Splitting Quoted Text ======")
@@ -213,14 +213,13 @@ def uwuifyQuotedText(quotedText, uwu):
 				break	# if match found, stop checking the regexes
 		newSub = SubstringText(currentSubstring, isVar)
 		substringsClassified.append(newSub)
-		
 	if debug:
 		print("======+++++ Substrings have been classified +++++======")
 		for i in substringsClassified:
 			i.print()
 		printSep(1)
 	
-	# UwUifies non vars and Recombines list of SubstringText back into a regular string
+	# UwUifies non vars and recombines list of SubstringText back into a regular string
 	finalText = ''
 	for currentObject in substringsClassified:
 		variable = currentObject.getVar()
@@ -273,7 +272,7 @@ def parseLine(substrings, uwu, textPos):
 # RETURN: str - line that will be used to replace the original line
 ########################################
 def parseLineTemp(line, uwu):
-	substringsCreateTextEnd = splitCreateTextEnd(line)
+	substringsCreateTextEnd = splitLineByLoneDoubleQuotationMark(line)
 	if debug:
 		printSep(0)
 		print('Creating Final Line from substringsCreateTextEnd')
@@ -287,14 +286,14 @@ def parseLineTemp(line, uwu):
 # Parse Line - Helper
 ########################################
 # PARAMETER(S): 
-# 	str - line beginning with local, which is usually variable declaration, or line with whitespace and description string
+# 	str - line containing quoted text
 #	object - uwuifier
 # 	int - position of quoted text
 # DESCRIPTION: splits and uwuifies the given line, according the structure of the other parseline function calling it
 # RETURN : str - line that will be used to replace the original line
 ########################################
 def parseLineHelper(line, uwu, pos):
-	substrings = substringsLocalSplit(line)
+	substrings = splitLineByLoneDoubleQuotationMark(line)
 	finalLine = parseLine(substrings, uwu, pos)
 
 	# Puts hypens back
@@ -303,25 +302,26 @@ def parseLineHelper(line, uwu, pos):
 	
 	return finalLine
 
-########################################
-# Parse Line - Local, Description String
-########################################
+####################
+# Parse Line - Local Keyword, Description
+####################
 # PARAMETER(S): 
 # 	str - line beginning with local, which is usually variable declaration, or line with whitespace and description string
 # DESCRIPTION: splits and uwuifies the given line
-#		local (whatever)			| 			whitespace
+#		local <whatever> = iu_actit(
+#			OR local <whatever> = 
 #		"
 #		quoted text				<< position 2
 #		"
-#		end}, 				if applicable
+#		, <color>) 				if applicable
 # RETURN: str - the line that will be used to replace the original line
-########################################
+####################
 def parseLineLocal(line, uwu):
 	return parseLineHelper(line, uwu, 2)
 	
-########################################
-# Parse Line - Desc
-########################################
+####################
+# Parse Line - Description String
+####################
 # PARAMETER(S): 
 # 	str- a line of description
 # DESCRIPTION: splits and uwuifies the line
@@ -331,7 +331,7 @@ def parseLineLocal(line, uwu):
 #		,
 # 	Position 1 this time because it cleans out the none
 # RETURN: str - the line that will be used to replace the original line
-########################################
+####################
 def parseLineDesc(line, uwu):
 	return parseLineHelper(line, uwu, 1)
 
@@ -434,6 +434,7 @@ def replace(fileRead, fileWrite):
 		#		Strings that get repeated in the talent tree
 		#		EX: local can_be_refr_dur_active_dur = "- Can be refreshed during active duration."
 		match_local_description = re.match(regexLocalDescription, line)
+		match_local = match_local_keyword or match_local_description
 		#	String Description
 		#		TALENTS_Enh_desc, TALENTS_Enh_desc2, TALENTS_Enh_desc_nodes, TALENTS_Enh_desc_penances
 		#		Line that's only a string
@@ -446,15 +447,13 @@ def replace(fileRead, fileWrite):
 			skipNextLines = 2
 			output_file.write(line) # write then skip the other checks
 			continue
-		elif match_local_keyword or match_local_description or match_description_string:
+		elif match_local or match_description_string:
 			cleanedUwu = ''
 			line = linePreprocess(line)
 			
 			# uwuifies according to which type of line it is
-			if match_local_keyword:
-				cleanedUwu = parseLineLocalKeyword(line, uwu)
-			elif match_local_description:
-				cleanedUwu = parseLineLocalDescription(line, uwu)
+			if match_local:
+				cleanedUwu = parseLineLocal(line, uwu)
 			else:
 				cleanedUwu = parseLineDesc(line, uwu)
 			# writes down the uwuified line
