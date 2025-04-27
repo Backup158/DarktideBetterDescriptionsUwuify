@@ -49,12 +49,12 @@ Enhanced Descriptions mod
 
    Example: 
    ```
-   python3 darktideBetterDescriptionsUwuify.py CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua
-   cd Loc_EN/
-   python3 COLORS_KWords.lua COLORS_KW_Penances.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua TALENTS_Enh_desc_penances.lua 
+   python3 darktideBetterDescriptionsUwuify.py CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua ; cd Loc_EN/ ; python3 COLORS_KWords.lua COLORS_KW_Penances.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua TALENTS_Enh_desc_penances.lua 
    ```
 
-   Including the full path to each file if you skipped step 1
+   That is three separate commands chained together through `;`, which means you can paste it as one line
+
+   Include the full path to each file if you skipped step 1
 
 6. Delete the original EDM target files (not the backups) and rename uwu_OriginalName.lua to the original file name
 
