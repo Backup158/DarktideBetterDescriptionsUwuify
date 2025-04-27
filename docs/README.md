@@ -29,7 +29,7 @@ Enhanced Descriptions mod
 
 1. *Optional*: Place this script in the folder containing the Enhanced Description mod (EDM) files
 
-   ```<Darktide_Folder>/mods/Enhanced_descriptions/```
+   ```<Darktide Folder>/mods/Enhanced_descriptions/```
 
    File names from now on will be referred to relative to this location.
 
@@ -49,7 +49,7 @@ Enhanced Descriptions mod
 
    Example: 
    ```
-   python3 darktideBetterDescriptionsUwuify.py CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua ; cd Loc_EN/ ; python3 COLORS_KWords.lua COLORS_KW_Penances.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua TALENTS_Enh_desc_penances.lua 
+   python3 DarktideEnhancedDescriptionsUwUify.py CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua ; cd Loc_EN/ ; python3 DarktideEnhancedDescriptionsUwUify.py COLORS_KWords.lua COLORS_KW_Penances.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua TALENTS_Enh_desc_penances.lua 
    ```
 
    That is three separate commands chained together through `;`, which means you can paste it as one line
