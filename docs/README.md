@@ -42,9 +42,7 @@ Enhanced Descriptions mod
 
    * Note: You cannot pass them all at once because they are in different folders and I'm not overcomplicating this script (i.e. I am lazy)
 
-   * Example: ```
-   python3 DarktideEnhancedDescriptionsUwUify.py CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua ; cd Loc_EN/ ; python3 ../DarktideEnhancedDescriptionsUwUify.py COLORS_KWords.lua COLORS_KW_Penances.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua TALENTS_Enh_desc_penances.lua 
-   ```
+   * Example: ``` python3 DarktideEnhancedDescriptionsUwUify.py CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua ; cd Loc_EN/ ; python3 ../DarktideEnhancedDescriptionsUwUify.py COLORS_KWords.lua COLORS_KW_Penances.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua TALENTS_Enh_desc_penances.lua ```
 
    * That is three separate commands chained together through `;`, which means you can paste it as one line
 
