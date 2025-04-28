@@ -289,11 +289,13 @@ def parseLineTemp(line, uwu):
 	openingQuoteFound = False
 	i = 0
 	while i < len(substringsCreateText):
+		# Haven't seen a quotation mark yet, so just put it in
 		if openingQuoteFound == False:
 			finalLine += substringsCreateText[i]
-			i = i + 1
+			# checks if current string is opening quote
 			if substringsCreateText[i] == "\"":
 				openingQuoteFound = True
+			i = i + 1
 		else:
 			if debug: print(f'uwuifying!!!\n\t{substringsCreateText[i]}')
 			uwutext = uwuifyQuotedText(substringsCreateText[i], uwu)
@@ -302,6 +304,12 @@ def parseLineTemp(line, uwu):
 			finalLine += uwutext + "\"" # automatically adds the closing quote
 			i = i + 2					# then skips processing it
 			openingQuoteFound = False
+	if debug: print(f'\tFinal line before postprocessing {finalLine}')
+	# Puts hypens back
+	finalLine = finalLine.replace('"~', '"-')
+	finalLine = finalLine.replace('-~', '--')
+	# Puts the quotes back
+	finalLine = finalLine.replace('\\\'', '\\\"')
 	if debug: print(f'\tFinal line is {finalLine}')
 	return finalLine
 	
@@ -322,6 +330,8 @@ def parseLineHelper(line, uwu, pos):
 	# Puts hypens back
 	finalLine = finalLine.replace('"~', '"-')
 	finalLine = finalLine.replace('-~', '--')
+	# Puts the quotes back
+	finalLine = finalLine.replace('\\\'', '\\\"')
 	
 	return finalLine
 
@@ -421,14 +431,17 @@ def replace(fileRead, fileWrite):
 				if debug: print(f'\t{lineCount}: Skipping this and next {skipNextLines - 1} lines')
 				output_file.write(line) # write then skip the other checks
 				skipNextLines = skipNextLines - 1
-				continue
 			else:
 				cleanedUwu = ''
 				line = linePreprocess(line)
 				# UWUIFY AND WRITE
+				cleanedUwu = parseLineTemp(line, uwu)
+				output_file.write(cleanedUwu)
 
 				predetermined = False
 				skipNextLines = 0
+			# In either case, predetermined text means the script should skip the rest of the this iteration
+			continue
 
 		# Checking line to see if it's one of those that contains quoted text
 		# re.match checks the BEGINNING
@@ -467,7 +480,7 @@ def replace(fileRead, fileWrite):
 		# CreateTemplateEn does not contain text to uwuify, but the one two lines after does
 		if match_template:
 			predetermined = True
-			skipNextLines = 2
+			skipNextLines = 1
 			output_file.write(line) # write then skip the other checks
 			continue
 		elif match_local or match_description_string:
