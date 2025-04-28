@@ -40,23 +40,27 @@ Enhanced Descriptions mod
    
 3. Execute the file and pass each EDM target file as a terminal argument
 
-   * Note: You cannot pass them all at once because they are in different folders and I'm not overcomplicating this script (i.e. I am lazy)
-
-   * Example: ``` python3 DarktideEnhancedDescriptionsUwUify.py CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua ; cd Loc_EN/ ; python3 ../DarktideEnhancedDescriptionsUwUify.py COLORS_KWords.lua COLORS_KW_Penances.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua TALENTS_Enh_desc_penances.lua ```
-
-   * That is three separate commands chained together through `;`, which means you can paste it as one line
+   * You cannot pass them all at once because they are in different folders and I'm not overcomplicating this script (i.e. I am lazy)
 
    * Include the full path to each file if you skipped step 1
 
+   * Example: ``` python3 DarktideEnhancedDescriptionsUwUify.py CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua ; cd Loc_EN/ ; python3 ../DarktideEnhancedDescriptionsUwUify.py COLORS_KWords.lua COLORS_KW_Penances.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua TALENTS_Enh_desc_penances.lua ```
+
+      * That is three separate commands chained together through `;`, which means you can paste it as one line
+
+      * UwUifies the ones in the base folder, then moves to English Localization folder, then UwUifies the ones in there
+
 4. Delete the original EDM target files (not the backups) and rename uwu_OriginalName.lua to the original file name
 
-   Example: ```cd ..``` Don't forget to go back to the main mod file folder
+   * Example: 
+      
+      * ```cd ..``` Don't forget to go back to the main mod file folder
 
-            ```trash Loc_EN/COLORS_KWords.lua Loc_EN/COLORS_KW_Penances.lua Loc_EN/TALENTS_Enh_desc.lua Loc_EN/TALENTS_Enh_desc2.lua Loc_EN/TALENTS_Enh_desc_nodes.lua  Loc_EN/TALENTS_Enh_desc_penances.lua CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua```
+      * ```trash Loc_EN/COLORS_KWords.lua Loc_EN/COLORS_KW_Penances.lua Loc_EN/TALENTS_Enh_desc.lua Loc_EN/TALENTS_Enh_desc2.lua Loc_EN/TALENTS_Enh_desc_nodes.lua  Loc_EN/TALENTS_Enh_desc_penances.lua CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua```
 
-            ```rename 's/uwu_//' ./* ; rename 's/uwu_//' ./Loc_EN/*``` Renaming files, substitute uwu_ with empty, for all files in this folder.
+      * ```rename 's/uwu_//' ./* ; rename 's/uwu_//' ./Loc_EN/*``` Renaming files, substitute uwu_ with empty, for all files in this folder.
 
-   If you skipped Step 1, move the generated files to the EDM folder
+   * If you skipped Step 1, move the generated files to the EDM folder
   
 5. Verify the changes in-game
 
