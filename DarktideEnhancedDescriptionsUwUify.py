@@ -130,6 +130,8 @@ def clearNone(substrings, which):
 # RETURN: arr(str) - the create template stuff, the quoted text with vars, end),, and any comments afterwards
 #################################################################
 def splitLineByLoneDoubleQuotationMark(line):
+	# Removes comments from the end of lines
+	# line = re.sub(regexCommentPostLine, "", line)
 	# Splits the string at the return point and end point
 	substrings = re.split(regexLoneDoubleQuote, line)
 	if debug: 
