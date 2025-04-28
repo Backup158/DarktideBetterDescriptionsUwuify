@@ -26,28 +26,29 @@ Enhanced Descriptions mod
 
    File names from now on will be referred to relative to this location.
 
-2. Create a backup of the EDM target files:
+2. Create a backup of the EDM target files
+   
+   * Target files:
 
-   * `Loc_EN/COLORS_KWords.lua`, `Loc_EN/COLORS_KW_Penances.lua`, `Loc_EN/TALENTS_Enh_desc.lua`, `Loc_EN/TALENTS_Enh_desc2.lua`, `Loc_EN/TALENTS_Enh_desc_nodes.lua`, `Loc_EN/TALENTS_Enh_desc_penances.lua`
+      * `Loc_EN/COLORS_KWords.lua`, `Loc_EN/COLORS_KW_Penances.lua`, `Loc_EN/TALENTS_Enh_desc.lua`, `Loc_EN/TALENTS_Enh_desc2.lua`, `Loc_EN/TALENTS_Enh_desc_nodes.lua`, `Loc_EN/TALENTS_Enh_desc_penances.lua`
 
-   * `CURIOS_Blessings_Perks.lua`, `TALENTS.lua`, `WEAPONS_Blessings_Perks.lua`
+      * `CURIOS_Blessings_Perks.lua`, `TALENTS.lua`, `WEAPONS_Blessings_Perks.lua`
 
-   * Note: `Enhanced_descriptions_localization.lua` is not included because I already [have an UwUifier](https://github.com/Backup158/DarktideModLocalizationUwuify) for those, so no need to reinvent the wheel
+      * Note: `Enhanced_descriptions_localization.lua` is not included because I already [have an UwUifier](https://github.com/Backup158/DarktideModLocalizationUwuify) for those, so no need to reinvent the wheel
 
-   Example (with an aliased command for a Bash script to backup all arguments): ```backup Loc_EN/COLORS_KWords.lua Loc_EN/COLORS_KW_Penances.lua Loc_EN/TALENTS_Enh_desc.lua Loc_EN/TALENTS_Enh_desc2.lua Loc_EN/TALENTS_Enh_desc_nodes.lua Loc_EN/TALENTS_Enh_desc_penances.lua CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua```
+   * Example (with an aliased command for a Bash script to backup all arguments): ```backup Loc_EN/COLORS_KWords.lua Loc_EN/COLORS_KW_Penances.lua Loc_EN/TALENTS_Enh_desc.lua Loc_EN/TALENTS_Enh_desc2.lua Loc_EN/TALENTS_Enh_desc_nodes.lua Loc_EN/TALENTS_Enh_desc_penances.lua CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua```
    
 3. Execute the file and pass each EDM target file as a terminal argument
 
-   Note: You cannot pass them all at once because they are in different folders and I'm not overcomplicating this script (i.e. I am lazy)
+   * Note: You cannot pass them all at once because they are in different folders and I'm not overcomplicating this script (i.e. I am lazy)
 
-   Example: 
-   ```
+   * Example: ```
    python3 DarktideEnhancedDescriptionsUwUify.py CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua ; cd Loc_EN/ ; python3 ../DarktideEnhancedDescriptionsUwUify.py COLORS_KWords.lua COLORS_KW_Penances.lua TALENTS_Enh_desc.lua TALENTS_Enh_desc2.lua TALENTS_Enh_desc_nodes.lua TALENTS_Enh_desc_penances.lua 
    ```
 
-   That is three separate commands chained together through `;`, which means you can paste it as one line
+   * That is three separate commands chained together through `;`, which means you can paste it as one line
 
-   Include the full path to each file if you skipped step 1
+   * Include the full path to each file if you skipped step 1
 
 4. Delete the original EDM target files (not the backups) and rename uwu_OriginalName.lua to the original file name
 
