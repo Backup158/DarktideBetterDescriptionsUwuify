@@ -1,15 +1,6 @@
-> [!WARNING]
-> Not yet updated for v3.402!
-> 
-> (Nightmares and Vision patch)
-> 
-> Instructions need updating and code needs rewriting
->
-> DO NOT USE UNTIL THIS WARNING IS GONE!
-
 # WTF does this even do?
 
-This script turns displayed text from the [Enhanced Descriptions mod for *Warhammer 40,000: Darktide*](https://www.nexusmods.com/warhammer40kdarktide/mods/210) into UwU speak. It edits all text that will be displayed to the user, as long as the line is not commented out.
+This script turns displayed text from the [Enhanced Descriptions mod for *Warhammer 40,000: Darktide*](https://www.nexusmods.com/warhammer40kdarktide/mods/210) into UwU speak. It edits all text that will be displayed to the user, as long as the line is not commented out and it's associate with English.
 
 Uses the [uwuipy](https://github.com/Cuprum77/uwuipy) library.
 
@@ -26,6 +17,8 @@ Enhanced Descriptions mod
 [uwuipy](https://github.com/Cuprum77/uwuipy) installed (v0.1.9+).
 
 ## Usage
+
+### Typical Use
 
 1. *Optional*: Place this script in the folder containing the Enhanced Description mod (EDM) files
 
@@ -66,6 +59,25 @@ Enhanced Descriptions mod
   
 8. Verify the changes in-game
 
+### Shell Script
+I wrote a Bash script to execute all the commands above **for my system**. That means it includes aliased commands (which most likely won't match up with yours), and it's for Linux. `backup` executes a Bash script that creates a copy of all arguments (where each copy is a `.bak` file).
+
+If this does not apply to you, go back to the Typical Use instructions. Otherwise...
+
+1) Download `DarktideEnhancedDescriptionsUwUifyHelper.sh` and place it in `<Darktide Folder>/mods/Enhanced_descriptions/`
+
+2) Make the file executable
+
+   * doing so through your desktop enviroment's GUI 
+   
+   * chmod +x DarktideEnhancedDescriptionsUwUifyHelper.sh
+
+3) Run the script
+
+   `bash DarktideEnhancedDescriptionsUwUifyHelper.sh`
+
+4) Verify the changes in-game
+
 # Errors
 **Error: attempt to call local 'func' (a nil value)**
 
@@ -74,6 +86,16 @@ Enhanced Descriptions mod
 ```
 
 This is a syntax error, which likely means a variable or some formatting was erroneously UwUified or had a roleplay action inserted next to it.
+
+The full line may look like:
+
+```
+[Lua] [MOD][Enhanced_descriptions][ERROR] Error processing './../mods/Enhanced_descriptions/TALENTS.lua': [string "./../mods/dmf/scripts/mods/dmf/modules/core/i..."]:69: attempt to call local 'func' (a nil value)
+```
+
+Which tells you which file is the issue. In this case, it was `TALENTS.lua`. 
+
+To narrow down the error from thousands of lines, I abuse the Binary Search method (I say abuse because that's intended for having only one error). Delete half the lines in the file --> reload mods --> if the mod loads, the syntax error was in the deleted half, so restart with that.
 
 **Module call error for uwuipy**
 
