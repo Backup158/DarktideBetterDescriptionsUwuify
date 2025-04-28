@@ -6,6 +6,8 @@ Uses the [uwuipy](https://github.com/Cuprum77/uwuipy) library.
 
 ![UwUified weapon](https://imgur.com/K603bvO.png)
 
+![UwUified Ogryn talents](https://i.imgur.com/S4RQ0J2.png)
+
 # Requirements
 
 A moddable copy of *Darktide* (NOT through GEForceNow) [patched for modding](https://dmf-docs.darkti.de/#/installing-mods)
@@ -130,6 +132,13 @@ I could add a limited uwuifier based on line length but I'm lazy. Maybe if enoug
 # Gallery
 
 ![Flamer](https://imgur.com/bRrrpB0.png)
+
 ![Ranged Weapons](https://imgur.com/mF52XI1.png)
+
 ![Recon](https://imgur.com/DgE8amT.png)
+
 ![Talents1](https://imgur.com/K5HieQk.png)
+
+![Ogryn Talents 2](https://imgur.com/B4IvhDx.png)
+
+![Ogryn Talents 3](https://imgur.com/bDcX93V.png)
