@@ -297,6 +297,12 @@ def parseLineTemp(line, uwu):
 				openingQuoteFound = True
 			i = i + 1
 		else:
+			# Handling empty string ""
+			if substringsCreateText[i] == "\"":
+				finalLine += substringsCreateText[i]
+				openingQuoteFound = False
+				i = i + 1
+				continue
 			if debug: print(f'uwuifying!!!\n\t{substringsCreateText[i]}')
 			uwutext = uwuifyQuotedText(substringsCreateText[i], uwu)
 			uwutext = cleanuwu(uwutext)
