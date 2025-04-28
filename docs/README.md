@@ -112,7 +112,7 @@ The uwuipy version I developed this on is v0.1.10, which can be called with `fro
 
 uwuipy v0.1.7 and below can only use `from uwupiy import uwuipy`. My code uses `from uwupiy import Uwuipy` and modifies the power by passing an 8th argument through the constructor, which requires v0.1.9 and above. Note that v0.1.9 can only use `from uwupiy import Uwuipy`.
 
-If this doesn't work, open up an issue. The relevant lines are 1 and 216.
+If this doesn't work, open up an issue. The relevant lines are 1 and 232.
 
 # Known Issues
 
