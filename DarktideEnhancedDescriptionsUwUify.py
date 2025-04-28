@@ -260,30 +260,53 @@ def parseLine(substrings, uwu, textPos):
 	if debug: print(f'\tFinal line is {finalLine}')
 	return finalLine
 
-########################################
-# Parse Line - Create Template
-########################################
+#################################################################
+# Parse Line - Create Template Version
+#################################################################
 # PARAMETER(S): 
 # 	str - line beginning with create_template, the description declaration
 # DESCRIPTION: splits and calls parseLine uwuifies it
-#	create_template("quotes", {"quotes2"}, {"quotes3"}, function(locale, value) return
-#	quotes and variables					<< position 1
-#	end),
+#				2 lines after create_template
+#				generally formatted like this:
+#	loc_text(COLORS_Numbers.maxhlth_rgb..
+# 	"
+# 	 Maximum 
+# 	"
+# 	..COLORS_KWords.Health_rgb)),
+#				but there can be multiple quoted text
 # RETURN: str - line that will be used to replace the original line
-########################################
+#################################################################
 def parseLineTemp(line, uwu):
-	substringsCreateTextEnd = splitLineByLoneDoubleQuotationMark(line)
+	# Split so by quotation marks
+	substringsCreateText = splitLineByLoneDoubleQuotationMark(line)
 	if debug:
 		printSep(0)
-		print('Creating Final Line from substringsCreateTextEnd')
-		printList(substringsCreateTextEnd,0)
+		print('Creating Final Line from substringsCreateText')
+		printList(substringsCreateText,0)
 		printSep(0)
-	finalLine = parseLine(substringsCreateTextEnd, uwu, 1)
-
+	# UwUify each quoted part
+	finalLine = ''
+	openingQuoteFound = False
+	i = 0
+	while i < len(substringsCreateText):
+		if openingQuoteFound == False:
+			finalLine += substringsCreateText[i]
+			i = i + 1
+			if substringsCreateText[i] == "\"":
+				openingQuoteFound = True
+		else:
+			if debug: print(f'uwuifying!!!\n\t{substringsCreateText[i]}')
+			uwutext = uwuifyQuotedText(substringsCreateText[i], uwu)
+			uwutext = cleanuwu(uwutext)
+			if debug: print(f'\t vvvvvvv \n\t{uwutext}')
+			finalLine += uwutext + "\"" # automatically adds the closing quote
+			i = i + 2					# then skips processing it
+			openingQuoteFound = False
+	if debug: print(f'\tFinal line is {finalLine}')
 	return finalLine
 	
 ########################################
-# Parse Line - Helper
+# Parse Line - Helper Preprocessor
 ########################################
 # PARAMETER(S): 
 # 	str - line containing quoted text
