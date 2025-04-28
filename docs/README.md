@@ -26,17 +26,17 @@ Enhanced Descriptions mod
 
    File names from now on will be referred to relative to this location.
 
-3. Create a backup of the EDM target files:
+2. Create a backup of the EDM target files:
 
-&emsp;&emsp;&emsp;`Loc_EN/COLORS_KWords.lua`, `Loc_EN/COLORS_KW_Penances.lua`, `Loc_EN/TALENTS_Enh_desc.lua`, `Loc_EN/TALENTS_Enh_desc2.lua`, `Loc_EN/TALENTS_Enh_desc_nodes.lua`, `Loc_EN/TALENTS_Enh_desc_penances.lua`
+   * `Loc_EN/COLORS_KWords.lua`, `Loc_EN/COLORS_KW_Penances.lua`, `Loc_EN/TALENTS_Enh_desc.lua`, `Loc_EN/TALENTS_Enh_desc2.lua`, `Loc_EN/TALENTS_Enh_desc_nodes.lua`, `Loc_EN/TALENTS_Enh_desc_penances.lua`
 
-&emsp;&emsp;&emsp;`CURIOS_Blessings_Perks.lua`, `TALENTS.lua`, `WEAPONS_Blessings_Perks.lua`
+   * `CURIOS_Blessings_Perks.lua`, `TALENTS.lua`, `WEAPONS_Blessings_Perks.lua`
 
-&emsp;&emsp;&emsp;Note: `Enhanced_descriptions_localization.lua` is not included because I already [have an UwUifier](https://github.com/Backup158/DarktideModLocalizationUwuify) for those, so no need to reinvent the wheel
+   * Note: `Enhanced_descriptions_localization.lua` is not included because I already [have an UwUifier](https://github.com/Backup158/DarktideModLocalizationUwuify) for those, so no need to reinvent the wheel
 
-   Example with an aliased command for a bash script to backup all arguments: ```backup Loc_EN/COLORS_KWords.lua Loc_EN/COLORS_KW_Penances.lua Loc_EN/TALENTS_Enh_desc.lua Loc_EN/TALENTS_Enh_desc2.lua Loc_EN/TALENTS_Enh_desc_nodes.lua Loc_EN/TALENTS_Enh_desc_penances.lua CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua```
+   Example (with an aliased command for a Bash script to backup all arguments): ```backup Loc_EN/COLORS_KWords.lua Loc_EN/COLORS_KW_Penances.lua Loc_EN/TALENTS_Enh_desc.lua Loc_EN/TALENTS_Enh_desc2.lua Loc_EN/TALENTS_Enh_desc_nodes.lua Loc_EN/TALENTS_Enh_desc_penances.lua CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua```
    
-5. Execute the file and pass each EDM target file as a terminal argument
+3. Execute the file and pass each EDM target file as a terminal argument
 
    Note: You cannot pass them all at once because they are in different folders and I'm not overcomplicating this script (i.e. I am lazy)
 
@@ -49,17 +49,17 @@ Enhanced Descriptions mod
 
    Include the full path to each file if you skipped step 1
 
-6. Delete the original EDM target files (not the backups) and rename uwu_OriginalName.lua to the original file name
+4. Delete the original EDM target files (not the backups) and rename uwu_OriginalName.lua to the original file name
 
    Example: ```cd ..``` Don't forget to go back to the main mod file folder
 
             ```trash Loc_EN/COLORS_KWords.lua Loc_EN/COLORS_KW_Penances.lua Loc_EN/TALENTS_Enh_desc.lua Loc_EN/TALENTS_Enh_desc2.lua Loc_EN/TALENTS_Enh_desc_nodes.lua  Loc_EN/TALENTS_Enh_desc_penances.lua CURIOS_Blessings_Perks.lua TALENTS.lua WEAPONS_Blessings_Perks.lua```
-            
+
             ```rename 's/uwu_//' ./* ; rename 's/uwu_//' ./Loc_EN/*``` Renaming files, substitute uwu_ with empty, for all files in this folder.
 
    If you skipped Step 1, move the generated files to the EDM folder
   
-8. Verify the changes in-game
+5. Verify the changes in-game
 
 ### Shell Script
 I wrote a Bash script to execute all the commands above **for my system**. That means it includes aliased commands (which most likely won't match up with yours), and it's for Linux. `backup` executes a Bash script that creates a copy of all arguments (where each copy is a `.bak` file).
