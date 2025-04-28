@@ -309,8 +309,11 @@ def parseLineTemp(line, uwu):
 			uwutext = uwuifyQuotedText(substringsCreateText[i], uwu)
 			uwutext = cleanuwu(uwutext)
 			if debug: print(f'\t vvvvvvv \n\t{uwutext}')
-			finalLine += uwutext + "\"" # automatically adds the closing quote
-			i = i + 2					# then skips processing it
+			finalLine += uwutext
+			# skips processing the closing quote
+			i = i + 2 
+			if i < len(substringsCreateText):
+				finalLine += "\""
 			openingQuoteFound = False
 	if debug: print(f'\tFinal line before postprocessing {finalLine}')
 	# Puts hypens back
