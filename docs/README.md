@@ -92,7 +92,7 @@ If this does not apply to you, go back to the Typical Use instructions. Otherwis
 [ERROR] [DMF Mod Manager] (new_mod) 'mod_script' initialization: [string"./../mods/dmf/scripts/mods/dmf/modules/core/i..."]:69: attempt to call local 'func' (a nil value)
 ```
 
-This is a syntax error, which likely means a variable or some formatting was erroneously UwUified or had a roleplay action inserted next to it.
+This is a syntax error, which likely means a variable or some formatting was erroneously UwUified or had a roleplay action inserted next to it. You may be thinking that this simply means "The syntax error is on Line 69 of my mod," but it actually means the error is happen in line 69 of a DMF module, which is caused by a syntax error from your mod.
 
 The full line may look like:
 
